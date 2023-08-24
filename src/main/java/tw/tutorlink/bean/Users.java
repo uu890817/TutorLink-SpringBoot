@@ -40,10 +40,12 @@ public class Users {
 
 	@OneToOne(cascade = CascadeType.ALL, mappedBy = "users")
 	private UserDetail userDetail;
+	
+	// 關聯性欄位-----------------------------------------------------
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
-	private List<Lesson> lesson;
+	private List<Lessons> lesson;
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
@@ -71,10 +73,17 @@ public class Users {
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
-	private List<Lectures> lectures;
+	private List<ExercisePermissions> exercisePermissions;
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
+	private List<Calender> calender;
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
-	private List<ExercisePermissions> exercisePermissions;
-
+	private List<Vacation> vacation;
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
+	private List<Question> question;
 }

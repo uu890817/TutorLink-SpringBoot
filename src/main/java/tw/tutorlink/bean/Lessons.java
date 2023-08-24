@@ -15,8 +15,8 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "Lesson")
-public class Lesson {
+@Table(name = "Lessons")
+public class Lessons {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,14 +27,16 @@ public class Lesson {
 	@JoinColumn(name = "UsersId", referencedColumnName = "usersId")
 	private Users users;
 
-	@Column(name = "LessonName")
+	@Column(name = "LessonName", columnDefinition = "nvarchar(50)")
 	private String lessonName;
+
+	@Column(name = "LeesonType", columnDefinition = "bit")
+	private boolean lessonType;
 
 	@Column(name = "Image")
 	private String image;
 
-	@Column(name = "LeesonType")
-	private Integer lessonType;
+	// 關聯性欄位-----------------------------------------------------
 
 	@OneToOne(mappedBy = "lesson", cascade = CascadeType.ALL)
 	private LessonDetail lessondetail;
@@ -53,9 +55,11 @@ public class Lesson {
 
 	@OneToMany(mappedBy = "lesson", cascade = CascadeType.ALL)
 	private List<Favorite> favorite;
-	
+
 	@OneToMany(mappedBy = "lesson", cascade = CascadeType.ALL)
 	private List<Exercises> exercises;
-
+	
+	@OneToMany(mappedBy = "lesson", cascade = CascadeType.ALL)
+	private List<Calender> calender;
 
 }

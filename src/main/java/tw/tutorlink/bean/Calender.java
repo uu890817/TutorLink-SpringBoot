@@ -1,5 +1,7 @@
 package tw.tutorlink.bean;
 
+import java.util.Date;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -10,25 +12,26 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "Lectures")
-public class Lectures {
+@Table(name = "Calender")
+public class Calender {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "LectureId")
-	private Integer lectureId;
+	@Column(name = "calenderId")
+	private Integer calenderId;
 
 	@ManyToOne
 	@JoinColumn(name = "UsersId", referencedColumnName = "usersId", nullable = false)
 	private Users users;
 
-	@Column(name = "LectureName",columnDefinition = "nvarchar(50)")
-	private String lectureName;
+	@ManyToOne
+	@JoinColumn(name = "LessonId", referencedColumnName = "lessonId", nullable = false)
+	private Lessons lesson;
 
-	@Column(name = "LeactureType",columnDefinition = "bit")
-	private boolean leactureType;
+	@Column(name = "StartTime", columnDefinition = "Date")
+	private Date startTime;
 
-	@Column(name = "LeacturePrice")
-	private Integer leacturePrice;
+	@Column(name = "EndTime", columnDefinition = "Date")
+	private Date endTime;
 
 }

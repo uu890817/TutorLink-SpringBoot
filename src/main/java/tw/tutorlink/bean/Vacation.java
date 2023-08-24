@@ -12,25 +12,25 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "Report")
-public class Report {
+@Table(name="Vacation")
+public class Vacation {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "ReportId")
-	private Integer reportId;
-
-	@ManyToOne
-	@JoinColumn(name = "LessonId", referencedColumnName = "lessonId", nullable = false)
-	private Lessons lesson;
+	@Column(name = "VacationId")
+	private Integer vacationId;
 
 	@ManyToOne
 	@JoinColumn(name = "UsersId", referencedColumnName = "usersId", nullable = false)
 	private Users users;
 
-	@Column(name = "Time")
-	private Date Time;
+	@Column(name = "StartTime", columnDefinition = "Date")
+	private Date startTime;
 
-	@Column(name = "Context", length = 50)
-	private String context;
+	@Column(name = "EndTime", columnDefinition = "Date")
+	private Date endTime;
+
+	@Column(name = "IsRepeat", columnDefinition = "bit")
+	private boolean isRepeat;
+
 }

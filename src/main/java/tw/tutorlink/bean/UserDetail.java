@@ -18,8 +18,8 @@ public class UserDetail {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "UserDtId")
-	private Integer userDtId;
+	@Column(name = "UserDetailId")
+	private Integer userDetailId;
 
 	
 	@OneToOne(cascade = CascadeType.ALL)

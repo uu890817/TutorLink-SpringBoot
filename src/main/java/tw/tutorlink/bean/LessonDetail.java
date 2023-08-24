@@ -18,23 +18,27 @@ import jakarta.persistence.Table;
 public class LessonDetail {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "LessonDtId")
-	private Integer lessonDetail;
+	@Column(name = "LessonDetailId")
+	private Integer lessonDetailId;
 
 	@JsonIgnore
 	@OneToOne
 	@JoinColumn(referencedColumnName = "LessonId", nullable = false)
-	private Lesson lesson;
+	private Lessons lesson;
 
-	@Column(name = "Video")
-	private String video;
+	@Column(name = "MeetingUrl", columnDefinition = "varchar(100)")
+	private String meetingUrl;
 
-	@Column(name = "CreateTime", nullable = false)
+	@Column(name = "Information", columnDefinition = "nvarchar(max)")
+	private String imformation;
+
+	@Column(name = "CreateTime", columnDefinition = "Date")
 	private Date createTime;
 
-	@Column(name = "UpdateTime")
-	private Date updateTime;
+	@Column(name = "CourseUrl", columnDefinition = "varchar(100)")
+	private String courseUrl;
 
-	@Column(name = "Infomation")
-	private String information;
+	@Column(name = "CourserTotalTime")
+	private Integer courseTotalTime;
+
 }

@@ -26,23 +26,28 @@ public class Exercises {
 
 	@ManyToOne
 	@JoinColumn(name = "LessonId", referencedColumnName = "lessonId", nullable = false)
-	private Lesson lesson;
+	private Lessons lesson;
 
 	@ManyToOne
 	@JoinColumn(name = "UsersId", referencedColumnName = "usersId", nullable = false)
 	private Users users;
 
-	@Column(name = "ExerName", nullable = false)
+	@Column(name = "ExerName", nullable = false,columnDefinition = "nvarchar(50)")
 	private String exerName;
 
 	@Column(name = "CreateDate")
 	private Date createDate;
+	
+	// 關聯性欄位-----------------------------------------------------
 
 	@OneToMany(mappedBy = "exercises", cascade = CascadeType.ALL)
 	private List<Topics> topics;
 	
 	@OneToOne(cascade = CascadeType.ALL,mappedBy = "exercises")
 	private ExercisePermissions exercisePermissions;
+	
+	@OneToMany(mappedBy = "exercises", cascade = CascadeType.ALL)
+	private List<Question> question;
 }
 
 

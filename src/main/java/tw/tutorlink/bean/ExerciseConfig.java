@@ -29,13 +29,13 @@ public class ExerciseConfig {
 	@JoinColumn(name = "ExerPerId", referencedColumnName = "exerPerId")
 	private ExercisePermissions exercisePermissions;
 
-	@Column(name = "Tyoe")
+	@Column(name = "Type")
 	private Integer type;
 
-	@Column(name = "StartTime")
+	@Column(name = "StartTime",columnDefinition = "Datetime2")
 	private Date startTime;
 
-	@Column(name = "EndTime")
+	@Column(name = "EndTime",columnDefinition = "Datetime2")
 	private Date endTime;
 
 	@Column(name = "TimeCountDown")
@@ -44,6 +44,4 @@ public class ExerciseConfig {
 	@Column(name = "FinishShowAnswer")
 	private boolean finishShowAnswer;
 
-	@Column(name = "RandomTopic")
-	private boolean randomTopic;
 }
