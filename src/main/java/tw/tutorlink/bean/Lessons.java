@@ -26,6 +26,10 @@ public class Lessons {
 	@ManyToOne
 	@JoinColumn(name = "UsersId", referencedColumnName = "usersId")
 	private Users users;
+	
+	@ManyToOne
+	@JoinColumn(name="SubjectId",referencedColumnName = "subjectId")
+	private Subject subject;
 
 	@Column(name = "LessonName", columnDefinition = "nvarchar(50)")
 	private String lessonName;
@@ -61,5 +65,11 @@ public class Lessons {
 	
 	@OneToMany(mappedBy = "lesson", cascade = CascadeType.ALL)
 	private List<Calender> calender;
+	
+	@OneToMany(mappedBy = "lesson", cascade = CascadeType.ALL)
+	private List<StudentWillLearn> studentWillLearn;
+	
+	@OneToOne(mappedBy = "lesson", cascade = CascadeType.ALL)
+	private CourseQA courseQA;
 
 }

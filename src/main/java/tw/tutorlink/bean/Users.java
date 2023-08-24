@@ -86,4 +86,16 @@ public class Users {
 	@JsonIgnore
 	@OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
 	private List<Question> question;
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
+	private List<LessonPost> lessonPost;
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
+	private List<VideoNote> videoNote;
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
+	private List<CourseQA> courseQA;
 }
