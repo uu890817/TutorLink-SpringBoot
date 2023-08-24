@@ -20,14 +20,14 @@ public class StudentAnswers {
 	@Column(name="StudentAnsId")
 	private Integer studentAnsId;
 	
-//	@ManyToOne
-//	@JoinColumn(name="ExerPerId",referencedColumnName = "exerPerId")
-//	private ExercisePermissions exercisePermissions;
-//	
-//	@OneToOne
-//	@JoinColumn(name="TopicsId",referencedColumnName = "topicsId")
-//	private Topics topics;
-//	
+	@ManyToOne
+	@JoinColumn(name="ExerPerId",referencedColumnName = "exerPerId")
+	private ExercisePermissions exercisePermissions;
+	
+	@OneToOne
+	@JoinColumn(name="TopicsId",referencedColumnName = "topicsId")
+	private Topics topics;
+	
 	@Column(name="Answer")
 	private String answer;
 }

@@ -36,6 +36,6 @@ public class Topics {
 	@OneToMany(mappedBy = "topics",cascade = CascadeType.ALL)
 	private List<Options> options;
 	
-//	@OneToOne(cascade = CascadeType.ALL, mappedBy = "topics")
-//	private StudentAnswers studentAnswers;
+	@OneToOne(cascade = CascadeType.ALL, mappedBy = "topics")
+	private StudentAnswers studentAnswers;
 }

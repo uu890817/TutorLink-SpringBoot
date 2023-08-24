@@ -1,5 +1,7 @@
 package tw.tutorlink.bean;
 
+import java.util.List;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -39,6 +41,6 @@ public class ExercisePermissions {
 	@Column(name="OverwriteScore")
 	private Integer overwriteScore;
 	
-//	@OneToMany(cascade = CascadeType.ALL, mappedBy = "exercisePermissions")
-//	private StudentAnswers studentAnswers;
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "exercisePermissions")
+	private List<StudentAnswers> studentAnswers;
 }
