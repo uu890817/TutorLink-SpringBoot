@@ -1,9 +1,7 @@
 package tw.tutorlink.bean;
 
 import java.util.Date;
-import java.util.List;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -11,21 +9,20 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "Question")
-public class Question {
+@Table(name = "Answer")
+public class Answer {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "QuestionId")
-	private Integer questionId;
-
+	@Column(name = "AnswerId")
+	private Integer answerId;
+	
 	@ManyToOne
-	@JoinColumn(name = "ExerId", referencedColumnName = "exerId")
-	private Exercises exercises;
+	@JoinColumn(name="QuestionId",referencedColumnName = "questionId")
+	private Question question;
 
 	@ManyToOne
 	@JoinColumn(name = "UsersId", referencedColumnName = "usersId", nullable = false)
@@ -39,9 +36,4 @@ public class Question {
 
 	@Column(name = "IsDelete", columnDefinition = "bit")
 	private boolean isDelete;
-
-	// 關聯性欄位-----------------------------------------------------
-
-	@OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
-	private List<Answer> answer;
 }

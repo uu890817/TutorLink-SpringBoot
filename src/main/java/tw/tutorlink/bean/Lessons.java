@@ -42,13 +42,13 @@ public class Lessons {
 	private LessonDetail lessondetail;
 
 	@OneToMany(mappedBy = "lesson", cascade = CascadeType.ALL)
-	private List<Orders> order;
+	private List<OrderItem> order;
 
 	@OneToMany(mappedBy = "lesson", cascade = CascadeType.ALL)
-	private List<Comment> comment;
+	private List<Score> comment;
 
 	@OneToMany(mappedBy = "lesson", cascade = CascadeType.ALL)
-	private List<ShoppingCart> shoppingCart;
+	private List<Cart> shoppingCart;
 
 	@OneToMany(mappedBy = "lesson", cascade = CascadeType.ALL)
 	private List<Report> report;

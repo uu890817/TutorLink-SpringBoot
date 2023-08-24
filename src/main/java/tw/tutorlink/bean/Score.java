@@ -13,7 +13,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "Comment")
-public class Comment {
+public class Score {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,12 +28,12 @@ public class Comment {
 	@JoinColumn(name = "UsersId", referencedColumnName = "usersId",nullable = false)
 	private Users users;
 
-	@Column(name = "Context", length = 50)
-	private String context;
+	@Column(name = "ScoreContent", columnDefinition = "nvarchar(500)")
+	private String scoreContent;
 
 	@Column(name = "Score", nullable = false)
 	private Integer Score;
 
-	@Column(name = "Time", nullable = false)
-	private Date time;
+	@Column(name = "CreateTime", nullable = false)
+	private Date createTime;
 }

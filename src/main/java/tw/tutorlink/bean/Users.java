@@ -37,27 +37,27 @@ public class Users {
 
 	@Column(name = "GoolgeToken", columnDefinition = "varchar(100)")
 	private String googleToken;
+	
+	// 關聯性欄位-----------------------------------------------------
 
 	@OneToOne(cascade = CascadeType.ALL, mappedBy = "users")
 	private UserDetail userDetail;
 	
-	// 關聯性欄位-----------------------------------------------------
-
 	@JsonIgnore
 	@OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
 	private List<Lessons> lesson;
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
-	private List<Orders> order;
+	private List<OrderItem> order;
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
-	private List<Comment> comment;
+	private List<Score> comment;
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
-	private List<ShoppingCart> shoppingCart;
+	private List<Cart> Cart;
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "users", cascade = CascadeType.ALL)

@@ -28,7 +28,7 @@ public class Favorite {
 	@JoinColumn(name = "UsersId", referencedColumnName = "usersId",nullable = false)
 	private Users users;
 
-	@Column(name = "Time")
+	@Column(name = "Time",columnDefinition = "Date")
 	private Date Time;
 
 }

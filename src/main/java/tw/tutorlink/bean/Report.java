@@ -28,9 +28,18 @@ public class Report {
 	@JoinColumn(name = "UsersId", referencedColumnName = "usersId", nullable = false)
 	private Users users;
 
-	@Column(name = "Time")
-	private Date Time;
+	@Column(name = "CreateTime", nullable = false)
+	private Date createTime;
 
-	@Column(name = "Context", length = 50)
-	private String context;
+	@Column(name = "ReportType", columnDefinition = "nvarchar(50)")
+	private String reportType;
+
+	@Column(name = "ReportContent", columnDefinition = "nvarchar(500)")
+	private String reportContent;
+
+	@Column(name = "Status")
+	private Integer status;
+
+	@Column(name = "ProcessingDate", columnDefinition = "Date")
+	private Date processingDate;
 }

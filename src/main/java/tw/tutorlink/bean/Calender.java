@@ -2,6 +2,7 @@ package tw.tutorlink.bean;
 
 import java.util.Date;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -9,6 +10,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -17,7 +19,7 @@ public class Calender {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "calenderId")
+	@Column(name = "CalenderId")
 	private Integer calenderId;
 
 	@ManyToOne
@@ -33,5 +35,8 @@ public class Calender {
 
 	@Column(name = "EndTime", columnDefinition = "Date")
 	private Date endTime;
+
+	@OneToOne(mappedBy = "calender", cascade = CascadeType.ALL)
+	private OrderItem orderitem;
 
 }
