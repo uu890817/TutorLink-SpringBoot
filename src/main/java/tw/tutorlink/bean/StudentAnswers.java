@@ -27,7 +27,7 @@ public class StudentAnswers {
 	@OneToOne
 	@JoinColumn(name="TopicsId",referencedColumnName = "topicsId")
 	private Topics topics;
-
+	
 	@Column(name="Answer")
 	private String answer;
 }
