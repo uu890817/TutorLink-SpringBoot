@@ -36,4 +36,5 @@ public class Answer {
 
 	@Column(name = "IsDelete", columnDefinition = "bit")
 	private boolean isDelete;
+	
 }
