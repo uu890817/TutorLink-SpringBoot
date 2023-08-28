@@ -53,4 +53,81 @@ public class LessonDetail {
 	@JsonIgnore
 	@OneToMany(mappedBy = "lessonDetail",cascade = CascadeType.ALL)
 	private List<LessonPost> lessonPost;
+	
+	// Getter/Setter-----------------------------------------------
+
+	public Integer getLessonDetailId() {
+		return lessonDetailId;
+	}
+
+	public void setLessonDetailId(Integer lessonDetailId) {
+		this.lessonDetailId = lessonDetailId;
+	}
+
+	public Lessons getLesson() {
+		return lesson;
+	}
+
+	public void setLesson(Lessons lesson) {
+		this.lesson = lesson;
+	}
+
+	public String getMeetingUrl() {
+		return meetingUrl;
+	}
+
+	public void setMeetingUrl(String meetingUrl) {
+		this.meetingUrl = meetingUrl;
+	}
+
+	public String getImformation() {
+		return imformation;
+	}
+
+	public void setImformation(String imformation) {
+		this.imformation = imformation;
+	}
+
+	public Date getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
+
+	public String getCourseUrl() {
+		return courseUrl;
+	}
+
+	public void setCourseUrl(String courseUrl) {
+		this.courseUrl = courseUrl;
+	}
+
+	public Integer getCourseTotalTime() {
+		return courseTotalTime;
+	}
+
+	public void setCourseTotalTime(Integer courseTotalTime) {
+		this.courseTotalTime = courseTotalTime;
+	}
+
+	public List<Video> getVideo() {
+		return video;
+	}
+
+	public void setVideo(List<Video> video) {
+		this.video = video;
+	}
+
+	public List<LessonPost> getLessonPost() {
+		return lessonPost;
+	}
+
+	public void setLessonPost(List<LessonPost> lessonPost) {
+		this.lessonPost = lessonPost;
+	}
+	
+	
+	
 }

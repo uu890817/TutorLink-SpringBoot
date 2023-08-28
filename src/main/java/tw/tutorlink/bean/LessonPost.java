@@ -32,4 +32,48 @@ public class LessonPost {
 	@Column(name="PostContent",columnDefinition = "nvarchar(max)")
 	private String postContent;
 
+	
+	// Getter/Setter-----------------------------------------------
+	public Integer getLessonPostId() {
+		return lessonPostId;
+	}
+
+	public void setLessonPostId(Integer lessonPostId) {
+		this.lessonPostId = lessonPostId;
+	}
+
+	public Users getUsers() {
+		return users;
+	}
+
+	public void setUsers(Users users) {
+		this.users = users;
+	}
+
+	public LessonDetail getLessonDetail() {
+		return lessonDetail;
+	}
+
+	public void setLessonDetail(LessonDetail lessonDetail) {
+		this.lessonDetail = lessonDetail;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getPostContent() {
+		return postContent;
+	}
+
+	public void setPostContent(String postContent) {
+		this.postContent = postContent;
+	}
+
+	
+	
 }

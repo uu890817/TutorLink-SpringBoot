@@ -28,4 +28,33 @@ public class Subject {
 	@OneToMany(mappedBy = "subject",cascade = CascadeType.ALL)
 	private List<Lessons> lesson;
 
+	// Getter/Setter-----------------------------------------------
+	
+	public Integer getSubjectId() {
+		return subjectId;
+	}
+
+	public void setSubjectId(Integer subjectId) {
+		this.subjectId = subjectId;
+	}
+
+	public String getSubjectContent() {
+		return subjectContent;
+	}
+
+	public void setSubjectContent(String subjectContent) {
+		this.subjectContent = subjectContent;
+	}
+
+	public List<Lessons> getLesson() {
+		return lesson;
+	}
+
+	public void setLesson(List<Lessons> lesson) {
+		this.lesson = lesson;
+	}
+	
+	
+	
+
 }
