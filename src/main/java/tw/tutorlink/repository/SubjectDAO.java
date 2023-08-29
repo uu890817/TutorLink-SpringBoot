@@ -9,5 +9,5 @@ import tw.tutorlink.bean.Subject;
 
 public interface SubjectDAO extends JpaRepository<Subject, Integer> {
 
-	List<Subject> findBySubjectNameContaining(String SubjectContent);
+//	List<Subject> findBySubjectContentContaining(String SubjectContent);
 }

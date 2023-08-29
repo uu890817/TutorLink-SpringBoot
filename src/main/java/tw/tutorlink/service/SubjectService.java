@@ -25,14 +25,22 @@ public class SubjectService {
 	}
 	
 	//靠ID查詢課程類別
-	public Optional<Subject> findSubjectById(int subjectId){
-		return sDAO.findById(subjectId);
+	public Subject findSubjectById(Subject subject){
+		Optional<Subject> Subject = sDAO.findById(subject.getSubjectId());
+		if(Subject.isPresent()) {
+			
+			return Subject.get();
+		}
+		return null;
 	}
 	
-	//靠類別名稱查詢課程資料
-	public List<Subject> getSubjectByName(String SubjectContent){
-		return sDAO.findBySubjectNameContaining(SubjectContent);
-	}
+//	//靠類別名稱查詢課程資料
+//	public Subject getSubjectByName(Subject subject){
+//		return sDAO.findBySubjectContentContaining(SubjectContent);
+//		Optional<Subject> subjects = sDAO.findById(subject.getSubjectId());
+//		subjects.get().getSubjectContent();
+//		return subject;
+//	}
 	
 	//新增課程類別
 	public Subject insertSubject(Subject subject) {
@@ -52,7 +60,12 @@ public class SubjectService {
 	}
 	
 	//刪除課程類別
-	public void deleteSubject(int subjectId) {
-		sDAO.deleteById(subjectId);
+	public String deleteSubject(Subject subject) {
+		Optional<Subject> Subject = sDAO.findById(subject.getSubjectId());
+		if(Subject.isPresent()) {
+	 	sDAO.deleteById(subject.getSubjectId());
+	 	return "刪除成功";
+	}
+		return "刪除失敗";
 	}
 }
