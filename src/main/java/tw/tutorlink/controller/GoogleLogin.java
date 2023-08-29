@@ -16,7 +16,7 @@ public class GoogleLogin {
 	@PostMapping("/googletoken")
 	public String verifyToken( @RequestBody String aaa ) {
 		System.out.println(aaa);
-		return null;
+		return aaa;
 	}
 
 }
