@@ -27,9 +27,9 @@ public class Lessons {
 	@JoinColumn(name = "UsersId", referencedColumnName = "usersId")
 	private Users users;
 	
-	@ManyToOne
-	@JoinColumn(name="SubjectId",referencedColumnName = "subjectId")
-	private Subject subject;
+//	@ManyToOne
+//	@JoinColumn(name="SubjectId",referencedColumnName = "subjectId")
+//	private Subject subject;
 
 	@Column(name = "LessonName", columnDefinition = "nvarchar(50)")
 	private String lessonName;
@@ -90,13 +90,13 @@ public class Lessons {
 		this.users = users;
 	}
 	
-	public Subject getSubject() {
-		return subject;
-	}
-	
-	public void setSubject(Subject subject) {
-		this.subject = subject;
-	}
+//	public Subject getSubject() {
+//		return subject;
+//	}
+//	
+//	public void setSubject(Subject subject) {
+//		this.subject = subject;
+//	}
 	
 	public String getLessonName() {
 		return lessonName;

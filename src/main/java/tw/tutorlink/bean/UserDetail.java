@@ -43,6 +43,9 @@ public class UserDetail {
 
 	@Column(name = "CreateDate")
 	private Date createDate;
+	
+	@Column(name="IdCard",columnDefinition = "nvarchar(50)")
+	private String idCard;
 
 	@Column(name = "TeacherState",columnDefinition = "bit")
 	private boolean teacherState;

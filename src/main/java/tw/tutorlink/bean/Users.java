@@ -43,6 +43,9 @@ public class Users {
 	@OneToOne(cascade = CascadeType.ALL, mappedBy = "users")
 	private UserDetail userDetail;
 	
+	@OneToOne(mappedBy = "users",cascade = CascadeType.ALL)
+	private ApplyTeacher applyTeacher;
+	
 	@JsonIgnore
 	@OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
 	private List<Lessons> lesson;
