@@ -6,23 +6,6 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
-//@Configuration
-//public class CrosConfig implements WebMvcConfigurer{
-//
-//	@Override
-//	public void addCorsMappings(CorsRegistry registry) {
-//			registry.addMapping("/**")//所有API支持跨域
-//					.allowedOrigins("/*")//允許域名
-//					.allowCredentials(true)//是否發送Cookie
-//					.allowedMethods("*")//允許那些請求方法
-//					.allowedHeaders("/*")
-//					.maxAge(3600)//跨域允許時間
-//					;
-//	}	
-//
-//	
-//}
-
 @Configuration
 public class CrosConfig {
     @Bean
