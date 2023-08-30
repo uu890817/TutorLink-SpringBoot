@@ -34,18 +34,13 @@ public class SubjectService {
 		return null;
 	}
 	
-<<<<<<< HEAD
+
 	//靠類別名稱查詢課程資料
-//	public List<Subject> getSubjectByName(String SubjectContent){
-//		return sDAO.findBySubjectNameContaining(SubjectContent);
-=======
-//	//靠類別名稱查詢課程資料
 //	public Subject getSubjectByName(Subject subject){
 //		return sDAO.findBySubjectContentContaining(SubjectContent);
 //		Optional<Subject> subjects = sDAO.findById(subject.getSubjectId());
 //		subjects.get().getSubjectContent();
 //		return subject;
->>>>>>> branch 'develop' of https://github.com/uu890817/TutorLink-SpringBoot.git
 //	}
 	
 	//新增課程類別
