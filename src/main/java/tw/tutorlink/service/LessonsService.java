@@ -1,5 +1,6 @@
 package tw.tutorlink.service;
 
+import java.lang.StackWalker.Option;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,18 +26,23 @@ public class LessonsService {
 		return lDAO.findAll();
 	}
 	
-	//靠課程名稱查詢課程資料
-	public List<Lessons> getLessonsByName(String lessonName){
-		return lDAO.findByLessonNameContaining(lessonName);
-	}
+//	//靠課程名稱查詢課程資料
+//	public List<Lessons> getLessonsByName(String lessonName){
+//		return lDAO.findByLessonNameContaining(lessonName);
+//	}
 	
 	//靠課程ID查詢資料
-	public Optional<Lessons> findLessonsById(int lessonId){
-		return lDAO.findById(lessonId);
+	public Lessons findLessonsById(Lessons lesson){
+		Optional<Lessons> lessons = lDAO.findById(lesson.getLessonId());
+		if(lessons.isPresent()) {
+			return lessons.get();
+		}
+		return null;
 	}
 	
 	//新增課程
 	public Lessons insertLesson(Lessons lesson) {
+		
 		return lDAO.save(lesson);
 	}
 	
@@ -57,7 +63,12 @@ public class LessonsService {
 	}
 	
 	//刪除課程
-	public void deleteLesson(int lessonId) {
-		lDAO.deleteById(lessonId);
+	public String deleteLessons(Lessons lesson) {
+		Optional<Lessons> lessons = lDAO.findById(lesson.getLessonId());
+		if(lessons.isPresent()) {
+			lDAO.deleteById(lesson.getLessonId());
+			return "刪除成功";
+		}
+		return "刪除失敗";
 	}
 }

@@ -22,7 +22,7 @@ public class Lessons {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "LessonId")
 	private Integer lessonId;
-
+	
 	@ManyToOne
 	@JoinColumn(name = "UsersId", referencedColumnName = "usersId")
 	private Users users;

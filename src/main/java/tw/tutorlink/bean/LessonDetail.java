@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -24,7 +25,7 @@ public class LessonDetail {
 	@Column(name = "LessonDetailId")
 	private Integer lessonDetailId;
 
-	@JsonIgnore
+	@JsonIncludeProperties("lessonId")
 	@OneToOne
 	@JoinColumn(referencedColumnName = "LessonId", nullable = false)
 	private Lessons lesson;

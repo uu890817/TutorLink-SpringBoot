@@ -1,6 +1,9 @@
+
 package tw.tutorlink.bean;
 
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -24,7 +27,7 @@ public class Subject {
 	private String subjectContent;
 	
 	// 關聯性欄位-----------------------------------------------------
-	
+	@JsonIgnore
 	@OneToMany(mappedBy = "subject",cascade = CascadeType.ALL)
 	private List<Lessons> lesson;
 
@@ -56,5 +59,4 @@ public class Subject {
 	
 	
 	
-
 }

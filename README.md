@@ -18,4 +18,6 @@
 
 ## 開發人員
 
-<img src="https://contrib.rocks/image?repo=uu890817/TutorLink-SpringBoot"/>
+<a href="https://github.com/uu890817/TutorLink-SpringBoot/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=uu890817/TutorLink-SpringBoot" />
+</a>
