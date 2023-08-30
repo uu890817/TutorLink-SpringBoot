@@ -47,20 +47,20 @@ public class LessonsService {
 	}
 	
 	//修改課程
-//	public Lessons updateLesson(Lessons lesson) {
-//		Optional<Lessons> lessons = lDAO.findById(lesson.getLessonId());
-//		if(lessons.isPresent()) {
-//		Lessons result = lessons.get();
-//			result.setSubject(lesson.getSubject());
-//			result.setLessonName(lesson.getLessonName());
-//			result.setLessonType(lesson.getLessonType());
-//			result.setImage(lesson.getImage());
-//			
-//			return lDAO.save(result);
-//		}
-//		
-//		return null;
-//	}
+	public Lessons updateLesson(Lessons lesson) {
+		Optional<Lessons> lessons = lDAO.findById(lesson.getLessonId());
+		if(lessons.isPresent()) {
+		Lessons result = lessons.get();
+			result.setSubject(lesson.getSubject());
+			result.setLessonName(lesson.getLessonName());
+			result.setLessonType(lesson.getLessonType());
+			result.setImage(lesson.getImage());
+			
+			return lDAO.save(result);
+		}
+		
+		return null;
+	}
 	
 	//刪除課程
 	public String deleteLessons(Lessons lesson) {
