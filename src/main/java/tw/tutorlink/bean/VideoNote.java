@@ -19,8 +19,8 @@ public class VideoNote {
 	@Column(name="VideoNoteId")
 	private Integer videoNoteId;
 	
-	@OneToOne
-	@JoinColumn(name="VideoId",referencedColumnName = "VideoId")
+	@ManyToOne
+	@JoinColumn(name="VideoId",referencedColumnName = "videoId")
 	private Video video;
 	
 	@ManyToOne
@@ -34,4 +34,55 @@ public class VideoNote {
 	@Column(name="NoteContent",columnDefinition = "nvarchar(max)")
 	private String noteContent;
 
+
+	public Integer getVideoNoteId() {
+		return videoNoteId;
+	}
+
+
+	public void setVideoNoteId(Integer videoNoteId) {
+		this.videoNoteId = videoNoteId;
+	}
+
+
+	public Video getVideo() {
+		return this.video;
+	}
+
+
+	public void setVideo(Video video) {
+		this.video = video;
+	}
+
+
+	public Users getUsers() {
+		return this.users;
+	}
+
+
+	public void setUsers(Users users) {
+		this.users = users;
+	}
+
+
+	public Integer getTimeLine() {
+		return timeLine;
+	}
+
+
+	public void setTimeLine(Integer timeLine) {
+		this.timeLine = timeLine;
+	}
+
+
+	public String getNoteContent() {
+		return noteContent;
+	}
+
+
+	public void setNoteContent(String noteContent) {
+		this.noteContent = noteContent;
+	}
+
+	
 }

@@ -69,8 +69,8 @@ public class Lessons {
 	@OneToMany(mappedBy = "lesson", cascade = CascadeType.ALL)
 	private List<StudentWillLearn> studentWillLearn;
 	
-	@OneToOne(mappedBy = "lesson", cascade = CascadeType.ALL)
-	private CourseQA courseQA;
+	@OneToMany(mappedBy = "lesson", cascade = CascadeType.ALL)
+	private List<CourseQA> courseQA;
 
 	// Getter/Setter-----------------------------------------------
 	
@@ -193,14 +193,16 @@ public class Lessons {
 	public void setStudentWillLearn(List<StudentWillLearn> studentWillLearn) {
 		this.studentWillLearn = studentWillLearn;
 	}
-	
-	public CourseQA getCourseQA() {
+
+	public List<CourseQA> getCourseQA() {
 		return courseQA;
 	}
-	
-	public void setCourseQA(CourseQA courseQA) {
+
+	public void setCourseQA(List<CourseQA> courseQA) {
 		this.courseQA = courseQA;
 	}
+	
+	
 	
 	
 	

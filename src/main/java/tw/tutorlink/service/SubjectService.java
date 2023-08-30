@@ -30,9 +30,9 @@ public class SubjectService {
 	}
 	
 	//靠類別名稱查詢課程資料
-	public List<Subject> getSubjectByName(String SubjectContent){
-		return sDAO.findBySubjectNameContaining(SubjectContent);
-	}
+//	public List<Subject> getSubjectByName(String SubjectContent){
+//		return sDAO.findBySubjectNameContaining(SubjectContent);
+//	}
 	
 	//新增課程類別
 	public Subject insertSubject(Subject subject) {
