@@ -76,15 +76,18 @@ public class GoogleLogin {
 
 //		// 建立session
 		Users user = uService.login(sub);
-
-		session.setAttribute("logState", user);
-		System.out.println(session.getId());
 		
-		Users loggedInUser = (Users) session.getAttribute("logState");
-		
-		System.out.println("測試撈session中資料: "+loggedInUser.getGoogleSubId());
-		System.out.println("測試撈session中資料: "+loggedInUser.getUserEmail());
-		return "google";
+		if(user != null) {
+			session.setAttribute("logState", user);
+			System.out.println(session.getId());
+			
+			Users loggedInUser = (Users) session.getAttribute("logState");
+			
+			System.out.println("測試撈session中資料: "+loggedInUser.getGoogleSubId());
+			System.out.println("測試撈session中資料: "+loggedInUser.getUserEmail());
+			return "google";
+		}
+		return "erroe";
 	}
 	//----------- 登出，清除session -----------
 	@GetMapping("/googlelogout")
@@ -99,12 +102,10 @@ public class GoogleLogin {
 	// ---------------測試用Controller---------------
 	@GetMapping("/test")
 	public Users test() {
-
 //		Users u = uService.findUsersByID(1);
 		Users u = uService.login("101357692755892249932");
-		System.out.println(u.getUserEmail());
-		System.out.println(u.getGoogleSubId());
-
+//		System.out.println(u.getUserEmail());
+//		System.out.println(u.getGoogleSubId());
 		return u;
 	}
 

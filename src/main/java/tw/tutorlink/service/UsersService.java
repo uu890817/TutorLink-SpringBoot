@@ -15,7 +15,10 @@ public class UsersService {
 	public Users login(String strSub) {
 
 		Users users = uDAO.findByGoogleSubId(strSub);
-		return users;
+		if(users != null) {
+			return users;		
+		}
+		return null;
 	}
 	
 	public Users findUsersByID(Integer uID) {

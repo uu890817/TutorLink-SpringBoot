@@ -46,23 +46,23 @@ public class Users {
 	@OneToOne(mappedBy = "users",cascade = CascadeType.ALL)
 	private ApplyTeacher applyTeacher;
 	
-	@JsonIgnore
+//	@JsonIgnore
 	@OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
 	private List<Lessons> lesson;
 
-	@JsonIgnore
+//	@JsonIgnore
 	@OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
 	private List<OrderItem> order;
 
-	@JsonIgnore
+//	@JsonIgnore
 	@OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
 	private List<Score> comment;
 
-	@JsonIgnore
+//	@JsonIgnore
 	@OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
 	private List<Cart> Cart;
 
-	@JsonIgnore
+//	@JsonIgnore
 	@OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
 	private List<Report> report;
 
@@ -78,7 +78,7 @@ public class Users {
 	@OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
 	private List<ExercisePermissions> exercisePermissions;
 	
-	@JsonIgnore
+//	@JsonIgnore
 	@OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
 	private List<Calender> calender;
 
