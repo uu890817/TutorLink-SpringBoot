@@ -6,7 +6,6 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import org.hibernate.internal.build.AllowSysOut;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,7 +25,7 @@ import tw.tutorlink.bean.Users;
 import tw.tutorlink.service.UsersService;
 
 @RestController
-public class GoogleLogin {
+public class GoogleLoginController {
 
 	@Autowired
 	private UsersService uService;
@@ -42,7 +41,7 @@ public class GoogleLogin {
 		String urlStr = "https://www.googleapis.com/oauth2/v3/tokeninfo?access_token=" + accessToken;
 		// 設定一個空字串準備裝回應值
 		String response = "";
-		//----------- 傳給google網站分析token -----------
+		// ----------- 傳給google網站分析token -----------
 		try {
 			// 建URL
 			URL apiUrl = new URL(urlStr);
@@ -71,39 +70,30 @@ public class GoogleLogin {
 		ObjectMapper objectMapper = new ObjectMapper();
 		JsonNode jsonNode = objectMapper.readTree(response);
 
-        String mail = jsonNode.get("email").asText();
+		String mail = jsonNode.get("email").asText();
 		String sub = jsonNode.get("sub").asText();
 
-		//利用google回傳token中的唯一識別碼及Mail是否存在資料庫中
-		Users user = uService.login(sub,mail);
-		// 建立session
-		
+		// 利用google回傳token中的唯一識別碼及Mail是否存在資料庫中
+		Users user = uService.login(sub, mail);
+
+		// ----------- 建立session -----------
 		// 當回傳不為空值時，代表資料存在，寫入整個bean進session
-		if(user != null) {
+		if (user != null) {
 			session.setAttribute("logState", user);
 			System.out.println(session.getId());
 			return "google";
 //			Users loggedInUser = (Users) session.getAttribute("logState");
 //			System.out.println("測試撈session中資料: "+loggedInUser.getGoogleSubId());
 //			System.out.println("測試撈session中資料: "+loggedInUser.getUserEmail());
+		} else {
+			return "verification failed";
 		}
-		return "erroe";
 	}
-	//----------- 登出，清除session -----------
+
+	// ----------- 登出，清除session -----------
 	@GetMapping("/googlelogout")
 	@ResponseBody
 	public void logout(HttpSession session) {
 		session.removeAttribute("logState");
 	}
-
-	// ---------------測試用Controller---------------
-//	@GetMapping("/test")
-//	public Users test() {
-//		Users u = uService.findUsersByID(1);
-//		Users u = uService.login("101357692755892249932");
-//		System.out.println(u.getUserEmail());
-//		System.out.println(u.getGoogleSubId());
-//		return u;
-//	}
-
 }
