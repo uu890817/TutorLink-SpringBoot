@@ -71,21 +71,21 @@ public class GoogleLogin {
 		ObjectMapper objectMapper = new ObjectMapper();
 		JsonNode jsonNode = objectMapper.readTree(response);
 
-//        String mail = jsonNode.get("email").asText();
+        String mail = jsonNode.get("email").asText();
 		String sub = jsonNode.get("sub").asText();
 
-//		// 建立session
-		Users user = uService.login(sub);
+		//利用google回傳token中的唯一識別碼及Mail是否存在資料庫中
+		Users user = uService.login(sub,mail);
+		// 建立session
 		
+		// 當回傳不為空值時，代表資料存在，寫入整個bean進session
 		if(user != null) {
 			session.setAttribute("logState", user);
 			System.out.println(session.getId());
-			
-			Users loggedInUser = (Users) session.getAttribute("logState");
-			
-			System.out.println("測試撈session中資料: "+loggedInUser.getGoogleSubId());
-			System.out.println("測試撈session中資料: "+loggedInUser.getUserEmail());
 			return "google";
+//			Users loggedInUser = (Users) session.getAttribute("logState");
+//			System.out.println("測試撈session中資料: "+loggedInUser.getGoogleSubId());
+//			System.out.println("測試撈session中資料: "+loggedInUser.getUserEmail());
 		}
 		return "erroe";
 	}
@@ -93,20 +93,17 @@ public class GoogleLogin {
 	@GetMapping("/googlelogout")
 	@ResponseBody
 	public void logout(HttpSession session) {
-//		Users loggedInUser = (Users) session.getAttribute("logState");
 		session.removeAttribute("logState");
-//		System.out.println("測試撈session中資料: "+loggedInUser.getGoogleSubId());
-//		System.out.println("測試撈session中資料: "+loggedInUser.getUserEmail());
 	}
 
 	// ---------------測試用Controller---------------
-	@GetMapping("/test")
-	public Users test() {
+//	@GetMapping("/test")
+//	public Users test() {
 //		Users u = uService.findUsersByID(1);
-		Users u = uService.login("101357692755892249932");
+//		Users u = uService.login("101357692755892249932");
 //		System.out.println(u.getUserEmail());
 //		System.out.println(u.getGoogleSubId());
-		return u;
-	}
+//		return u;
+//	}
 
 }
