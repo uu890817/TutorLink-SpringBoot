@@ -13,7 +13,7 @@ public class CrosConfig {
         //1.添加CORS配置信息
         CorsConfiguration config = new CorsConfiguration();
         //允許域名
-        config.addAllowedOriginPattern("*");
+        config.addAllowedOriginPattern("http://localhost:5173/");
         //允許Cookie信息
         config.setAllowCredentials(true);
 
