@@ -1,6 +1,6 @@
 package tw.tutorlink.bean;
 
-import java.util.Date;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -24,19 +24,72 @@ public class Calender {
 
 	@ManyToOne
 	@JoinColumn(name = "UsersId", referencedColumnName = "usersId", nullable = false)
+	@JsonIgnore
 	private Users users;
 
 	@ManyToOne
 	@JoinColumn(name = "LessonId", referencedColumnName = "lessonId", nullable = false)
+	@JsonIgnore
 	private Lessons lesson;
-
-	@Column(name = "StartTime", columnDefinition = "Date")
-	private Date startTime;
-
-	@Column(name = "EndTime", columnDefinition = "Date")
-	private Date endTime;
-
+	
+	@Column(name = "lessonTimeStr")
+	private String lessonTimeStr;
+	
+	
+	@Column(name = "LessonTime")
+	private String lessonTime;
+	
 	@OneToOne(mappedBy = "calender", cascade = CascadeType.ALL)
 	private OrderItem orderitem;
+
+	public Integer getCalenderId() {
+		return calenderId;
+	}
+
+	public void setCalenderId(Integer calenderId) {
+		this.calenderId = calenderId;
+	}
+
+	public Users getUsers() {
+		return users;
+	}
+
+	public void setUsers(Users users) {
+		this.users = users;
+	}
+
+	public Lessons getLesson() {
+		return lesson;
+	}
+
+	public void setLesson(Lessons lesson) {
+		this.lesson = lesson;
+	}
+
+	public String getLessonTimeStr() {
+		return lessonTimeStr;
+	}
+
+	public void setLessonTimeStr(String lessonTimeStr) {
+		this.lessonTimeStr = lessonTimeStr;
+	}
+
+	public String getLessonTime() {
+		return lessonTime;
+	}
+
+	public void setLessonTime(String lessonTime) {
+		this.lessonTime = lessonTime;
+	}
+
+	public OrderItem getOrderitem() {
+		return orderitem;
+	}
+
+	public void setOrderitem(OrderItem orderitem) {
+		this.orderitem = orderitem;
+	}
+	
+	
 
 }
