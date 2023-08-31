@@ -13,9 +13,11 @@ import org.springframework.web.bind.annotation.RestController;
 import tw.tutorlink.bean.LessonDetail;
 import tw.tutorlink.bean.Lessons;
 import tw.tutorlink.bean.Subject;
+import tw.tutorlink.bean.VideoNote;
 import tw.tutorlink.service.LessonDetailService;
 import tw.tutorlink.service.LessonsService;
 import tw.tutorlink.service.SubjectService;
+import tw.tutorlink.service.VideoNoteService;
 
 @RestController
 public class LessonController {
@@ -28,6 +30,9 @@ public class LessonController {
 	
 	@Autowired
 	private LessonDetailService ldService;
+	
+	@Autowired
+	private VideoNoteService vnService; 
 	
 	
 	
@@ -95,7 +100,7 @@ public class LessonController {
 		return lService.deleteLessons(lesson);
 	}
 	
-	//------------------ 課程 -----------------------
+	//------------------ 課程明細 -----------------------
 	
 	//課程明細新增
 	@PostMapping(path="/lessonDetail",produces="application/json;charset=UTF-8")
@@ -113,5 +118,13 @@ public class LessonController {
 	@PutMapping(path="/updateLessonDetail",produces="application/json;charset=UTF-8")
 	public LessonDetail updateLessonDetail(@RequestBody LessonDetail lessonDetail) {
 		return ldService.updateLessonDetail(lessonDetail);
+	}
+	
+	//---------------------------------------------------
+	
+	//新增QA
+	@PostMapping(path="/videoNote",produces="application/json;charset=UTF-8")
+	public VideoNote insertVideoNote(@RequestBody VideoNote videoNote) {
+		return  vnService.createVideoNote(videoNote);
 	}
 }	
