@@ -21,8 +21,12 @@ public class LessonDetailService {
 	}
 	
 	//靠ID查詢課程明細
-	public Optional<LessonDetail>findLessonDetailById(int lessonDetailId){
-		return ldDAO.findById(lessonDetailId);
+	public LessonDetail findLessonDetailById(LessonDetail lessonDetail){
+		Optional<LessonDetail> LessonDetail = ldDAO.findById(lessonDetail.getLessonDetailId());
+		if(LessonDetail.isPresent()) {
+			return LessonDetail.get();
+		}
+		return null;
 	}
 	
 	//新增課程明細
@@ -45,10 +49,6 @@ public class LessonDetailService {
 		return null;
 	}
 	
-	//刪除課程明細
-	public void deleteLessonDetail(int lessonDetailId) {
-		ldDAO.deleteById(lessonDetailId);
-	}
 	
 	
 }
