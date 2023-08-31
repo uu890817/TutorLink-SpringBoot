@@ -79,6 +79,7 @@ public class GoogleLoginController {
 		// ----------- 建立session -----------
 		// 當回傳不為空值時，代表資料存在，寫入整個bean進session
 		if (user != null) {
+			session.setMaxInactiveInterval(600);
 			session.setAttribute("logState", user);
 			System.out.println(session.getId());
 			return "google";

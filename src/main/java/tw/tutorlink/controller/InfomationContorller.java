@@ -11,17 +11,22 @@ import tw.tutorlink.service.UsersService;
 
 @RestController
 public class InfomationContorller {
-	
+
 	@Autowired
 	private UsersService uService;
-	
+
 	@PostMapping("/infomation")
 	@ResponseBody
 	public Users infomation(HttpSession session) {
 		Users loggedInUser = (Users) session.getAttribute("logState");
-		System.out.println("測試撈session中資料: "+loggedInUser.getGoogleSubId());
-		System.out.println("測試撈session中資料: "+loggedInUser.getGoogleSubId());
-		System.out.println("測試撈session中資料: "+loggedInUser.getUsersId());
-		return loggedInUser;
+		Users result = new Users();
+		if(loggedInUser == null ) {
+			result.setGoogleSubId("null");
+			result.setUserEmail("null");	
+			return result;
+		}
+		result.setGoogleSubId(loggedInUser.getGoogleSubId());
+		result.setUserEmail(loggedInUser.getUserEmail());	
+		return result;
 	}
 }

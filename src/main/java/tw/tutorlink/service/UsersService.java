@@ -18,18 +18,13 @@ public class UsersService {
 		if (users != null) {
 			// 不為空，驗證傳入資料及查詢的資料是否吻合
 			if (users.getGoogleSubId().equals(sub) && users.getUserEmail().equals(mail)) {
-
 				// 吻合及回傳Bean
 				return users;
 			}
-
 			// 不吻合回傳null，讓controller判定邏輯
 			return null;
-
 		} else {
-
 			// 當為空值，代表不存在，即新增進資料庫做註冊使用
-
 			Users add = new Users();
 			add.setUserEmail(mail);
 			add.setGoogleSubId(sub);
