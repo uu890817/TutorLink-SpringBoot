@@ -23,20 +23,20 @@ public class Users {
 	@Column(name = "UsersId")
 	private Integer usersId;
 
-	@Column(name = "UserAccount", nullable = false, columnDefinition = "varchar(50)")
+	@Column(name = "UserAccount", columnDefinition = "varchar(50)")
 	private String userAccount;
 
-	@Column(name = "UserPassword", nullable = false, columnDefinition = "varchar(50)")
+	@Column(name = "UserPassword", columnDefinition = "varchar(50)")
 	private String userPassword;
 
-	@Column(name = "UserEamil", nullable = false, columnDefinition = "varchar(50)")
+	@Column(name = "UserEamil", columnDefinition = "varchar(50)")
 	private String userEmail;
 
-	@Column(name = "UserType", nullable = false)
+	@Column(name = "UserType")
 	private Integer userType;
 
-	@Column(name = "GoolgeToken", columnDefinition = "varchar(100)")
-	private String googleToken;
+	@Column(name = "GoogleSubId", columnDefinition = "varchar(100)")
+	private String googleSubId;
 	
 	// 關聯性欄位-----------------------------------------------------
 
@@ -46,23 +46,23 @@ public class Users {
 	@OneToOne(mappedBy = "users",cascade = CascadeType.ALL)
 	private ApplyTeacher applyTeacher;
 	
-	@JsonIgnore
+//	@JsonIgnore
 	@OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
 	private List<Lessons> lesson;
 
-	@JsonIgnore
+//	@JsonIgnore
 	@OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
 	private List<OrderItem> order;
 
-	@JsonIgnore
+//	@JsonIgnore
 	@OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
 	private List<Score> comment;
 
-	@JsonIgnore
+//	@JsonIgnore
 	@OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
 	private List<Cart> Cart;
 
-	@JsonIgnore
+//	@JsonIgnore
 	@OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
 	private List<Report> report;
 
@@ -78,7 +78,7 @@ public class Users {
 	@OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
 	private List<ExercisePermissions> exercisePermissions;
 	
-	@JsonIgnore
+//	@JsonIgnore
 	@OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
 	private List<Calender> calender;
 
@@ -142,12 +142,12 @@ public class Users {
 		this.userType = userType;
 	}
 
-	public String getGoogleToken() {
-		return googleToken;
+	public String getGoogleSubId() {
+		return googleSubId;
 	}
 
-	public void setGoogleToken(String googleToken) {
-		this.googleToken = googleToken;
+	public void setGoogleSubId(String googleSubId) {
+		this.googleSubId = googleSubId;
 	}
 
 	public UserDetail getUserDetail() {
@@ -156,6 +156,14 @@ public class Users {
 
 	public void setUserDetail(UserDetail userDetail) {
 		this.userDetail = userDetail;
+	}
+
+	public ApplyTeacher getApplyTeacher() {
+		return applyTeacher;
+	}
+
+	public void setApplyTeacher(ApplyTeacher applyTeacher) {
+		this.applyTeacher = applyTeacher;
 	}
 
 	public List<Lessons> getLesson() {
@@ -269,7 +277,6 @@ public class Users {
 	public void setCourseQA(List<CourseQA> courseQA) {
 		this.courseQA = courseQA;
 	}
-	
 	
 	
 }
