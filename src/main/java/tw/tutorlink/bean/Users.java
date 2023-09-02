@@ -2,6 +2,7 @@ package tw.tutorlink.bean;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
@@ -70,7 +71,7 @@ public class Users {
 	@OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
 	private List<Favorite> favorite;
 
-	@JsonIgnore
+	@JsonBackReference
 	@OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
 	private List<Exercises> exercises;
 

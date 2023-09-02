@@ -2,6 +2,9 @@ package tw.tutorlink.bean;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -24,6 +27,7 @@ public class Lessons {
 	private Integer lessonId;
 	
 	@ManyToOne
+	@JsonIgnore
 	@JoinColumn(name = "UsersId", referencedColumnName = "usersId")
 	private Users users;
 	
@@ -61,6 +65,7 @@ public class Lessons {
 	private List<Favorite> favorite;
 
 	@OneToMany(mappedBy = "lesson", cascade = CascadeType.ALL)
+	@JsonBackReference
 	private List<Exercises> exercises;
 	
 	@OneToMany(mappedBy = "lesson", cascade = CascadeType.ALL)
