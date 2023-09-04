@@ -47,6 +47,7 @@ public class Exercises {
 
 	// 關聯性欄位-----------------------------------------------------
 
+	@JsonBackReference
 	@OneToMany(mappedBy = "exercises", cascade = CascadeType.ALL)
 	private List<Topics> topics;
 

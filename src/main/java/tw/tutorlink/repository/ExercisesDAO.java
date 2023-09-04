@@ -13,7 +13,6 @@ public interface ExercisesDAO extends JpaRepository<Exercises, Integer> {
 	@Query("FROM Exercises e JOIN e.lesson WHERE e.users.usersId = :usersId")
 	public List<Exercises> findByUsers(@Param("usersId") Integer usersId);
 	
-
 	
 	
 	

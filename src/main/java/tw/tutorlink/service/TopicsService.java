@@ -16,7 +16,7 @@ public class TopicsService {
 	
 	
 	public List<Topics> getTopicsByExerciseId(Integer eId){
-		return tDAO.findByExerciseId(1);
+		return tDAO.findByExerciseId(eId);
 	}
 	
 	

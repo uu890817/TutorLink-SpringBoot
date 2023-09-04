@@ -36,9 +36,9 @@ build/
 /bin/
 
 ### Access ###
-.avi
-.mkv
-.mp3
-.mp4
-.pdf
+*.avi
+*.mkv
+*.mp3
+*.mp4
+*.pdf
 

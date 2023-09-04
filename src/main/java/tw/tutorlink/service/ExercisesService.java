@@ -15,8 +15,8 @@ public class ExercisesService {
 	private ExercisesDAO eDAO;
 	
 	
-	public List<Exercises> getTeacherExercise() {
-		return eDAO.findByUsers(1);
+	public List<Exercises> getTeacherExercise(Integer usersId) {
+		return eDAO.findByUsers(usersId);
 	}
 	
 	
