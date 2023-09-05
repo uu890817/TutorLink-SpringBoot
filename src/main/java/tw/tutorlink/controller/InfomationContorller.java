@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.google.cloud.Date;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -30,10 +29,7 @@ public class InfomationContorller {
 			result.setUserEmail("null");
 			return result;
 		}
-		result.setGoogleSubId(loggedInUser.getGoogleSubId());
-		result.setUserEmail(loggedInUser.getUserEmail());
-		result.setUserPassword(null);
-		return result;
+		return uService.findByIdDetail(loggedInUser.getUsersId());
 	}
 
 	@PostMapping("/send")
@@ -42,11 +38,11 @@ public class InfomationContorller {
 		System.out.println(str);
 		JsonObject json = JsonParser.parseString(str).getAsJsonObject();
 		String name = json.get("UserName").getAsString();
-		String mail = json.get("userEmail").getAsString();
 		String phone = json.get("Phone").getAsString();
 		String city = json.get("City").getAsString();
 		int birth = json.get("Birthday").getAsInt();
-		System.out.println(name + " , " + mail + " , " + phone + " , " + city + " , " + birth);
+		
+		// 抓ID
 		Users loggedInUser = (Users) session.getAttribute("logState");
 		int id = loggedInUser.getUsersId();
 		

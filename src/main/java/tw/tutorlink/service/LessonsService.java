@@ -50,6 +50,7 @@ public class LessonsService {
 		Users user = uDAO.findById(id);
 		if(user!=null) {
 			user.getLesson();
+//			user.setUsersId(id);
 //			lesson.setLessonName(lessonName);
 //			lesson.setPrice(price);
 //			lesson.setLessonType(lessonType);

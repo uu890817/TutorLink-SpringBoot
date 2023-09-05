@@ -72,7 +72,7 @@ public class LessonController {
 	public Lessons insertLesson(@RequestBody Lessons lesson,HttpSession session) {
 		Users loggedInUser = (Users) session.getAttribute("logState");
 		
-		return lService.insertLesson(1, lesson);
+		return lService.insertLesson(loggedInUser.getUsersId(),lesson);
 	}
 	
 	//課程全部查詢
