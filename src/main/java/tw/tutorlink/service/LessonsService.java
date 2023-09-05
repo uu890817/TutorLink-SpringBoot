@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import tw.tutorlink.bean.Lessons;
+import tw.tutorlink.bean.Users;
 import tw.tutorlink.repository.LessonsDAO;
 
 @Service
@@ -70,5 +71,10 @@ public class LessonsService {
 			return "刪除成功";
 		}
 		return "刪除失敗";
+	}
+	
+	//用User找課程
+	public List<Lessons> findByUsers(Users user){
+		return lDAO.findByUsers(user);
 	}
 }

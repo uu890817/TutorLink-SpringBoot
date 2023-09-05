@@ -10,9 +10,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.servlet.http.HttpSession;
 import tw.tutorlink.bean.LessonDetail;
 import tw.tutorlink.bean.Lessons;
 import tw.tutorlink.bean.Subject;
+import tw.tutorlink.bean.Users;
 import tw.tutorlink.bean.VideoNote;
 import tw.tutorlink.service.LessonDetailService;
 import tw.tutorlink.service.LessonsService;
@@ -72,7 +74,9 @@ public class LessonController {
 	
 	//課程新增
 	@PostMapping(path="/lessons",produces="application/json;charset=UTF-8")
-	public Lessons insertLesson(@RequestBody Lessons lesson) {
+	public Lessons insertLesson(@RequestBody Lessons lesson,HttpSession session) {
+		Users loggedInUser = (Users) session.getAttribute("logState");
+		lesson.setUsers( loggedInUser);
 		return lService.insertLesson(lesson);
 	}
 	
@@ -120,11 +124,5 @@ public class LessonController {
 		return ldService.updateLessonDetail(lessonDetail);
 	}
 	
-	//---------------------------------------------------
 	
-	//新增QA
-	@PostMapping(path="/videoNote",produces="application/json;charset=UTF-8")
-	public VideoNote insertVideoNote(@RequestBody VideoNote videoNote) {
-		return  vnService.createVideoNote(videoNote);
-	}
 }	
