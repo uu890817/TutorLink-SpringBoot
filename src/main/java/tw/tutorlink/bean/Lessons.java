@@ -57,7 +57,8 @@ public class Lessons {
 	private List<OrderItem> order;
 
 	@OneToMany(mappedBy = "lesson", cascade = CascadeType.ALL)
-	private List<Score> comment;
+	@JsonIgnore
+	private List<Comment> comment;
 
 	@OneToMany(mappedBy = "lesson", cascade = CascadeType.ALL)
 	private List<CartItem> shoppingCart;
@@ -154,11 +155,11 @@ public class Lessons {
 		this.order = order;
 	}
 	
-	public List<Score> getComment() {
+	public List<Comment> getComment() {
 		return comment;
 	}
 	
-	public void setComment(List<Score> comment) {
+	public void setComment(List<Comment> comment) {
 		this.comment = comment;
 	}
 	
