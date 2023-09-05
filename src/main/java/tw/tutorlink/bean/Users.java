@@ -59,11 +59,11 @@ public class Users{
 
 //	@JsonIgnore
 	@OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
-	private List<Score> comment;
+	private List<Comment> comment;
 
 //	@JsonIgnore
 	@OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
-	private List<Cart> Cart;
+	private List<CartItem> cartItem;
 
 //	@JsonIgnore
 	@OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
@@ -185,20 +185,20 @@ public class Users{
 		this.order = order;
 	}
 
-	public List<Score> getComment() {
+	public List<Comment> getComment() {
 		return comment;
 	}
 
-	public void setComment(List<Score> comment) {
+	public void setComment(List<Comment> comment) {
 		this.comment = comment;
 	}
 
-	public List<Cart> getCart() {
-		return Cart;
+	public List<CartItem> getCart() {
+		return cartItem;
 	}
 
-	public void setCart(List<Cart> cart) {
-		Cart = cart;
+	public void setCart(List<CartItem> cart) {
+		this.cartItem = cart;
 	}
 
 	public List<Report> getReport() {
