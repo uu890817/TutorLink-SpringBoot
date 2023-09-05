@@ -38,7 +38,7 @@ public class Topics {
 	private Integer type;
 	
 	// 關聯性欄位-----------------------------------------------------
-	
+	@JsonManagedReference
 	@OneToMany(mappedBy = "topics",cascade = CascadeType.ALL)
 	private List<Options> options;
 	
