@@ -40,6 +40,10 @@ public class Lessons {
 
 	@Column(name = "LeesonType", columnDefinition = "bit")
 	private boolean lessonType;
+	
+	@Column(name = "Price")
+	private Integer price;
+
 
 	@Column(name = "Image")
 	private String image;
@@ -117,6 +121,13 @@ public class Lessons {
 	
 	public void setLessonType(boolean lessonType) {
 		this.lessonType = lessonType;
+	}
+	public Integer getPrice() {
+		return price;
+	}
+	
+	public void setPrice(Integer price) {
+		this.price = price;
 	}
 	
 	public String getImage() {
