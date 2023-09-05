@@ -71,7 +71,7 @@ public class LessonController {
 	@PostMapping(path="/lessons",produces="application/json;charset=UTF-8")
 	public Lessons insertLesson(@RequestBody Lessons lesson,HttpSession session) {
 		Users loggedInUser = (Users) session.getAttribute("logState");
-		
+		System.out.println("前端資料 : "+loggedInUser);
 		return lService.insertLesson(loggedInUser.getUsersId(),lesson);
 	}
 	
