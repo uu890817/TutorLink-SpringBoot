@@ -34,3 +34,11 @@ build/
 ### VS Code ###
 .vscode/
 /bin/
+
+### Access ###
+*.avi
+*.mkv
+*.mp3
+*.mp4
+*.pdf
+

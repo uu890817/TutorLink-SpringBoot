@@ -25,8 +25,9 @@ import tw.tutorlink.bean.Users;
 import tw.tutorlink.service.UsersService;
 
 @RestController
-public class GoogleLoginController {
+public class GoogleLoginController{
 
+	
 	@Autowired
 	private UsersService uService;
 
@@ -79,6 +80,7 @@ public class GoogleLoginController {
 		// ----------- 建立session -----------
 		// 當回傳不為空值時，代表資料存在，寫入整個bean進session
 		if (user != null) {
+			session.setMaxInactiveInterval(600);
 			session.setAttribute("logState", user);
 			System.out.println(session.getId());
 			return "google";

@@ -15,7 +15,7 @@ import tw.tutorlink.bean.LessonDetail;
 import tw.tutorlink.bean.Lessons;
 import tw.tutorlink.bean.Subject;
 import tw.tutorlink.bean.Users;
-import tw.tutorlink.bean.VideoNote;
+
 import tw.tutorlink.service.LessonDetailService;
 import tw.tutorlink.service.LessonsService;
 import tw.tutorlink.service.SubjectService;
@@ -76,14 +76,26 @@ public class LessonController {
 	@PostMapping(path="/lessons",produces="application/json;charset=UTF-8")
 	public Lessons insertLesson(@RequestBody Lessons lesson,HttpSession session) {
 		Users loggedInUser = (Users) session.getAttribute("logState");
-		lesson.setUsers( loggedInUser);
-		return lService.insertLesson(lesson);
+
+		if (loggedInUser != null) {
+	        // 如果已登录用户存在于Session中
+	        int userId = loggedInUser.getUsersId();
+	        Users user = new Users();
+	        user.setUsersId(userId);
+	        lesson.setUsers(user); // 设置课程的用户ID
+
+	        return lService.insertLesson(lesson);
+		 } else {
+		        // 如果Session中没有已登录用户
+		        // 返回适当的错误或进行其他处理
+		        return null; // 或者抛出异常或返回错误消息
+		    }
 	}
 	
 	//課程全部查詢
 	@GetMapping(path="/allLessons",produces="application/json;charset=UTF-8")
-	public List<Lessons> findAllLessons() {
-		return lService.getAllLessons();
+	public List<Lessons> findAllLessons(HttpSession session) {
+		return lService.getUserAllLessons(session);
 	}
 	
 	//課程單筆查詢
