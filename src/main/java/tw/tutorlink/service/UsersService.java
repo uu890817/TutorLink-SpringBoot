@@ -47,6 +47,9 @@ public class UsersService {
 		return uDAO.findById(uID).get();
 	}
 
+	public Users findByIdDetail(Integer id) {
+		return uDAO.findByIdDetail(id);
+	}
 	public UserDetail setData(int uID, String name, String phone, String city, int birth) {
 
 		Users user = uDAO.findById(uID);

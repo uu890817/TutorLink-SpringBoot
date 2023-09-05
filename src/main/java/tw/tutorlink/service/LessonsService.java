@@ -46,6 +46,13 @@ public class LessonsService {
 	}
 	
 	//新增課程
+
+	public Lessons insertLesson(Lessons lesson) {
+		
+		return lDAO.save(lesson);
+	
+	}
+
 	public Lessons insertLesson(int id,Lessons lesson) {
 		Users user = uDAO.findById(id);
 		Lessons lessons = new Lessons();
@@ -59,9 +66,16 @@ public class LessonsService {
 			lessons.setPrice(lesson.getPrice());
 			lessons.setImage(lesson.getImage());
 			lDAO.save(lessons);
+
 		}
+
+			
+
 		System.out.println("課程資料 : "+lessons);
 		return lessons;
+
+
+
 	}
 	
 	//修改課程
@@ -88,5 +102,10 @@ public class LessonsService {
 			return "刪除成功";
 		}
 		return "刪除失敗";
+	}
+	
+	//用User找課程
+	public List<Lessons> findByUsers(Users user){
+		return lDAO.findByUsers(user);
 	}
 }

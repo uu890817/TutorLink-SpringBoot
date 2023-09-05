@@ -20,7 +20,6 @@ public interface VideoNoteDAO extends JpaRepository<VideoNote, Integer> {
 	
 	@Query("SELECT vn FROM VideoNote vn WHERE vn.video.id = :videoId AND vn.users.id = :usersId")
 	List<VideoNote> findVideoNoteByVideoIdAndUsersIdJpql(@Param("videoId") Integer videoId, @Param("usersId") Integer usersId);
-
 	
 	
 

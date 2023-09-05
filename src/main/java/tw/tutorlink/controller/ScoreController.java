@@ -12,7 +12,6 @@ import jakarta.servlet.http.HttpSession;
 import tw.tutorlink.bean.Comment;
 import tw.tutorlink.bean.Lessons;
 import tw.tutorlink.bean.Users;
-import tw.tutorlink.service.LessonsService;
 import tw.tutorlink.service.ScoreService;
 
 @RestController
@@ -20,8 +19,6 @@ public class ScoreController {
 	
 	@Autowired
 	private ScoreService sService;
-	
-	
 	
 	// 查詢所有評論
 	@GetMapping("/comment")
@@ -36,7 +33,6 @@ public class ScoreController {
 		// 取得登入的session
 		Users user = (Users) session.getAttribute("logState");
 		// int id = user.getUsersId();
-		
 		// 取得lesson
 		Lessons lesson = sService.findLessonsById(lid);
 		sc.setUsers(user);

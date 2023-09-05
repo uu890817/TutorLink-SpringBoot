@@ -2,6 +2,8 @@ package tw.tutorlink.bean;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -21,7 +23,7 @@ public class UserDetail {
 	@Column(name = "UserDetailId")
 	private Integer userDetailId;
 
-	
+	@JsonIgnore
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "UsersId", referencedColumnName = "usersId")
 	private Users users;
