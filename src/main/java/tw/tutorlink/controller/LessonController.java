@@ -77,19 +77,8 @@ public class LessonController {
 	public Lessons insertLesson(@RequestBody Lessons lesson,HttpSession session) {
 		Users loggedInUser = (Users) session.getAttribute("logState");
 
-		if (loggedInUser != null) {
-	        // 如果已登录用户存在于Session中
-	        int userId = loggedInUser.getUsersId();
-	        Users user = new Users();
-	        user.setUsersId(userId);
-	        lesson.setUsers(user); // 设置课程的用户ID
-
-	        return lService.insertLesson(lesson);
-		 } else {
-		        // 如果Session中没有已登录用户
-		        // 返回适当的错误或进行其他处理
-		        return null; // 或者抛出异常或返回错误消息
-		    }
+		
+		return lService.insertLesson(loggedInUser.getUsersId(),lesson);
 	}
 	
 	//課程全部查詢

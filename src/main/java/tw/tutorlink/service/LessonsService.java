@@ -37,20 +37,31 @@ public class LessonsService {
 	}
 	
 	//靠課程ID查詢資料
-//	public Lessons findLessonsById(Lessons lesson){
-//		Optional<Lessons> lessons = lDAO.findById(lesson.getLessonId());
-//		if(lessons.isPresent()) {
-//			return lessons.get();
-//		}
-//		return null;
-//	}
+	public Lessons findLessonsById(Lessons lesson){
+		Optional<Lessons> lessons = lDAO.findById(lesson.getLessonId());
+		if(lessons.isPresent()) {
+			return lessons.get();
+		}
+		return null;
+	}
 	
 	//新增課程
+
 	public Lessons insertLesson(Lessons lesson) {
 		
 		return lDAO.save(lesson);
 	
-		 
+	}
+
+	public Lessons insertLesson(int id,Lessons lesson) {
+		Users user = uDAO.findById(id);
+		if(user!=null) {
+			user.getLesson();
+
+			lDAO.save(lesson);
+		}
+		return lesson;
+
 	}
 	
 	//修改課程
