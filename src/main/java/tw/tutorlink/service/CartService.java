@@ -8,14 +8,13 @@ import org.springframework.stereotype.Service;
 import jakarta.servlet.http.HttpSession;
 import tw.tutorlink.bean.CartItem;
 import tw.tutorlink.bean.Users;
-import tw.tutorlink.repository.CartDAO;
 import tw.tutorlink.repository.UsersDAO;
 
 @Service
 public class CartService {
 
 	@Autowired
-	private CartDAO cDAO;
+	private UsersService cDAO;
 	
 	@Autowired
 	private UsersDAO uDAO;
@@ -27,16 +26,23 @@ public class CartService {
 	public List<CartItem> getAllShoppingCartItem(HttpSession session){
 		Users loggedInUser = (Users) session.getAttribute("logState");
 		List<CartItem> cart = loggedInUser.getCart();
+		
 		return cart;
 	}
 	
-	//刪除購物車
-	public List<CartItem> deleteShoppingCartItem(HttpSession session) {
-		Users loggedInUser = (Users) session.getAttribute("logState");
-		List<CartItem> cart = loggedInUser.getCart();
-		return cart;
-	}
+//	//刪除購物車
+//	public List<CartItem> deleteShoppingCartItem(HttpSession session) {
+//		Users loggedInUser = (Users) session.getAttribute("logState");
+//		List<CartItem> cart = loggedInUser.getCart();
+//		return cart;
+//	}
+//	
+//	//新增購物車
+//	public List<CartItem> deleteShoppingCartItem(HttpSession session) {
+//		Users loggedInUser = (Users) session.getAttribute("logState");
+//		List<CartItem> cart = loggedInUser.getCart();
+//		return cart;
+//	}
 	
-
 
 }
