@@ -35,7 +35,10 @@ public class Comment {
 			"comment", "Cart", "report", "favorite", "exercises", "calender", "vacation", "question", "lessonPost",
 			"videoNote", "courseQA", "cart" })
 	private Users users;
-
+	
+	@Column(name="RateTags",columnDefinition = "nvarchar(100)")
+	private String rateTags;
+	
 	@Column(name = "RateContent", columnDefinition = "nvarchar(500)")
 	private String rateContent;
 
@@ -49,10 +52,11 @@ public class Comment {
 		super();
 	}
 
-	public Comment(Lessons lesson, Users users, String rateContent, Integer rate, Date createTime) {
+	public Comment(Lessons lesson, Users users, String rateTags, String rateContent, Integer rate, Date createTime) {
 		super();
 		this.lesson = lesson;
 		this.users = users;
+		this.rateTags = rateTags;
 		this.rateContent = rateContent;
 		this.rate = rate;
 		this.createTime = createTime;
@@ -82,6 +86,14 @@ public class Comment {
 		this.users = users;
 	}
 
+	public String getRateTags() {
+		return rateTags;
+	}
+
+	public void setRateTags(String rateTags) {
+		this.rateTags = rateTags;
+	}
+
 	public String getRateContent() {
 		return rateContent;
 	}
@@ -106,4 +118,5 @@ public class Comment {
 		this.createTime = createTime;
 	}
 
+	
 }
