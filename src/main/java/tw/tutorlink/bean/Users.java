@@ -55,9 +55,9 @@ public class Users {
 	@OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
 	private List<OrderItem> order;
 
-//	@JsonIgnore
+	@JsonIgnore
 	@OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
-	private List<Score> comment;
+	private List<Comment> comment;
 
 //	@JsonIgnore
 	@OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
@@ -183,11 +183,11 @@ public class Users {
 		this.order = order;
 	}
 
-	public List<Score> getComment() {
+	public List<Comment> getComment() {
 		return comment;
 	}
 
-	public void setComment(List<Score> comment) {
+	public void setComment(List<Comment> comment) {
 		this.comment = comment;
 	}
 
