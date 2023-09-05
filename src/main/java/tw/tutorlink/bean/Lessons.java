@@ -40,6 +40,10 @@ public class Lessons {
 
 	@Column(name = "LeesonType", columnDefinition = "bit")
 	private boolean lessonType;
+	
+	@Column(name = "Price")
+	private Integer price;
+
 
 	@Column(name = "Image")
 	private String image;
@@ -56,7 +60,7 @@ public class Lessons {
 	private List<Score> comment;
 
 	@OneToMany(mappedBy = "lesson", cascade = CascadeType.ALL)
-	private List<Cart> shoppingCart;
+	private List<CartItem> shoppingCart;
 
 	@OneToMany(mappedBy = "lesson", cascade = CascadeType.ALL)
 	private List<Report> report;
@@ -118,6 +122,13 @@ public class Lessons {
 	public void setLessonType(boolean lessonType) {
 		this.lessonType = lessonType;
 	}
+	public Integer getPrice() {
+		return price;
+	}
+	
+	public void setPrice(Integer price) {
+		this.price = price;
+	}
 	
 	public String getImage() {
 		return image;
@@ -151,11 +162,11 @@ public class Lessons {
 		this.comment = comment;
 	}
 	
-	public List<Cart> getShoppingCart() {
+	public List<CartItem> getShoppingCart() {
 		return shoppingCart;
 	}
 	
-	public void setShoppingCart(List<Cart> shoppingCart) {
+	public void setShoppingCart(List<CartItem> shoppingCart) {
 		this.shoppingCart = shoppingCart;
 	}
 	
