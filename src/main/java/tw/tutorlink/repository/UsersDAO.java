@@ -12,5 +12,8 @@ public interface UsersDAO extends JpaRepository<Users, Integer> {
 	// 這邊的where 後面搜尋的欄位 要輸入Bean裡面給的屬性
 	// EX: private String googleSubId;
 	public Users findByGoogleSubId(@Param("sub") String googleSubId);
+	
+	@Query("from Users where usersId = :id")
+	public Users findById(@Param("id") int id);
 
 }

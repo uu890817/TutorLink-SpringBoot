@@ -25,8 +25,9 @@ import tw.tutorlink.bean.Users;
 import tw.tutorlink.service.UsersService;
 
 @RestController
-public class GoogleLoginController {
+public class GoogleLoginController{
 
+	
 	@Autowired
 	private UsersService uService;
 

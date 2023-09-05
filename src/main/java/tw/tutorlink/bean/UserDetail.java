@@ -26,12 +26,15 @@ public class UserDetail {
 	@JoinColumn(name = "UsersId", referencedColumnName = "usersId")
 	private Users users;
 
-	@Column(name = "UserName", nullable = false,columnDefinition = "nvarchar(50)")
+	@Column(name = "UserName",columnDefinition = "nvarchar(50)")
 	private String userName;
 
-	@Column(name = "Gender", nullable = false)
+	@Column(name = "Gender")
 	private Integer gender;
 
+	@Column(name = "Phone")
+	private String phone;
+	
 	@Column(name = "Image",columnDefinition = "varchar(100)")
 	private String image;
 
@@ -53,5 +56,101 @@ public class UserDetail {
 
 	@Column(name = "LastLoginTime")
 	private Date lastLoginTime;
+
+	public Integer getUserDetailId() {
+		return userDetailId;
+	}
+
+	public void setUserDetailId(Integer userDetailId) {
+		this.userDetailId = userDetailId;
+	}
+
+	public Users getUsers() {
+		return users;
+	}
+
+	public void setUsers(Users users) {
+		this.users = users;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public Integer getGender() {
+		return gender;
+	}
+
+	public void setGender(Integer gender) {
+		this.gender = gender;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
+	}
+
+	public Date getBirthday() {
+		return birthday;
+	}
+
+	public void setBirthday(Date birthday) {
+		this.birthday = birthday;
+	}
+
+	public String getCity() {
+		return City;
+	}
+
+	public void setCity(String city) {
+		City = city;
+	}
+
+	public Date getCreateDate() {
+		return createDate;
+	}
+
+	public void setCreateDate(Date createDate) {
+		this.createDate = createDate;
+	}
+
+	public String getIdCard() {
+		return idCard;
+	}
+
+	public void setIdCard(String idCard) {
+		this.idCard = idCard;
+	}
+
+	public boolean isTeacherState() {
+		return teacherState;
+	}
+
+	public void setTeacherState(boolean teacherState) {
+		this.teacherState = teacherState;
+	}
+
+	public Date getLastLoginTime() {
+		return lastLoginTime;
+	}
+
+	public void setLastLoginTime(Date lastLoginTime) {
+		this.lastLoginTime = lastLoginTime;
+	}
 
 }

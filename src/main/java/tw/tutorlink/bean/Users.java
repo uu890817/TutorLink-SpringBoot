@@ -17,7 +17,9 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "Users")
-public class Users {
+public class Users{
+
+	
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,7 +32,7 @@ public class Users {
 	@Column(name = "UserPassword", columnDefinition = "varchar(50)")
 	private String userPassword;
 
-	@Column(name = "UserEamil", columnDefinition = "varchar(50)")
+	@Column(name = "UserEmail", columnDefinition = "varchar(50)")
 	private String userEmail;
 
 	@Column(name = "UserType")
@@ -38,15 +40,15 @@ public class Users {
 
 	@Column(name = "GoogleSubId", columnDefinition = "varchar(100)")
 	private String googleSubId;
-	
+
 	// 關聯性欄位-----------------------------------------------------
 
 	@OneToOne(cascade = CascadeType.ALL, mappedBy = "users")
 	private UserDetail userDetail;
-	
-	@OneToOne(mappedBy = "users",cascade = CascadeType.ALL)
+
+	@OneToOne(mappedBy = "users", cascade = CascadeType.ALL)
 	private ApplyTeacher applyTeacher;
-	
+
 //	@JsonIgnore
 	@OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
 	private List<Lessons> lesson;
@@ -67,39 +69,39 @@ public class Users {
 	@OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
 	private List<Report> report;
 
-	@JsonIgnore
+//	@JsonIgnore
 	@OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
 	private List<Favorite> favorite;
 
-	@JsonBackReference
+//	@JsonBackReference
 	@OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
 	private List<Exercises> exercises;
 
-	@JsonIgnore
+//	@JsonIgnore
 	@OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
 	private List<ExercisePermissions> exercisePermissions;
-	
+
 //	@JsonIgnore
 	@OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
 	private List<Calender> calender;
 
-	@JsonIgnore
+//	@JsonIgnore
 	@OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
 	private List<Vacation> vacation;
-	
-	@JsonIgnore
+
+//	@JsonIgnore
 	@OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
 	private List<Question> question;
-	
-	@JsonIgnore
+
+//	@JsonIgnore
 	@OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
 	private List<LessonPost> lessonPost;
-	
-	@JsonIgnore
+
+//	@JsonIgnore
 	@OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
 	private List<VideoNote> videoNote;
-	
-	@JsonIgnore
+
+//	@JsonIgnore
 	@OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
 	private List<CourseQA> courseQA;
 
@@ -278,6 +280,5 @@ public class Users {
 	public void setCourseQA(List<CourseQA> courseQA) {
 		this.courseQA = courseQA;
 	}
-	
-	
+
 }
