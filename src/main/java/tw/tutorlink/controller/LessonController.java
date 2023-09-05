@@ -71,14 +71,14 @@ public class LessonController {
 	@PostMapping(path="/lessons",produces="application/json;charset=UTF-8")
 	public Lessons insertLesson(@RequestBody Lessons lesson,HttpSession session) {
 		Users loggedInUser = (Users) session.getAttribute("logState");
-		loggedInUser.getUsersId();
-		return lService.insertLesson(lesson);
+		
+		return lService.insertLesson(loggedInUser.getUsersId(),lesson);
 	}
 	
 	//課程全部查詢
 	@GetMapping(path="/allLessons",produces="application/json;charset=UTF-8")
-	public List<Lessons> findAllLessons() {
-		return lService.getAllLessons();
+	public List<Lessons> findAllLessons(HttpSession session) {
+		return lService.getUserAllLessons(session);
 	}
 	
 	//課程單筆查詢
