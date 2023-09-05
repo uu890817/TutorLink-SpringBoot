@@ -154,40 +154,22 @@ public class Lessons {
 	public void setOrder(List<OrderItem> order) {
 		this.order = order;
 	}
-<<<<<<< HEAD
 
-	public List<Score> getComment() {
-=======
 	
 	public List<Comment> getComment() {
->>>>>>> branch 'develop' of https://github.com/uu890817/TutorLink-SpringBoot.git
 		return comment;
 	}
-<<<<<<< HEAD
 
-	public void setComment(List<Score> comment) {
-=======
 	
 	public void setComment(List<Comment> comment) {
->>>>>>> branch 'develop' of https://github.com/uu890817/TutorLink-SpringBoot.git
 		this.comment = comment;
 	}
-<<<<<<< HEAD
-
-	public List<Cart> getShoppingCart() {
-=======
 	
 	public List<CartItem> getShoppingCart() {
->>>>>>> branch 'develop' of https://github.com/uu890817/TutorLink-SpringBoot.git
 		return shoppingCart;
 	}
-<<<<<<< HEAD
-
-	public void setShoppingCart(List<Cart> shoppingCart) {
-=======
 	
 	public void setShoppingCart(List<CartItem> shoppingCart) {
->>>>>>> branch 'develop' of https://github.com/uu890817/TutorLink-SpringBoot.git
 		this.shoppingCart = shoppingCart;
 	}
 
