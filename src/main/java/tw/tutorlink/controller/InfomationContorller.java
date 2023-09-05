@@ -27,6 +27,6 @@ public class InfomationContorller {
 		}
 		result.setGoogleSubId(loggedInUser.getGoogleSubId());
 		result.setUserEmail(loggedInUser.getUserEmail());	
-		return result;
+		return loggedInUser;
 	}
 }
