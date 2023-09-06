@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import tw.tutorlink.bean.Exercises;
 import tw.tutorlink.bean.Topics;
+import tw.tutorlink.dto.exercises.TeacherGetAllExerciseDTO;
+import tw.tutorlink.dto.exercises.TeacherGetAllLessonsName;
 import tw.tutorlink.service.ExercisesService;
 import tw.tutorlink.service.TopicsService;
 
@@ -29,7 +31,7 @@ public class TeacherExerciseController {
 	
 	@GetMapping("/myExercise")
 	@ResponseBody
-	public List<Exercises> getMyExercise(@RequestParam Integer teacherId) {
+	public List<TeacherGetAllExerciseDTO> getMyExercise(@RequestParam Integer teacherId) {
 		return eService.getTeacherExercise(teacherId);
 	}
 	
@@ -37,6 +39,13 @@ public class TeacherExerciseController {
 	public List<Topics> getTopics(@PathVariable Integer eId){
 		return tService.getTopicsByExerciseId(eId);
 	}
+	
+	@GetMapping("/myLessons")
+	public List<TeacherGetAllLessonsName> getLessons(@RequestParam Integer teacherId){
+		return eService.getLessonsName(teacherId);
+	}
+	
+	
 	
 	
 	@PostMapping("/newExercise")

@@ -69,4 +69,9 @@ public class CourseQAService {
         }
         return null;
     }
+    
+    //查詢老師課程所有問答
+    public List<CourseQA> getCourseQAByUser(Users user) {
+        return cDAO.findByLesson_Users(user);
+    }
 }

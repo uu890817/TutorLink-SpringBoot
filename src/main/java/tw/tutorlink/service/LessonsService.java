@@ -46,18 +46,36 @@ public class LessonsService {
 	}
 	
 	//新增課程
+
+	public Lessons insertLesson(Lessons lesson) {
+		
+		return lDAO.save(lesson);
+	
+	}
+
 	public Lessons insertLesson(int id,Lessons lesson) {
 		Users user = uDAO.findById(id);
+		Lessons lessons = new Lessons();
+		System.out.println("會員ID : "+user);
 		if(user!=null) {
 			user.getLesson();
-//			user.setUsersId(id);
-//			lesson.setLessonName(lessonName);
-//			lesson.setPrice(price);
-//			lesson.setLessonType(lessonType);
-//			lesson.setImage(image);
-			lDAO.save(lesson);
+			lessons.setUsers(user);
+			lessons.setLessonName(lesson.getLessonName());
+			lessons.setSubject(lesson.getSubject());
+			lessons.setLessonType(lesson.getLessonType());
+			lessons.setPrice(lesson.getPrice());
+			lessons.setImage(lesson.getImage());
+			lDAO.save(lessons);
+
 		}
-		return lesson;
+
+			
+
+		System.out.println("課程資料 : "+lessons);
+		return lessons;
+
+
+
 	}
 	
 	//修改課程
@@ -84,5 +102,10 @@ public class LessonsService {
 			return "刪除成功";
 		}
 		return "刪除失敗";
+	}
+	
+	//用User找課程
+	public List<Lessons> findByUsers(Users user){
+		return lDAO.findByUsers(user);
 	}
 }
