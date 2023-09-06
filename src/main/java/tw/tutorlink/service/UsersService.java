@@ -68,15 +68,17 @@ public class UsersService {
 		return null;
 	}
 
-	public String findbyIdAndPwd(int cookieid, String oldpwd, String newPwd) {
+	public String findbyIdAndPwd(int cookieid, String oldpwd, String newPwd, String newPwd2) {
 		Users user = uDAO.findById(cookieid);
-
-		if (user != null) {
-			if (oldpwd != user.getUserPassword()) {
-				return "fail";
-			}
-		}
+		
+		System.out.println(oldpwd+" "+newPwd+" "+newPwd2);
+//		if (user != null) {
+//			if (oldpwd != user.getUserPassword()||newPwd!=(newPwd2)) {
+//				return "fail";
+//			}
+//		}
 		user.setUserPassword(newPwd);
+		uDAO.save(user);
 		return "update";
 	}
 }
