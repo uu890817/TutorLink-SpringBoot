@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import tw.tutorlink.bean.Users;
 import tw.tutorlink.service.UsersService;
@@ -31,42 +33,44 @@ public class InfomationContorller {
 //			return result;
 //		}
 		int cookieid = Integer.parseInt(cookie);
+		System.out.println(cookieid);
 		return uService.findByIdDetail(cookieid);
+//		return null;
 	}
 
 	@PostMapping("/send")
 	@ResponseBody
 	public String data(@RequestBody String str, HttpSession session,@CookieValue("UsersId") String cookie) {
-		System.out.println(str);
 		// 字串轉JSON
 		JsonObject json = JsonParser.parseString(str).getAsJsonObject();
 		String name = json.get("UserName").getAsString();
 		String phone = json.get("Phone").getAsString();
 		String city = json.get("City").getAsString();
 		Long birth =json.get("Birthday").getAsLong();
-		System.out.println(birth);
-		
 		// 用session抓ID
 		Users loggedInUser = (Users) session.getAttribute("logState");
-		@SuppressWarnings("unused")
 		int sessionid = loggedInUser.getUsersId();
 		
 		// 用cookie抓ID
-		int cookieid = Integer.parseInt(cookie);
-		
+		Integer cookieid = Integer.parseInt(cookie);
+	
 		uService.setData(cookieid, name, phone, city, birth);
+//		uService.setData(sessionid, name, phone, city, birth);
 		return "ok";
 	}
 	
 	@PostMapping("/pwdverifty")
 	@ResponseBody
-	public String pwd (@RequestBody String str,HttpSession session,@CookieValue("UsersId") String cookie) {
+	public String pwd (@RequestBody String str,HttpSession session,@CookieValue("UsersId") String cookie,HttpServletResponse response) {
 		JsonObject json = JsonParser.parseString(str).getAsJsonObject();
 		String oldpwd = json.get("oldPwd").getAsString();
 		String newPwd = json.get("newPwd").getAsString();
 		String newPwd2 = json.get("newPwd2").getAsString();
-		System.out.println(oldpwd+" "+newPwd+" "+newPwd2);
-		System.out.println(cookie);
+		int cookieid = Integer.parseInt(cookie);
+		String result = uService.findbyIdAndPwd(cookieid,oldpwd,newPwd,newPwd2);
+//		if(result.equals("fail")) {
+//			return "fail";
+//		}
 		return "ok";
 	}
 }

@@ -48,8 +48,10 @@ public class UsersService {
 	}
 
 	public Users findByIdDetail(Integer id) {
+
 		return uDAO.findByIdDetail(id);
 	}
+
 	public UserDetail setData(int uID, String name, String phone, String city, long birth) {
 
 		Users user = uDAO.findById(uID);
@@ -64,5 +66,19 @@ public class UsersService {
 			return ud;
 		}
 		return null;
+	}
+
+	public String findbyIdAndPwd(int cookieid, String oldpwd, String newPwd, String newPwd2) {
+		Users user = uDAO.findById(cookieid);
+		
+		System.out.println(oldpwd+" "+newPwd+" "+newPwd2);
+//		if (user != null) {
+//			if (oldpwd != user.getUserPassword()||newPwd!=(newPwd2)) {
+//				return "fail";
+//			}
+//		}
+		user.setUserPassword(newPwd);
+		uDAO.save(user);
+		return "update";
 	}
 }

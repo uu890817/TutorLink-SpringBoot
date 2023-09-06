@@ -103,16 +103,17 @@ public class GoogleLoginController {
 	@ResponseBody
 	public String logout(HttpSession session, HttpServletResponse response) {
 		// 將Cookie 值設置為null
-		Cookie cookie = new Cookie("UsersId", null);
+		Cookie cookie = new Cookie("UsersId", "");
 
 		// 設置過期時間為0
 		cookie.setMaxAge(0);
-
+		// 會顯示在瀏覽器上
+		cookie.setPath("/");
 		// 將Cookie 物件加入Response 中
 		response.addCookie(cookie);
-		System.out.println("已清除cookie");
 		// 移除session
 		session.removeAttribute("logState");
+		session.invalidate();
 		System.out.println("已清除session");
 		return "delete Cookie";
 	}
