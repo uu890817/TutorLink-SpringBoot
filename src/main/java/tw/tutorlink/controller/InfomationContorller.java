@@ -31,20 +31,22 @@ public class InfomationContorller {
 //			return result;
 //		}
 		int cookieid = Integer.parseInt(cookie);
+		System.out.println(cookieid);
 		return uService.findByIdDetail(cookieid);
+//		return null;
 	}
 
 	@PostMapping("/send")
 	@ResponseBody
 	public String data(@RequestBody String str, HttpSession session,@CookieValue("UsersId") String cookie) {
-		System.out.println(str);
+//		System.out.println(str);
 		// 字串轉JSON
 		JsonObject json = JsonParser.parseString(str).getAsJsonObject();
 		String name = json.get("UserName").getAsString();
 		String phone = json.get("Phone").getAsString();
 		String city = json.get("City").getAsString();
 		Long birth =json.get("Birthday").getAsLong();
-		System.out.println(birth);
+//		System.out.println(birth);
 		
 		// 用session抓ID
 		Users loggedInUser = (Users) session.getAttribute("logState");
@@ -65,6 +67,9 @@ public class InfomationContorller {
 		String oldpwd = json.get("oldPwd").getAsString();
 		String newPwd = json.get("newPwd").getAsString();
 		String newPwd2 = json.get("newPwd2").getAsString();
+		int cookieid = Integer.parseInt(cookie);
+		uService.findbyIdAndPwd(cookieid,oldpwd,newPwd);
+		
 		System.out.println(oldpwd+" "+newPwd+" "+newPwd2);
 		System.out.println(cookie);
 		return "ok";
