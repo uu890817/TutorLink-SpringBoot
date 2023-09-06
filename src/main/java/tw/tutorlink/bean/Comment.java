@@ -33,7 +33,7 @@ public class Comment {
 	@JoinColumn(name = "UsersId", referencedColumnName = "usersId", nullable = false)
 	@JsonIgnoreProperties({ "userPassword", "userEmail", "userType", "googleSubId", "applyTeacher", "lesson", "order",
 			"comment", "Cart", "report", "favorite", "exercises", "calender", "vacation", "question", "lessonPost",
-			"videoNote", "courseQA", "cart" })
+			"videoNote", "courseQA", "cart","exercisePermissions","userDetail" })
 	private Users users;
 	
 	@Column(name="RateTags",columnDefinition = "nvarchar(100)")
@@ -49,7 +49,7 @@ public class Comment {
 	private Date createTime;
 
 	public Comment() {
-		super();
+
 	}
 
 	public Comment(Lessons lesson, Users users, String rateTags, String rateContent, Integer rate, Date createTime) {

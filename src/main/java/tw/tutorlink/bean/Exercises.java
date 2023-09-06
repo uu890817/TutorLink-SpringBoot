@@ -3,11 +3,8 @@ package tw.tutorlink.bean;
 import java.util.Date;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -31,7 +28,6 @@ public class Exercises {
 	private Integer exerId;
 
 	@ManyToOne
-	@JsonManagedReference
 	@JoinColumn(name = "LessonId", referencedColumnName = "lessonId", nullable = false)
 	private Lessons lesson;
 
@@ -51,10 +47,16 @@ public class Exercises {
 	@JsonIgnoreProperties("exercises")
 	@OneToMany(mappedBy = "exercises", cascade = CascadeType.ALL)
 	private List<Topics> topics;
-
+	
+	@JsonIgnoreProperties("exercises")
+	@OneToOne(cascade = CascadeType.ALL, mappedBy = "exercises")
+	private ExerciseConfig exerciseConfig;
+	
+	@JsonIgnoreProperties("exercises")
 	@OneToOne(cascade = CascadeType.ALL, mappedBy = "exercises")
 	private ExercisePermissions exercisePermissions;
-
+	
+	@JsonIgnoreProperties("exercises")
 	@OneToMany(mappedBy = "exercises", cascade = CascadeType.ALL)
 	private List<Question> question;
 
@@ -85,6 +87,14 @@ public class Exercises {
 
 	public String getExerName() {
 		return exerName;
+	}
+
+	public ExerciseConfig getExerciseConfig() {
+		return exerciseConfig;
+	}
+
+	public void setExerciseConfig(ExerciseConfig exerciseConfig) {
+		this.exerciseConfig = exerciseConfig;
 	}
 
 	public void setExerName(String exerName) {

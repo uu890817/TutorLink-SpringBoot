@@ -20,20 +20,22 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import tw.tutorlink.bean.Users;
 import tw.tutorlink.service.UsersService;
 
 @RestController
-public class GoogleLoginController{
+public class GoogleLoginController {
 
-	
 	@Autowired
 	private UsersService uService;
 
+	@SuppressWarnings("unused")
 	@PostMapping("/googlelogin")
 	@ResponseBody
-	public String loginByGoogle(@RequestBody String googleToken, HttpSession session)
+	public String loginByGoogle(@RequestBody String googleToken, HttpSession session, HttpServletResponse response)
 			throws JsonMappingException, JsonProcessingException {
 
 		// 處理google登入後續邏輯
@@ -41,7 +43,7 @@ public class GoogleLoginController{
 		String accessToken = jsonObject.get("access_token").getAsString();
 		String urlStr = "https://www.googleapis.com/oauth2/v3/tokeninfo?access_token=" + accessToken;
 		// 設定一個空字串準備裝回應值
-		String response = "";
+		String res = "";
 		// ----------- 傳給google網站分析token -----------
 		try {
 			// 建URL
@@ -58,7 +60,7 @@ public class GoogleLoginController{
 				String line;
 				// 讀取每段回應值，直到空值前加到字串中
 				while ((line = reader.readLine()) != null) {
-					response += line;
+					res += line;
 				}
 				System.out.println(response);
 				reader.close();
@@ -69,33 +71,50 @@ public class GoogleLoginController{
 			e.printStackTrace();
 		}
 		ObjectMapper objectMapper = new ObjectMapper();
-		JsonNode jsonNode = objectMapper.readTree(response);
+		JsonNode jsonNode = objectMapper.readTree(res);
 
 		String mail = jsonNode.get("email").asText();
 		String sub = jsonNode.get("sub").asText();
 
 		// 利用google回傳token中的唯一識別碼及Mail是否存在資料庫中
 		Users user = uService.login(sub, mail);
+		String usersid = user.getUsersId().toString();
 
+		Cookie cookie = new Cookie("UsersId", usersid);
+		// cookie生命週期1小時
+		cookie.setMaxAge(3600);
+		cookie.setPath("/");
+		// 回傳cookie
+		response.addCookie(cookie);
 		// ----------- 建立session -----------
 		// 當回傳不為空值時，代表資料存在，寫入整個bean進session
 		if (user != null) {
 			session.setMaxInactiveInterval(600);
 			session.setAttribute("logState", user);
-			System.out.println(session.getId());
+//			System.out.println(session.getId());
 			return "google";
-//			Users loggedInUser = (Users) session.getAttribute("logState");
-//			System.out.println("測試撈session中資料: "+loggedInUser.getGoogleSubId());
-//			System.out.println("測試撈session中資料: "+loggedInUser.getUserEmail());
 		} else {
 			return "verification failed";
 		}
 	}
 
-	// ----------- 登出，清除session -----------
-	@GetMapping("/googlelogout")
+	// ----------- 登出，清除session、cookie-----------
+	@GetMapping("/logout")
 	@ResponseBody
-	public void logout(HttpSession session) {
+	public String logout(HttpSession session, HttpServletResponse response) {
+		// 將Cookie 值設置為null
+		Cookie cookie = new Cookie("UsersId", "");
+
+		// 設置過期時間為0
+		cookie.setMaxAge(0);
+		// 會顯示在瀏覽器上
+		cookie.setPath("/");
+		// 將Cookie 物件加入Response 中
+		response.addCookie(cookie);
+		// 移除session
 		session.removeAttribute("logState");
+		session.invalidate();
+		System.out.println("已清除session");
+		return "delete Cookie";
 	}
 }
