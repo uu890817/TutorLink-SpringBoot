@@ -2,6 +2,7 @@ package tw.tutorlink.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,12 +15,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.servlet.http.HttpSession;
 import tw.tutorlink.bean.CourseQA;
 import tw.tutorlink.bean.LessonDetail;
 import tw.tutorlink.bean.LessonPost;
 import tw.tutorlink.bean.Lessons;
+import tw.tutorlink.bean.Subject;
 import tw.tutorlink.bean.Users;
 import tw.tutorlink.bean.Video;
 import tw.tutorlink.bean.VideoNote;
@@ -60,27 +63,60 @@ public class VideoCourseController {
 	
 	//-------------------課程-------------------
 	//新增影片課程
-	@PostMapping(path="/VideoLesson",produces="application/json;charset=UTF-8")
-	public ResponseEntity<Lessons> createVideoLesson(@RequestBody Lessons lesson,HttpSession session) {
+	@PostMapping(path = "/VideoLesson", produces = "application/json;charset=UTF-8")
+	public ResponseEntity<Lessons> createVideoLesson(@RequestParam("lessonName") String lessonName,
+			@RequestParam("subject") Subject subject, @RequestParam("lessonType") boolean lessonType,
+			@RequestParam("image") MultipartFile image, @RequestParam("price") Integer price, HttpSession session) {
 		try {
-		Users loggedInUser = (Users) session.getAttribute("logState");
-		lesson.setUsers(loggedInUser);
-		Lessons savedLesson = lService.insertLesson(lesson);
-		return ResponseEntity.status(HttpStatus.CREATED).body(savedLesson);
-		}catch(Exception e) {
+			Users loggedInUser = (Users) session.getAttribute("logState");
+			Lessons lesson = null; // 初始化 lesson 变量
+			
+			if (!image.isEmpty()) {
+				// 保存文件到本地文件夾
+				String fileName = generateUniqueFileName(image.getOriginalFilename());
+				String savePath = "c:/temp/upload/";
+				File saveFile = new File(savePath + fileName);
+				image.transferTo(saveFile);
+				// 获取图像保存路径
+				String imageSavePath = saveFile.getAbsolutePath();
+				
+				System.out.println("lessonName:"+lessonName+" subject:"+subject.getSubjectContent()+ " lessonType:"+lessonType+" imageSavePath:"+imageSavePath+" price:"+price);
+				lesson = new Lessons(lessonName, subject, lessonType, imageSavePath, price);
+			}
+			Lessons savedLesson = lService.insertLesson(loggedInUser.getUsersId(), lesson);
+			return ResponseEntity.status(HttpStatus.CREATED).body(savedLesson);
+		} catch (Exception e) {
+			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 		}
 	}
 	//新增課程Detail
 	@PostMapping(path="/VideoLessonDetail",produces="application/json;charset=UTF-8")
-	public ResponseEntity<LessonDetail> createVideoLessonDetail(@RequestBody LessonDetail lessonDetail) {
+	public ResponseEntity<LessonDetail> createVideoLessonDetail(@RequestParam("lesson") Lessons lesson,
+			@RequestParam("information") String Information, @RequestParam("createTime") Date CreateTime,
+			@RequestParam("video") MultipartFile video, @RequestParam("language") String language, 
+			@RequestParam("courseTotalTime") Integer courseTotalTime) {
 		try {
+			LessonDetail lessonDetail = null;
+			if (!video.isEmpty()) {
+				// 保存文件到本地文件夾
+				String fileName = generateUniqueFileName(video.getOriginalFilename());
+				String savePath = "c:/temp/upload/";
+				File saveFile = new File(savePath + fileName);
+				video.transferTo(saveFile);
+				// 獲取圖片保存路徑
+				String imageSavePath = saveFile.getAbsolutePath();
+				
+				lessonDetail = new LessonDetail(lesson, Information, CreateTime, imageSavePath, language,courseTotalTime);
+			}
 		LessonDetail savedLessonDetail = ldService.insertLessonDetail(lessonDetail);
 		return ResponseEntity.status(HttpStatus.CREATED).body(savedLessonDetail);
 		}catch(Exception e) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 		}
 	}
+	
+	
 	
 	//取得老師發佈的課程
 	@GetMapping(path="/VideoLessons",produces="application/json;charset=UTF-8")
@@ -163,6 +199,49 @@ public class VideoCourseController {
 			return "影片上傳失败";
 		}
 	}
+	
+	/////////////////
+	@PostMapping(path = "/uploadVideo2", produces = "application/json;charset=UTF-8")
+	public String uploadVideo(@RequestParam("chapterName") List<String> chapterNames,
+	                          @RequestParam("videoFile") List<MultipartFile> videoFiles,
+	                          @RequestParam("lessonDetail") List<LessonDetail> lessonDetailJsons,
+	                          @RequestParam("sort") List<Integer> sorts) {
+	    try {
+	        for (int i = 0; i < chapterNames.size(); i++) {
+	            // 获取每个章节的数据
+	            String chapterName = chapterNames.get(i);
+	            MultipartFile videoFile = videoFiles.get(i);
+	            LessonDetail lessonDetailJson = lessonDetailJsons.get(i);
+	            Integer sort = sorts.get(i);
+
+	            // 处理章节数据，例如保存文件并插入数据库
+	            if (videoFile != null && !videoFile.isEmpty()) {
+	                String fileName = generateUniqueFileName(videoFile.getOriginalFilename());
+	                String savePath = "c:/temp/upload/";
+	                File saveFile = new File(savePath + fileName);
+	                videoFile.transferTo(saveFile);
+
+	                // 解析 lessonDetailJson 字符串为 LessonDetail 对象
+//	                LessonDetail lessonDetail = objectMapper.readValue(lessonDetailJson, LessonDetail.class);
+
+	                // 创建 Video 对象并设置属性
+	                Video video = new Video();
+	                video.setLessonDetail(lessonDetailJson);
+	                video.setSort(sort);
+	                video.setChapterName(chapterName);
+	                video.setCourseUrl(saveFile.getAbsolutePath());
+
+	                // 使用 videoService 保存 Video 对象到数据库
+	                vService.insertVideo(video);
+	            }
+	        }
+	        return "影片上傳成功";
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	        return "影片上傳失败";
+	    }
+	}
+
 
     // 生成一个唯一的文件名，避免文件名衝突
     private String generateUniqueFileName(String originalFileName) {

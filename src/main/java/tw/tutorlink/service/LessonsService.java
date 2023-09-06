@@ -1,5 +1,6 @@
 package tw.tutorlink.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -58,14 +59,19 @@ public class LessonsService {
 		Lessons lessons = new Lessons();
 		System.out.println("會員ID : "+user);
 		if(user!=null) {
-			user.getLesson();
+//			user.getLesson();
 			lessons.setUsers(user);
 			lessons.setLessonName(lesson.getLessonName());
 			lessons.setSubject(lesson.getSubject());
 			lessons.setLessonType(lesson.getLessonType());
 			lessons.setPrice(lesson.getPrice());
 			lessons.setImage(lesson.getImage());
-			lDAO.save(lessons);
+			
+			List<Lessons> lessenList = new ArrayList<>();
+			lessenList.add(lessons);
+			
+			user.setLesson(lessenList);
+			uDAO.save(user);
 
 		}
 

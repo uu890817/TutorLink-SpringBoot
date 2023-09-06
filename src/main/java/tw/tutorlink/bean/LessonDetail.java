@@ -41,6 +41,9 @@ public class LessonDetail {
 
 	@Column(name = "CourseUrl", columnDefinition = "varchar(100)")
 	private String courseUrl;
+	
+	@Column(name = "Language", columnDefinition = "nvarchar(50)")
+	private String language;
 
 	@Column(name = "CourserTotalTime")
 	private Integer courseTotalTime;
@@ -57,8 +60,21 @@ public class LessonDetail {
 	
 	// Getter/Setter-----------------------------------------------
 
+	
+	
 	public Integer getLessonDetailId() {
 		return lessonDetailId;
+	}
+
+	public LessonDetail(Lessons lesson, String imformation, Date createTime, String courseUrl, String language,
+			Integer courseTotalTime) {
+		super();
+		this.lesson = lesson;
+		this.imformation = imformation;
+		this.createTime = createTime;
+		this.courseUrl = courseUrl;
+		this.language = language;
+		this.courseTotalTime = courseTotalTime;
 	}
 
 	public void setLessonDetailId(Integer lessonDetailId) {
