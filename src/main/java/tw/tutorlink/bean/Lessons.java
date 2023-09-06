@@ -84,6 +84,18 @@ public class Lessons {
 
 	// Getter/Setter-----------------------------------------------
 
+	public Lessons() {
+		
+	}
+	
+	public Lessons(String lessonName,Subject subject,boolean lessonType,String image, Integer price) {
+		this.subject = subject;
+		this.lessonName = lessonName;
+		this.lessonType = lessonType;
+		this.price = price;
+		this.image = image;
+	}
+
 	public Integer getLessonId() {
 		return lessonId;
 	}

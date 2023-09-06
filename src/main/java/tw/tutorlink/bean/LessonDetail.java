@@ -56,6 +56,18 @@ public class LessonDetail {
 	private List<LessonPost> lessonPost;
 	
 	// Getter/Setter-----------------------------------------------
+	
+	public LessonDetail() {
+		
+	}
+	public LessonDetail(String imformation,String meetingUrl,String courseUrl,Date createTime,Integer courseTotalTime) {
+		this.imformation = imformation;
+		this.meetingUrl = meetingUrl;
+		this.createTime = createTime;
+		this.courseUrl = courseUrl;
+		this.courseTotalTime = courseTotalTime;
+		
+	}
 
 	public Integer getLessonDetailId() {
 		return lessonDetailId;
