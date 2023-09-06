@@ -1,6 +1,6 @@
 package tw.tutorlink.bean;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -21,7 +21,6 @@ public class Options {
 	private Integer optionsId;
 
 	@ManyToOne
-	@JsonBackReference
 	@JoinColumn(name="TopicsId",referencedColumnName =  "topicsId")
 	private Topics topics;
 	
@@ -31,6 +30,9 @@ public class Options {
 	@Column(name="SortId")
 	private Integer sortId;
 	
+	@Column(name="Answer",columnDefinition = "nvarchar(100)")
+	private String answer;
+	
 	public Integer getSortId() {
 		return sortId;
 	}
@@ -39,8 +41,7 @@ public class Options {
 		this.sortId = sortId;
 	}
 
-	@Column(name="Answer",columnDefinition = "nvarchar(100)")
-	private String answer;
+	
 
 	public Integer getOptionsId() {
 		return optionsId;

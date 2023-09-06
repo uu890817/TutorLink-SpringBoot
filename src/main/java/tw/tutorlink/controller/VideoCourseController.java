@@ -63,33 +63,33 @@ public class VideoCourseController {
 	
 	//-------------------課程-------------------
 	//新增影片課程
-	@PostMapping(path = "/VideoLesson", produces = "application/json;charset=UTF-8")
-	public ResponseEntity<Lessons> createVideoLesson(@RequestParam("lessonName") String lessonName,
-			@RequestParam("subject") Subject subject, @RequestParam("lessonType") boolean lessonType,
-			@RequestParam("image") MultipartFile image, @RequestParam("price") Integer price, HttpSession session) {
-		try {
-			Users loggedInUser = (Users) session.getAttribute("logState");
-			Lessons lesson = null; // 初始化 lesson 变量
-			
-			if (!image.isEmpty()) {
-				// 保存文件到本地文件夾
-				String fileName = generateUniqueFileName(image.getOriginalFilename());
-				String savePath = "c:/temp/upload/";
-				File saveFile = new File(savePath + fileName);
-				image.transferTo(saveFile);
-				// 获取图像保存路径
-				String imageSavePath = saveFile.getAbsolutePath();
-				
-				System.out.println("lessonName:"+lessonName+" subject:"+subject.getSubjectContent()+ " lessonType:"+lessonType+" imageSavePath:"+imageSavePath+" price:"+price);
-				lesson = new Lessons(lessonName, subject, lessonType, imageSavePath, price);
-			}
-			Lessons savedLesson = lService.insertLesson(loggedInUser.getUsersId(), lesson);
-			return ResponseEntity.status(HttpStatus.CREATED).body(savedLesson);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-		}
-	}
+//	@PostMapping(path = "/VideoLesson", produces = "application/json;charset=UTF-8")
+//	public ResponseEntity<Lessons> createVideoLesson(@RequestParam("lessonName") String lessonName,
+//			@RequestParam("subject") Subject subject, @RequestParam("lessonType") boolean lessonType,
+//			@RequestParam("image") MultipartFile image, @RequestParam("price") Integer price, HttpSession session) {
+//		try {
+//			Users loggedInUser = (Users) session.getAttribute("logState");
+//			Lessons lesson = null; // 初始化 lesson 变量
+//			
+//			if (!image.isEmpty()) {
+//				// 保存文件到本地文件夾
+//				String fileName = generateUniqueFileName(image.getOriginalFilename());
+//				String savePath = "c:/temp/upload/";
+//				File saveFile = new File(savePath + fileName);
+//				image.transferTo(saveFile);
+//				// 获取图像保存路径
+//				String imageSavePath = saveFile.getAbsolutePath();
+//				
+//				System.out.println("lessonName:"+lessonName+" subject:"+subject.getSubjectContent()+ " lessonType:"+lessonType+" imageSavePath:"+imageSavePath+" price:"+price);
+//				lesson = new Lessons(lessonName, subject, lessonType, imageSavePath, price);
+//			}
+//			Lessons savedLesson = lService.insertLesson(loggedInUser.getUsersId(), lesson);
+//			return ResponseEntity.status(HttpStatus.CREATED).body(savedLesson);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+//		}
+//	}
 	//新增課程Detail
 	@PostMapping(path="/VideoLessonDetail",produces="application/json;charset=UTF-8")
 	public ResponseEntity<LessonDetail> createVideoLessonDetail(@RequestParam("lesson") Lessons lesson,
