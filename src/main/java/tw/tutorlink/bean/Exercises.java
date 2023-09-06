@@ -3,10 +3,8 @@ package tw.tutorlink.bean;
 import java.util.Date;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -30,7 +28,6 @@ public class Exercises {
 	private Integer exerId;
 
 	@ManyToOne
-	@JsonManagedReference
 	@JoinColumn(name = "LessonId", referencedColumnName = "lessonId", nullable = false)
 	private Lessons lesson;
 
@@ -38,6 +35,10 @@ public class Exercises {
 	@JsonIgnore
 	@JoinColumn(name = "UsersId", referencedColumnName = "usersId", nullable = false)
 	private Users users;
+	
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name="ExerId",referencedColumnName = "exerId")
+	private ExerciseConfig exerciseConfig;
 
 	@Column(name = "ExerName", nullable = false, columnDefinition = "nvarchar(50)")
 	private String exerName;
@@ -47,13 +48,15 @@ public class Exercises {
 
 	// 關聯性欄位-----------------------------------------------------
 
-	@JsonBackReference
+	@JsonIgnoreProperties("exercises")
 	@OneToMany(mappedBy = "exercises", cascade = CascadeType.ALL)
 	private List<Topics> topics;
-
+	
+	@JsonIgnoreProperties("exercises")
 	@OneToOne(cascade = CascadeType.ALL, mappedBy = "exercises")
 	private ExercisePermissions exercisePermissions;
-
+	
+	@JsonIgnoreProperties("exercises")
 	@OneToMany(mappedBy = "exercises", cascade = CascadeType.ALL)
 	private List<Question> question;
 

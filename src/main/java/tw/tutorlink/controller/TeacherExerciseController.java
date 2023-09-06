@@ -13,8 +13,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
+import jakarta.servlet.http.HttpSession;
 import tw.tutorlink.bean.Exercises;
 import tw.tutorlink.bean.Topics;
+import tw.tutorlink.dto.exercises.TeacherGetAllExerciseDTO;
+import tw.tutorlink.dto.exercises.TeacherGetAllLessonsName;
 import tw.tutorlink.service.ExercisesService;
 import tw.tutorlink.service.TopicsService;
 
@@ -29,8 +35,8 @@ public class TeacherExerciseController {
 	
 	@GetMapping("/myExercise")
 	@ResponseBody
-	public List<Exercises> getMyExercise(@RequestParam Integer teacherId) {
-		return eService.getTeacherExercise(teacherId);
+	public List<TeacherGetAllExerciseDTO> getMyExercise(HttpSession session) {
+		return eService.getTeacherExercise(1);
 	}
 	
 	@GetMapping("/myTopics/{eId}")
@@ -38,10 +44,17 @@ public class TeacherExerciseController {
 		return tService.getTopicsByExerciseId(eId);
 	}
 	
+	@GetMapping("/myLessons")
+	public List<TeacherGetAllLessonsName> getLessons(HttpSession session){
+		return eService.getLessonsName(1);
+	}
 	
-	@PostMapping("/newExercise")
+	
+	
+	
+	@PostMapping(path = "/newExercise", produces="application/json;charset=UTF-8")
 	public String insertNewExercise(@RequestBody Exercises newExercise) {
-		
+		System.out.println(newExercise);
 		return "OK";
 	}
 	

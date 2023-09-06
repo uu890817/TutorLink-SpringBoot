@@ -1,6 +1,6 @@
 package tw.tutorlink.bean;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -21,7 +21,6 @@ public class Options {
 	private Integer optionsId;
 
 	@ManyToOne
-	@JsonBackReference
 	@JoinColumn(name="TopicsId",referencedColumnName =  "topicsId")
 	private Topics topics;
 	

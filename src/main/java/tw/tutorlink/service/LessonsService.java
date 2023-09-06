@@ -55,12 +55,26 @@ public class LessonsService {
 
 	public Lessons insertLesson(int id,Lessons lesson) {
 		Users user = uDAO.findById(id);
+		Lessons lessons = new Lessons();
+		System.out.println("會員ID : "+user);
 		if(user!=null) {
 			user.getLesson();
+			lessons.setUsers(user);
+			lessons.setLessonName(lesson.getLessonName());
+			lessons.setSubject(lesson.getSubject());
+			lessons.setLessonType(lesson.getLessonType());
+			lessons.setPrice(lesson.getPrice());
+			lessons.setImage(lesson.getImage());
+			lDAO.save(lessons);
 
-			lDAO.save(lesson);
 		}
-		return lesson;
+
+			
+
+		System.out.println("課程資料 : "+lessons);
+		return lessons;
+
+
 
 	}
 	

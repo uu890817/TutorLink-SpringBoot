@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -40,10 +41,9 @@ public class Lessons {
 
 	@Column(name = "LeesonType", columnDefinition = "bit")
 	private boolean lessonType;
-	
+
 	@Column(name = "Price")
 	private Integer price;
-
 
 	@Column(name = "Image")
 	private String image;
@@ -70,7 +70,7 @@ public class Lessons {
 	private List<Favorite> favorite;
 
 	@OneToMany(mappedBy = "lesson", cascade = CascadeType.ALL)
-	@JsonBackReference
+	@JsonIgnoreProperties("lesson")
 	private List<Exercises> exercises;
 
 	@OneToMany(mappedBy = "lesson", cascade = CascadeType.ALL)
@@ -123,14 +123,15 @@ public class Lessons {
 	public void setLessonType(boolean lessonType) {
 		this.lessonType = lessonType;
 	}
+
 	public Integer getPrice() {
 		return price;
 	}
-	
+
 	public void setPrice(Integer price) {
 		this.price = price;
 	}
-	
+
 	public String getImage() {
 		return image;
 	}
@@ -155,20 +156,18 @@ public class Lessons {
 		this.order = order;
 	}
 
-	
 	public List<Comment> getComment() {
 		return comment;
 	}
 
-	
 	public void setComment(List<Comment> comment) {
 		this.comment = comment;
 	}
-	
+
 	public List<CartItem> getShoppingCart() {
 		return shoppingCart;
 	}
-	
+
 	public void setShoppingCart(List<CartItem> shoppingCart) {
 		this.shoppingCart = shoppingCart;
 	}
