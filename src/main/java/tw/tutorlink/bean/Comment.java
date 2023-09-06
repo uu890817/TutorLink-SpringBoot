@@ -49,7 +49,7 @@ public class Comment {
 	private Date createTime;
 
 	public Comment() {
-		super();
+
 	}
 
 	public Comment(Lessons lesson, Users users, String rateTags, String rateContent, Integer rate, Date createTime) {

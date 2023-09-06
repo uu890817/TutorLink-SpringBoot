@@ -30,6 +30,9 @@ public class Options {
 	@Column(name="SortId")
 	private Integer sortId;
 	
+	@Column(name="Answer",columnDefinition = "nvarchar(100)")
+	private String answer;
+	
 	public Integer getSortId() {
 		return sortId;
 	}
@@ -38,8 +41,7 @@ public class Options {
 		this.sortId = sortId;
 	}
 
-	@Column(name="Answer",columnDefinition = "nvarchar(100)")
-	private String answer;
+	
 
 	public Integer getOptionsId() {
 		return optionsId;

@@ -41,7 +41,7 @@ public class UserDetail {
 	private String image;
 
 	@Column(name = "Birthday")
-	private Date birthday;
+	private long birthday;
 
 	@Column(name = "City",columnDefinition = "nvarchar(50)")
 	private String City;
@@ -107,11 +107,11 @@ public class UserDetail {
 		this.image = image;
 	}
 
-	public Date getBirthday() {
+	public long getBirthday() {
 		return birthday;
 	}
 
-	public void setBirthday(Date birthday) {
+	public void setBirthday(long birthday) {
 		this.birthday = birthday;
 	}
 

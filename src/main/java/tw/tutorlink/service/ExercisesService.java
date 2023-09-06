@@ -40,6 +40,14 @@ public class ExercisesService {
 		return tDTOs;
 	}
 	
+	public Exercises insertNewExercise(Exercises esercise) {
+		Exercises result = eDAO.save(esercise);
+		if(result != null) {
+			return result;
+		}
+		return null;
+	}
+	
 	
 	
 	
