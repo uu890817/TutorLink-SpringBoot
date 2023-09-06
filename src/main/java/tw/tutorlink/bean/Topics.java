@@ -2,8 +2,7 @@ package tw.tutorlink.bean;
 
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -27,7 +26,6 @@ public class Topics {
 	private Integer topicsId;
 	
 	@ManyToOne
-	@JsonManagedReference
 	@JoinColumn(name="ExerId",referencedColumnName = "exerId")
 	private Exercises exercises;
 	
@@ -38,7 +36,7 @@ public class Topics {
 	private Integer type;
 	
 	// 關聯性欄位-----------------------------------------------------
-	@JsonManagedReference
+	@JsonIgnoreProperties("topics")
 	@OneToMany(mappedBy = "topics",cascade = CascadeType.ALL)
 	private List<Options> options;
 	
