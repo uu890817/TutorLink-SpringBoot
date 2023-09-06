@@ -50,12 +50,13 @@ public class UsersService {
 	public Users findByIdDetail(Integer id) {
 		return uDAO.findByIdDetail(id);
 	}
-	public UserDetail setData(int uID, String name, String phone, String city, int birth) {
+	public UserDetail setData(int uID, String name, String phone, String city, long birth) {
 
 		Users user = uDAO.findById(uID);
 
 		if (user != null) {
 			UserDetail ud = user.getUserDetail();
+			ud.setBirthday(birth);
 			ud.setUserName(name);
 			ud.setPhone(phone);
 			ud.setCity(city);
