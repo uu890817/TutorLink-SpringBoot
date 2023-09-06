@@ -19,6 +19,7 @@ import com.google.gson.JsonParser;
 import jakarta.servlet.http.HttpSession;
 import tw.tutorlink.bean.Exercises;
 import tw.tutorlink.bean.Topics;
+import tw.tutorlink.bean.Users;
 import tw.tutorlink.dto.exercises.TeacherGetAllExerciseDTO;
 import tw.tutorlink.dto.exercises.TeacherGetAllLessonsName;
 import tw.tutorlink.service.ExercisesService;
@@ -49,13 +50,19 @@ public class TeacherExerciseController {
 		return eService.getLessonsName(1);
 	}
 	
-	
-	
-	
 	@PostMapping(path = "/newExercise", produces="application/json;charset=UTF-8")
 	public String insertNewExercise(@RequestBody Exercises newExercise) {
-		System.out.println(newExercise);
-		return "OK";
+		Users user = new Users();
+		user.setUsersId(1);
+		newExercise.setUsers(user);
+		System.out.println(newExercise.getUsers().getUsersId());
+		
+		Exercises result = eService.insertNewExercise(newExercise);
+		
+		if(result != null) {
+			return "OK";
+		}
+		return "Error";
 	}
 	
 	

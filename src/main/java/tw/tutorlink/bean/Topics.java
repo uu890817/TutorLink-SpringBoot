@@ -35,6 +35,9 @@ public class Topics {
 	@Column(name="Type",nullable = false)
 	private Integer type;
 	
+	@Column(name="SortId")
+	private Integer sortId;
+	
 	// 關聯性欄位-----------------------------------------------------
 	@JsonIgnoreProperties("topics")
 	@OneToMany(mappedBy = "topics",cascade = CascadeType.ALL)
