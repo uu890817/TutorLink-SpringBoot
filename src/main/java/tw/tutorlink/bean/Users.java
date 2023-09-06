@@ -2,6 +2,8 @@ package tw.tutorlink.bean;
 
 import java.util.List;
 
+import org.springframework.data.annotation.Transient;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -278,4 +280,8 @@ public class Users{
 		this.courseQA = courseQA;
 	}
 
+	@Transient
+	public String getUserDetailUserName() {
+	    return this.userDetail != null ? this.userDetail.getUserName() : null;
+	}
 }
