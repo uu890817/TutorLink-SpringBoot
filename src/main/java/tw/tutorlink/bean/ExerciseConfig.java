@@ -25,6 +25,7 @@ public class ExerciseConfig {
 	@JoinColumn(name = "ExerId", referencedColumnName = "exerId")
 	private Exercises exercises;
 
+	
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "ExerPerId", referencedColumnName = "exerPerId")
 	private ExercisePermissions exercisePermissions;
