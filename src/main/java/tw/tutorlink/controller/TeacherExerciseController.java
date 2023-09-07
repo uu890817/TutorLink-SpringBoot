@@ -3,10 +3,12 @@ package tw.tutorlink.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -52,9 +54,6 @@ public class TeacherExerciseController {
 	}
 	
 	
-	
-	
-	
 	@PostMapping(path = "/newExercise", produces="application/json;charset=UTF-8")
 	public String insertNewExercise(@RequestBody Exercises newExercise) {
 		Users user = new Users();
@@ -71,10 +70,26 @@ public class TeacherExerciseController {
 	
 	
 	
+	@PutMapping(path = "/updateExercise", produces="application/json;charset=UTF-8")
+	public String updataExercise(@RequestBody Exercises newExercise) {
+		Users user = new Users();
+		user.setUsersId(1);
+		newExercise.setUsers(user);
+		Exercises result = eService.insertNewExercise(newExercise);
+		
+		if(result != null) {
+			return "OK";
+		}
+		return "Error";
+	}
 	
 	
-	
-	
+	@DeleteMapping(path = "/deleteExercise/{eId}")
+	public String updataExercise(@PathVariable Integer eId) {
+		System.out.println(eId);
+		
+		return eService.deleteExercise(eId);
+	}
 	
 	
 	
