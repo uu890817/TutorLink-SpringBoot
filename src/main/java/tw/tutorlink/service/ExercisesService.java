@@ -10,7 +10,8 @@ import org.springframework.stereotype.Service;
 import tw.tutorlink.bean.Exercises;
 import tw.tutorlink.bean.Lessons;
 import tw.tutorlink.dto.exercises.TeacherGetAllExerciseDTO;
-import tw.tutorlink.dto.exercises.TeacherGetAllLessonsName;
+import tw.tutorlink.dto.exercises.TeacherGetAllLessonsNameDTO;
+import tw.tutorlink.dto.exercises.TeacherGetExerciseInfoDTO;
 import tw.tutorlink.repository.ExercisesDAO;
 
 @Service
@@ -30,11 +31,11 @@ public class ExercisesService {
 		return tDTOs;
 	}
 	
-	public List<TeacherGetAllLessonsName> getLessonsName(Integer usersId) {
-		List<TeacherGetAllLessonsName> tDTOs = new ArrayList<>();
+	public List<TeacherGetAllLessonsNameDTO> getLessonsName(Integer usersId) {
+		List<TeacherGetAllLessonsNameDTO> tDTOs = new ArrayList<>();
 		List<Lessons> lessons = eDAO.findLessonsByUsers(usersId);
 		for(Lessons lesson: lessons) {
-			TeacherGetAllLessonsName tDto = new TeacherGetAllLessonsName(lesson);
+			TeacherGetAllLessonsNameDTO tDto = new TeacherGetAllLessonsNameDTO(lesson);
 			tDTOs.add(tDto);
 		}
 		return tDTOs;
@@ -47,6 +48,12 @@ public class ExercisesService {
 		}
 		return null;
 	}
+	
+	public TeacherGetExerciseInfoDTO getExerciseByExerId(Integer exerId) {
+		TeacherGetExerciseInfoDTO tDTO = new TeacherGetExerciseInfoDTO(eDAO.findExercisesByExerId(exerId));
+		return tDTO;
+	}
+	
 	
 	
 	

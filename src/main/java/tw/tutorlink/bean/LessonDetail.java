@@ -3,6 +3,8 @@ package tw.tutorlink.bean;
 import java.util.Date;
 import java.util.List;
 
+import org.hibernate.annotations.Cascade;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 
@@ -41,6 +43,9 @@ public class LessonDetail {
 
 	@Column(name = "CourseUrl", columnDefinition = "varchar(100)")
 	private String courseUrl;
+	
+	@Column(name = "Language", columnDefinition = "nvarchar(50)")
+	private String language;
 
 	@Column(name = "CourserTotalTime")
 	private Integer courseTotalTime;
@@ -56,11 +61,42 @@ public class LessonDetail {
 	private List<LessonPost> lessonPost;
 	
 	// Getter/Setter-----------------------------------------------
+	
+	public LessonDetail() {
+		
+	}
+	public LessonDetail(String imformation,String meetingUrl,String courseUrl,Date createTime,Integer courseTotalTime,String language) {
+		this.imformation = imformation;
+		this.meetingUrl = meetingUrl;
+		this.createTime = createTime;
+		this.courseUrl = courseUrl;
+		this.courseTotalTime = courseTotalTime;
+		this.language = language;
+	}
 
+	
+	
 	public Integer getLessonDetailId() {
 		return lessonDetailId;
 	}
 
+	public LessonDetail(Lessons lesson, String imformation, Date createTime, String courseUrl, String language,
+			Integer courseTotalTime) {
+		super();
+		this.lesson = lesson;
+		this.imformation = imformation;
+		this.createTime = createTime;
+		this.courseUrl = courseUrl;
+		this.language = language;
+		this.courseTotalTime = courseTotalTime;
+	}
+
+	public String getLanguage() {
+		return language;
+	}
+	public void setLanguage(String language) {
+		this.language = language;
+	}
 	public void setLessonDetailId(Integer lessonDetailId) {
 		this.lessonDetailId = lessonDetailId;
 	}

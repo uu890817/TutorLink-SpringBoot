@@ -2,16 +2,16 @@ package tw.tutorlink.dto.exercises;
 
 import tw.tutorlink.bean.Lessons;
 
-public class TeacherGetAllLessonsName {
+public class TeacherGetAllLessonsNameDTO {
 
 	private Integer lessonId;
 	private String lessonName;
 	private boolean lessonType;
 	
-	public TeacherGetAllLessonsName() {
+	public TeacherGetAllLessonsNameDTO() {
 		
 	}
-	public TeacherGetAllLessonsName(Lessons lessons) {
+	public TeacherGetAllLessonsNameDTO(Lessons lessons) {
 		super();
 		this.lessonId = lessons.getLessonId();
 		this.lessonName = lessons.getLessonName();

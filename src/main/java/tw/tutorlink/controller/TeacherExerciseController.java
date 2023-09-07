@@ -21,7 +21,8 @@ import tw.tutorlink.bean.Exercises;
 import tw.tutorlink.bean.Topics;
 import tw.tutorlink.bean.Users;
 import tw.tutorlink.dto.exercises.TeacherGetAllExerciseDTO;
-import tw.tutorlink.dto.exercises.TeacherGetAllLessonsName;
+import tw.tutorlink.dto.exercises.TeacherGetAllLessonsNameDTO;
+import tw.tutorlink.dto.exercises.TeacherGetExerciseInfoDTO;
 import tw.tutorlink.service.ExercisesService;
 import tw.tutorlink.service.TopicsService;
 
@@ -34,21 +35,25 @@ public class TeacherExerciseController {
 	@Autowired
 	TopicsService tService;
 	
-	@GetMapping("/myExercise")
+	@GetMapping("/myAllExercise")
 	@ResponseBody
 	public List<TeacherGetAllExerciseDTO> getMyExercise(HttpSession session) {
 		return eService.getTeacherExercise(1);
 	}
 	
-	@GetMapping("/myTopics/{eId}")
-	public List<Topics> getTopics(@PathVariable Integer eId){
-		return tService.getTopicsByExerciseId(eId);
+	@GetMapping("/myExercise/{eId}")
+	public TeacherGetExerciseInfoDTO getTopics(@PathVariable Integer eId){
+		return eService.getExerciseByExerId(eId);
 	}
 	
 	@GetMapping("/myLessons")
-	public List<TeacherGetAllLessonsName> getLessons(HttpSession session){
+	public List<TeacherGetAllLessonsNameDTO> getLessons(HttpSession session){
 		return eService.getLessonsName(1);
 	}
+	
+	
+	
+	
 	
 	@PostMapping(path = "/newExercise", produces="application/json;charset=UTF-8")
 	public String insertNewExercise(@RequestBody Exercises newExercise) {
@@ -56,7 +61,6 @@ public class TeacherExerciseController {
 		user.setUsersId(1);
 		newExercise.setUsers(user);
 		System.out.println(newExercise.getUsers().getUsersId());
-		
 		Exercises result = eService.insertNewExercise(newExercise);
 		
 		if(result != null) {

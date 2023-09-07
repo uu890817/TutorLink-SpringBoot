@@ -2,6 +2,7 @@ package tw.tutorlink.bean;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.CascadeType;
@@ -26,6 +27,7 @@ public class Topics {
 	private Integer topicsId;
 	
 	@ManyToOne
+	@JsonIgnore()
 	@JoinColumn(name="ExerId",referencedColumnName = "exerId")
 	private Exercises exercises;
 	
