@@ -126,6 +126,9 @@ try {
 		  return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 	}
 	}
+	
+	
+	
 	//課程全部查詢
 	@GetMapping(path="/allLessons",produces="application/json;charset=UTF-8")
 	public List<Lessons> findAllLessons(HttpSession session) {
@@ -178,7 +181,6 @@ try {
         return uniqueName;
     }
 	
-	
-	
+
 	
 }	
