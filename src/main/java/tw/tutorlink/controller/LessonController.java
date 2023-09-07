@@ -87,7 +87,8 @@ public class LessonController {
 	public ResponseEntity<Lessons> insertLesson(HttpSession session,@RequestParam("lessonName")String lessonName,@RequestParam("subject")Subject subject,
 			@RequestParam("lessonType")boolean lessonType,@RequestParam(name="image",required = false)MultipartFile image,@RequestParam("price")Integer price,
 			@RequestParam(name="imformation",defaultValue="")String imformation,@RequestParam(name="meetingURL",defaultValue="")String meetingUrl,
-			@RequestParam(name="video",required = false)MultipartFile courseUrl,@RequestParam(name="createTime",required = false)Date createTime,@RequestParam(name="courseTotalTime",defaultValue="")Integer courseTotalTime) {
+			@RequestParam(name="video",required = false)MultipartFile courseUrl,@RequestParam(name="createTime",required = false)Date createTime,@RequestParam(name="courseTotalTime",defaultValue="")Integer courseTotalTime,
+			@RequestParam(name="language",defaultValue="")String language) {
 try {
 		Users loggedInUser = (Users) session.getAttribute("logState");
 		System.out.println("前端資料 : "+loggedInUser);
@@ -100,13 +101,14 @@ try {
             String savePath = "c:/temp/upload/image";
             File saveFile = new File(savePath + imageFileName);
             image.transferTo(saveFile);
+            System.out.println("圖片已存入本地資料夾");
             // 获取图像保存路径
             String imageSavePath = saveFile.getAbsolutePath();
             System.out.println(lessonName+" "+lessonType+" "+image+" ");
             lesson = new Lessons(lessonName, subject, lessonType, imageSavePath, price);
 		}
 		if (courseUrl == null || courseUrl.isEmpty()) {
-		    LD = new LessonDetail(imformation, meetingUrl, "", createTime, courseTotalTime);
+		    LD = new LessonDetail(imformation, meetingUrl, "", createTime, courseTotalTime,language);
 		} else {
 		    String videoFileName = generateUniqueFileName(courseUrl.getOriginalFilename());
 		    String savePath = "c:/temp/upload/video";
@@ -114,7 +116,7 @@ try {
 		    courseUrl.transferTo(saveFile);
 		    String videoSavePath = saveFile.getAbsolutePath();
 		    
-		    LD = new LessonDetail(imformation, meetingUrl, videoSavePath, createTime, courseTotalTime);
+		    LD = new LessonDetail(imformation, meetingUrl, videoSavePath, createTime, courseTotalTime,language);
 		}
 
 
