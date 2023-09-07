@@ -2,6 +2,8 @@ package tw.tutorlink.bean;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -22,6 +24,7 @@ public class ExerciseConfig {
 	private Integer exerConfigId;
 
 	@OneToOne(cascade = CascadeType.ALL)
+	@JsonIgnore
 	@JoinColumn(name = "ExerId", referencedColumnName = "exerId")
 	private Exercises exercises;
 
