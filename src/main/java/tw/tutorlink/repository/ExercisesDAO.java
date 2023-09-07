@@ -11,7 +11,7 @@ import tw.tutorlink.bean.Lessons;
 
 public interface ExercisesDAO extends JpaRepository<Exercises, Integer> {
 	
-	@Query("FROM Exercises e JOIN e.lesson WHERE e.users.usersId = :usersId")
+	@Query("FROM Exercises e  WHERE e.users.usersId = :usersId")
 	public List<Exercises> findByUsers(@Param("usersId") Integer usersId);
 	
 	@Query("FROM Lessons l WHERE l.users.usersId = :usersId")
