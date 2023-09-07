@@ -83,7 +83,7 @@ public class GoogleLoginController {
 		Cookie cookie = new Cookie("UsersId", usersid);
 		// cookie生命週期1小時
 		cookie.setMaxAge(3600);
-//		cookie.setPath("/");
+		cookie.setPath("/");
 		// 回傳cookie
 		response.addCookie(cookie);
 		// ----------- 建立session -----------
@@ -108,7 +108,7 @@ public class GoogleLoginController {
 		// 設置過期時間為0
 		cookie.setMaxAge(0);
 		// 會顯示在瀏覽器上
-//		cookie.setPath("/");
+		cookie.setPath("/");
 		// 將Cookie 物件加入Response 中
 		response.addCookie(cookie);
 		// 移除session
