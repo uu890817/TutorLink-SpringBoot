@@ -100,7 +100,7 @@ try {
 		if (!image.isEmpty()) {
             // 保存文件到本地文件夾
             String imageFileName = generateUniqueFileName(image.getOriginalFilename());
-            String savePath = "c:/temp/upload/image";
+            String savePath = "c:/temp/upload/image/";
             File saveFile = new File(savePath + imageFileName);
             image.transferTo(saveFile);
             System.out.println("圖片已存入本地資料夾");
@@ -113,7 +113,7 @@ try {
 		    LD = new LessonDetail(imformation, meetingUrl, "", createTime, courseTotalTime,language);
 		} else {
 		    String videoFileName = generateUniqueFileName(courseUrl.getOriginalFilename());
-		    String savePath = "c:/temp/upload/video";
+		    String savePath = "c:/temp/upload/video/";
 		    File saveFile = new File(savePath + videoFileName);
 		    courseUrl.transferTo(saveFile);
 		    String videoSavePath = saveFile.getAbsolutePath();
@@ -134,11 +134,16 @@ try {
 		  return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 	}
 	}
-	//課程全部查詢
+	
+	
+	
+	//單一使用者課程全部查詢
 	@GetMapping(path="/allLessons",produces="application/json;charset=UTF-8")
 	public List<Lessons> findAllLessons(HttpSession session) {
-		return lService.getUserAllLessons(session);
+		Users loggedInUser = (Users) session.getAttribute("logState");
+		return lService.getUserAllLessons(loggedInUser.getUsersId());
 	}
+	
 	
 	//課程單筆查詢
 	@GetMapping(path="/findLessons",produces="application/json;charset=UTF-8")
@@ -155,6 +160,7 @@ try {
 	//課程刪除
 	@DeleteMapping(path="/deleteLessons",produces="application/json;charset=UTF-8")
 	public String deleteLessons(@RequestBody Lessons lesson) {
+		System.out.println("lessonID "+lesson.getLessonId());
 		return lService.deleteLessons(lesson);
 	}
 	
@@ -186,7 +192,6 @@ try {
         return uniqueName;
     }
 	
-	
-	
+
 	
 }	

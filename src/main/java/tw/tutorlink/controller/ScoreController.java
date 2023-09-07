@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 
@@ -32,6 +33,7 @@ public class ScoreController {
 	
 	// 查詢所有評論
 	@GetMapping("/comment")
+	@ResponseBody
 	public List<Comment> findAllCommentList(){
 		List<Comment> fScore = sService.findAllCommentList();
 		return fScore;
@@ -39,6 +41,7 @@ public class ScoreController {
 	
 	// 查詢使用者所有評論
 	@GetMapping("/comment/selectbyuser")
+	@ResponseBody
 	public List<Comment> findCommentListByUsersId(@RequestParam("uid") Integer uid){
 		if(uid!=null) {
 			List<Comment> fScore = sService.findCommentListByUsersId(uid);
@@ -50,6 +53,7 @@ public class ScoreController {
 	
 	// 查詢課程所有評論
 	@GetMapping("/comment/selectbylesson")
+	@ResponseBody
 	public List<Comment> findCommentListByLessonId(@RequestParam("lid") Integer lid){
 		if(lid!=null) {
 			List<Comment> fScore = sService.findCommentListByLessonId(lid);
@@ -61,6 +65,7 @@ public class ScoreController {
 	
 	// 新增單一評論
 	@PostMapping(path="/comment",produces="application/json;charset=UTF-8")
+	@ResponseBody
 	public String InsertScore(@RequestBody Comment sc) {
 		Users user = sService.findUserId(3);
 		Lessons lesson = sService.findLessonsById(8);
@@ -72,6 +77,7 @@ public class ScoreController {
 	
 	// 刪除單筆評論
 	@DeleteMapping("/comment/delete")
+	@ResponseBody
 	public String deleteScore(@RequestParam("id") Integer id) {
 		Comment comment = sService.findById(id);
 		if(comment==null) {
@@ -83,8 +89,8 @@ public class ScoreController {
 	
 	
 	// 修改單筆評論
-	@Transactional
 	@PutMapping("/comment/update")
+	@ResponseBody
 	public String updateById(@RequestParam("comId") Integer cid,@RequestBody Comment newComment) {
 		Comment comment = sService.findById(cid);
 		if(comment!=null) {

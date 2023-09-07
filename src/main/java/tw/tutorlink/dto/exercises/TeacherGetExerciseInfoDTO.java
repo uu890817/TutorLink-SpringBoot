@@ -16,9 +16,10 @@ public class TeacherGetExerciseInfoDTO {
 	private ExerciseConfig exerciseConfig;
 	
 	public TeacherGetExerciseInfoDTO(Exercises exercise) {
-		super();
 		this.exerId = exercise.getExerId();
-		this.lessonId = exercise.getLesson().getLessonId();
+		if(exercise.getLesson() != null) {
+			this.lessonId = exercise.getLesson().getLessonId();
+		}
 		this.exerName = exercise.getExerName();
 		this.topics = exercise.getTopics();
 		this.exerciseConfig = exercise.getExerciseConfig();
