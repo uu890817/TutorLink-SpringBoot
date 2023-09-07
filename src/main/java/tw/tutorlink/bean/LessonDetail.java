@@ -3,6 +3,8 @@ package tw.tutorlink.bean;
 import java.util.Date;
 import java.util.List;
 
+import org.hibernate.annotations.Cascade;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 
@@ -63,13 +65,13 @@ public class LessonDetail {
 	public LessonDetail() {
 		
 	}
-	public LessonDetail(String imformation,String meetingUrl,String courseUrl,Date createTime,Integer courseTotalTime) {
+	public LessonDetail(String imformation,String meetingUrl,String courseUrl,Date createTime,Integer courseTotalTime,String language) {
 		this.imformation = imformation;
 		this.meetingUrl = meetingUrl;
 		this.createTime = createTime;
 		this.courseUrl = courseUrl;
 		this.courseTotalTime = courseTotalTime;
-		
+		this.language = language;
 	}
 
 	
@@ -89,6 +91,12 @@ public class LessonDetail {
 		this.courseTotalTime = courseTotalTime;
 	}
 
+	public String getLanguage() {
+		return language;
+	}
+	public void setLanguage(String language) {
+		this.language = language;
+	}
 	public void setLessonDetailId(Integer lessonDetailId) {
 		this.lessonDetailId = lessonDetailId;
 	}
