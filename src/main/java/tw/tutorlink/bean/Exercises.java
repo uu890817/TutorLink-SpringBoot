@@ -28,7 +28,7 @@ public class Exercises {
 	private Integer exerId;
 
 	@ManyToOne
-	@JoinColumn(name = "LessonId", referencedColumnName = "lessonId", nullable = false)
+	@JoinColumn(name = "LessonId", referencedColumnName = "lessonId")
 	private Lessons lesson;
 
 	@ManyToOne
