@@ -1,5 +1,6 @@
 package tw.tutorlink.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -7,8 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import jakarta.servlet.http.HttpSession;
+import tw.tutorlink.bean.LessonDetail;
 import tw.tutorlink.bean.Lessons;
 import tw.tutorlink.bean.Users;
+import tw.tutorlink.repository.LessonDetailDAO;
 import tw.tutorlink.repository.LessonsDAO;
 import tw.tutorlink.repository.UsersDAO;
 
@@ -20,6 +23,9 @@ public class LessonsService {
 	
 	@Autowired
 	private UsersDAO uDAO;
+	
+	@Autowired
+	private LessonDetailDAO ldDAO;
 	
 	
 //	public LessonsService(LessonsDAO lDAO) {
@@ -53,19 +59,31 @@ public class LessonsService {
 	
 	}
 
-	public Lessons insertLesson(int id,Lessons lesson) {
+	public Lessons insertLesson(int id,Lessons lesson,LessonDetail lessonDetail) {
 		Users user = uDAO.findById(id);
 		Lessons lessons = new Lessons();
 		System.out.println("會員ID : "+user);
 		if(user!=null) {
-			user.getLesson();
 			lessons.setUsers(user);
 			lessons.setLessonName(lesson.getLessonName());
 			lessons.setSubject(lesson.getSubject());
 			lessons.setLessonType(lesson.getLessonType());
 			lessons.setPrice(lesson.getPrice());
 			lessons.setImage(lesson.getImage());
-			lDAO.save(lessons);
+			
+
+			LessonDetail lD = new LessonDetail();
+			lD.setImformation(lessonDetail.getImformation());
+			lD.setMeetingUrl(lessonDetail.getMeetingUrl());
+			lD.setCreateTime(lessonDetail.getCreateTime());
+			lD.setCourseTotalTime(lessonDetail.getCourseTotalTime());
+			lD.setCourseUrl(lessonDetail.getCourseUrl());
+			lessons.setLessondetail(lD);
+			
+			List<Lessons> lessonList = new ArrayList<>();
+			lessonList.add(lessons);
+			user.setLesson(lessonList);
+			uDAO.save(user);
 
 		}
 
@@ -73,7 +91,6 @@ public class LessonsService {
 
 		System.out.println("課程資料 : "+lessons);
 		return lessons;
-
 
 
 	}

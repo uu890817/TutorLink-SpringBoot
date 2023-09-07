@@ -41,6 +41,9 @@ public class LessonDetail {
 
 	@Column(name = "CourseUrl", columnDefinition = "varchar(100)")
 	private String courseUrl;
+	
+	@Column(name = "Language", columnDefinition = "nvarchar(50)")
+	private String language;
 
 	@Column(name = "CourserTotalTime")
 	private Integer courseTotalTime;
@@ -56,9 +59,34 @@ public class LessonDetail {
 	private List<LessonPost> lessonPost;
 	
 	// Getter/Setter-----------------------------------------------
+	
+	public LessonDetail() {
+		
+	}
+	public LessonDetail(String imformation,String meetingUrl,String courseUrl,Date createTime,Integer courseTotalTime) {
+		this.imformation = imformation;
+		this.meetingUrl = meetingUrl;
+		this.createTime = createTime;
+		this.courseUrl = courseUrl;
+		this.courseTotalTime = courseTotalTime;
+		
+	}
 
+	
+	
 	public Integer getLessonDetailId() {
 		return lessonDetailId;
+	}
+
+	public LessonDetail(Lessons lesson, String imformation, Date createTime, String courseUrl, String language,
+			Integer courseTotalTime) {
+		super();
+		this.lesson = lesson;
+		this.imformation = imformation;
+		this.createTime = createTime;
+		this.courseUrl = courseUrl;
+		this.language = language;
+		this.courseTotalTime = courseTotalTime;
 	}
 
 	public void setLessonDetailId(Integer lessonDetailId) {

@@ -35,10 +35,6 @@ public class Exercises {
 	@JsonIgnore
 	@JoinColumn(name = "UsersId", referencedColumnName = "usersId", nullable = false)
 	private Users users;
-	
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name="ExerId",referencedColumnName = "exerId")
-	private ExerciseConfig exerciseConfig;
 
 	@Column(name = "ExerName", nullable = false, columnDefinition = "nvarchar(50)")
 	private String exerName;
@@ -51,6 +47,10 @@ public class Exercises {
 	@JsonIgnoreProperties("exercises")
 	@OneToMany(mappedBy = "exercises", cascade = CascadeType.ALL)
 	private List<Topics> topics;
+	
+	@JsonIgnoreProperties("exercises")
+	@OneToOne(cascade = CascadeType.ALL, mappedBy = "exercises")
+	private ExerciseConfig exerciseConfig;
 	
 	@JsonIgnoreProperties("exercises")
 	@OneToOne(cascade = CascadeType.ALL, mappedBy = "exercises")
@@ -87,6 +87,14 @@ public class Exercises {
 
 	public String getExerName() {
 		return exerName;
+	}
+
+	public ExerciseConfig getExerciseConfig() {
+		return exerciseConfig;
+	}
+
+	public void setExerciseConfig(ExerciseConfig exerciseConfig) {
+		this.exerciseConfig = exerciseConfig;
 	}
 
 	public void setExerName(String exerName) {
