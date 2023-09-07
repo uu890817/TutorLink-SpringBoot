@@ -70,8 +70,8 @@ public class UsersService {
 
 	public String findbyIdAndPwd(int cookieid, String oldpwd, String newPwd, String newPwd2) {
 		Users user = uDAO.findById(cookieid);
-		
-		System.out.println(oldpwd+" "+newPwd+" "+newPwd2);
+
+		System.out.println(oldpwd + " " + newPwd + " " + newPwd2);
 //		if (user != null) {
 //			if (oldpwd != user.getUserPassword()||newPwd!=(newPwd2)) {
 //				return "fail";
@@ -80,5 +80,28 @@ public class UsersService {
 		user.setUserPassword(newPwd);
 		uDAO.save(user);
 		return "update";
+	}
+
+	public Users checkMail(String mail) {
+		return uDAO.findByMail(mail);
+	}
+
+	public Users register(String name, String mail, String pwd) {
+		System.out.println(name);
+		System.out.println(mail);
+		System.out.println(pwd);
+		if (uDAO.findByMail(mail) == null) {
+			Users user= new Users();
+			UserDetail ud = new UserDetail();
+			ud.setUsers(user);
+			user.setUserAccount(mail);
+			user.setUserEmail(mail);
+			user.getUserDetail().setUserName(name);
+			user.setUserPassword(pwd);
+			user.setUserType(1);
+			uDAO.save(user);
+			return user;
+		}
+		return null;
 	}
 }
