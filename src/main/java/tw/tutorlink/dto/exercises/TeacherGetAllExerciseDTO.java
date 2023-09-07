@@ -1,5 +1,6 @@
 package tw.tutorlink.dto.exercises;
 
+import tw.tutorlink.bean.ExerciseConfig;
 import tw.tutorlink.bean.Exercises;
 
 public class TeacherGetAllExerciseDTO {
@@ -7,16 +8,41 @@ public class TeacherGetAllExerciseDTO {
 	private Integer exerId;
 	private String lessonName;
 	private String exerName;
+	private Integer exerType;
+//	private Exercises e;
 
 	public TeacherGetAllExerciseDTO() {
-		
+
 	}
 
 	public TeacherGetAllExerciseDTO(Exercises exercises) {
 		this.exerId = exercises.getExerId();
-		this.lessonName = exercises.getLesson().getLessonName();
-		this.exerName = exercises.getExerName();
+		if (exercises.getLesson() != null) {
+			this.lessonName = exercises.getLesson().getLessonName();
+		}
 
+		this.exerName = exercises.getExerName();
+		if (exercises.getExerciseConfig() != null) {
+			this.exerType = exercises.getExerciseConfig().getType();
+		}
+		
+//		this.e = exercises;
+	}
+
+	public Integer getExerType() {
+		return exerType;
+	}
+//
+//	public Exercises getE() {
+//		return e;
+//	}
+//
+//	public void setE(Exercises e) {
+//		this.e = e;
+//	}
+
+	public void setExerType(Integer exerType) {
+		this.exerType = exerType;
 	}
 
 	public Integer getExerId() {
