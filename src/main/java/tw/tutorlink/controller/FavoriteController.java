@@ -39,8 +39,8 @@ public class FavoriteController {
 	// 新增收藏
 	@PostMapping("/favorite")
 	@ResponseBody
-	public Favorite InsertFavorite(@RequestParam("lid") Integer lid,@RequestBody Favorite fv) {
-		Users user = fService.findUserId(2);
+	public Favorite InsertFavorite(@RequestParam("lid") Integer lid,@RequestParam("uid") Integer uid,@RequestBody Favorite fv) {
+		Users user = fService.findUserId(uid);
 		Lessons lesson = fService.findLessonsById(lid);
 		fv.setUsers(user);
 		fv.setLesson(lesson);
