@@ -53,12 +53,12 @@ public class UsersService {
 	public InfomationDTO findByIdDetail(Integer id) {
 		Users user = uDAO.findByIdDetail(id);
 		InfomationDTO iDTO = new InfomationDTO(user);
-		System.out.println(iDTO.getCity());
-		System.out.println(iDTO.getPhone());
+		System.out.println(iDTO.getUsersId());
 		System.out.println(iDTO.getUserEmail());
 		System.out.println(iDTO.getUserName());
 		System.out.println(iDTO.getBirthday());
-		System.out.println(iDTO.getUsersId());
+		System.out.println(iDTO.getCity());
+		System.out.println(iDTO.getPhone());
 		return iDTO;
 	}
 

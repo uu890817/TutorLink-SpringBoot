@@ -27,22 +27,13 @@ public class InfomationContorller {
 	public InfomationDTO infomation(HttpSession session, @CookieValue("UsersId") String cookie) {
 		Users loggedInUser = (Users) session.getAttribute("logState");
 		Users result = new Users();
-		if (loggedInUser == null) {
-			result.setGoogleSubId("null");
-			result.setUserEmail("null");
-//			return result;
-		}
 		int userid = loggedInUser.getUsersId();
+		System.out.println("Session取得的ID : "+userid);
 		int cookieid = Integer.parseInt(cookie);
 		System.out.println("Cookie取得的ID : " + cookieid);
 		InfomationDTO iDTO = uService.findByIdDetail(userid);
-//		result.setUserEmail(iDTO.getUserEmail());
-//		result.getUserDetail().setCity(iDTO.getCity());
-//		result.getUserDetail().setBirthday(iDTO.getBirthday());
-//		result.getUserDetail().setPhone(iDTO.getPhone());
-//		result.getUserDetail().setUserName(iDTO.getUserName());
-//		return result;
 		return iDTO;
+//		return null;
 	}
 
 	@PostMapping("/send")
@@ -57,12 +48,7 @@ public class InfomationContorller {
 		// 用session抓ID
 		Users loggedInUser = (Users) session.getAttribute("logState");
 		int sessionid = loggedInUser.getUsersId();
-
-		// 用cookie抓ID
-		Integer cookieid = Integer.parseInt(cookie);
-
-		uService.setData(cookieid, name, phone, city, birth);
-//		uService.setData(sessionid, name, phone, city, birth);
+		uService.setData(sessionid, name, phone, city, birth);
 		return "ok";
 	}
 

@@ -28,20 +28,19 @@ public class RouterVerify {
 				System.out.println("cookie: " + cookie.getValue());
 				userId = Integer.parseInt(cookie.getValue());
 				Users result = uService.findUsersByID(userId);
-				
+
 				if (session.getAttribute("logState") == null) {
 					session.setAttribute("logState", result);
 					session.setMaxInactiveInterval(600);
 					return "loginOk";
+				} else {
+					// cookie存在且session存在 (網頁重新整理，且不關網頁或重啟server的情況)
+					return "alreadylogin";
 				}
 			}
-			session.removeAttribute("logState");
-			session.invalidate();
 		}
-		
-
+		session.removeAttribute("logState");
+		session.invalidate();
 		return "loginAgain";
-
-
 	}
 }
