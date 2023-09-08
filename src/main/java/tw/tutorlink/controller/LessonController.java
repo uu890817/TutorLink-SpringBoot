@@ -180,8 +180,8 @@ try {
 	
 	//課程明細修改
 	@PutMapping(path="/updateLessonDetail",produces="application/json;charset=UTF-8")
-	public LessonDetail updateLessonDetail(@RequestBody LessonDetail lessonDetail) {
-		return ldService.updateLessonDetail(lessonDetail);
+	public LessonDetail updateLessonDetail(@RequestParam("id")int id,@RequestBody LessonDetail lessonDetail) {
+		return ldService.updateLessonDetail(id,lessonDetail);
 	}
 	
 	//生成一個唯一的文件名，避免文件名衝突
