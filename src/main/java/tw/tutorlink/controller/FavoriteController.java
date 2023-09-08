@@ -39,13 +39,13 @@ public class FavoriteController {
 	// 新增收藏
 	@PostMapping("/favorite")
 	@ResponseBody
-	public String InsertFavorite(@RequestBody Favorite fv) {
-		Users user = fService.findUserId(3);
-		Lessons lesson = fService.findLessonsById(8);
+	public Favorite InsertFavorite(@RequestParam("lid") Integer lid,@RequestBody Favorite fv) {
+		Users user = fService.findUserId(2);
+		Lessons lesson = fService.findLessonsById(lid);
 		fv.setUsers(user);
 		fv.setLesson(lesson);
 		fService.insert(fv);
-		return "新增成功";
+		return fv;
 	}
 
 	// 刪除收藏
