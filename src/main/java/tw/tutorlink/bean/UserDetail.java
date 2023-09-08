@@ -44,7 +44,7 @@ public class UserDetail {
 	private long birthday;
 
 	@Column(name = "City",columnDefinition = "nvarchar(50)")
-	private String City;
+	private String city;
 
 	@Column(name = "CreateDate")
 	private Date createDate;
@@ -116,11 +116,11 @@ public class UserDetail {
 	}
 
 	public String getCity() {
-		return City;
+		return city;
 	}
 
 	public void setCity(String city) {
-		City = city;
+		city = city;
 	}
 
 	public Date getCreateDate() {

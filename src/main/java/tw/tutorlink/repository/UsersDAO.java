@@ -22,4 +22,6 @@ public interface UsersDAO extends JpaRepository<Users, Integer> {
 	@Query("from Users where userEmail = :mail")
 	public Users findByMail(@Param("mail") String mail);
 
+	@Query("from Users where userPassword = :pwd and userEmail = :mail" )
+	public Users findByPwd(@Param("pwd") String pwd ,@Param("mail") String mail);
 }
