@@ -121,10 +121,12 @@ public class VideoCourseController {
 	
 	
 	//取得老師發佈的課程
-	@GetMapping(path="/VideoLessons",produces="application/json;charset=UTF-8")
+	@GetMapping(path="/videoLessons",produces="application/json;charset=UTF-8")
 	public List<Lessons> getLessonsByTeacher(HttpSession session){
 		Users loggedInUser = (Users) session.getAttribute("logState");
-		return lService.findByUsers(loggedInUser);
+		int userId = loggedInUser.getUsersId();
+		boolean lesson = false;
+		return lService.findByUserIdAndLessonType(userId,lesson);
 	}
 	
 	

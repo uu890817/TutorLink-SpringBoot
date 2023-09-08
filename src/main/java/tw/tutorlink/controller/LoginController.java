@@ -27,7 +27,7 @@ import tw.tutorlink.bean.Users;
 import tw.tutorlink.service.UsersService;
 
 @RestController
-public class GoogleLoginController {
+public class LoginController {
 
 	@Autowired
 	private UsersService uService;
@@ -70,6 +70,8 @@ public class GoogleLoginController {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+
+		// 分析json字串
 		ObjectMapper objectMapper = new ObjectMapper();
 		JsonNode jsonNode = objectMapper.readTree(res);
 
@@ -77,25 +79,65 @@ public class GoogleLoginController {
 		String sub = jsonNode.get("sub").asText();
 
 		// 利用google回傳token中的唯一識別碼及Mail是否存在資料庫中
-		Users user = uService.login(sub, mail);
+		Users user = uService.googleLogin(sub, mail);
 		String usersid = user.getUsersId().toString();
 
+		// --- 登入前確保cookie都已清空 ---
+		Cookie cookieclear = new Cookie("UsersId", "");
+		cookieclear.setMaxAge(0);
+		cookieclear.setPath("/");
+		response.addCookie(cookieclear);
+
+		// 重新建立cookie
 		Cookie cookie = new Cookie("UsersId", usersid);
-		// cookie生命週期1小時
 		cookie.setMaxAge(3600);
 		cookie.setPath("/");
 		// 回傳cookie
 		response.addCookie(cookie);
+
 		// ----------- 建立session -----------
 		// 當回傳不為空值時，代表資料存在，寫入整個bean進session
 		if (user != null) {
+			// 設定session存在時間
 			session.setMaxInactiveInterval(600);
 			session.setAttribute("logState", user);
-//			System.out.println(session.getId());
 			return "google";
 		} else {
-			return "verification failed";
+			return "loginfail";
 		}
+	}
+
+	@PostMapping("/normallogin")
+	@ResponseBody
+	public String login(@RequestBody String str, HttpSession session, HttpServletResponse response) {
+		JsonObject json = JsonParser.parseString(str).getAsJsonObject();
+		String mail = json.get("mail").getAsString();
+		String pwd = json.get("pwd").getAsString();
+		System.out.println(mail + "  " + pwd);
+		String result = uService.normalLogin(mail, pwd);
+		if (result.equals("103")) {
+			Users user = uService.checkMail(mail);
+			String usersid = user.getUsersId().toString();
+			// --- 登入前確保cookie都已清空 ---
+			Cookie cookieclear = new Cookie("UsersId", "");
+			cookieclear.setMaxAge(0);
+			cookieclear.setPath("/");
+			response.addCookie(cookieclear);
+
+			// 重新建立cookie
+			Cookie cookie = new Cookie("UsersId", usersid);
+			cookie.setMaxAge(3600);
+			cookie.setPath("/");
+			// 回傳cookie
+			response.addCookie(cookie);
+
+			// 建立session
+			session.setMaxInactiveInterval(600);
+			session.setAttribute("logState", user);
+
+			return result;
+		}
+		return result;
 	}
 
 	// ----------- 登出，清除session、cookie-----------
@@ -107,14 +149,14 @@ public class GoogleLoginController {
 
 		// 設置過期時間為0
 		cookie.setMaxAge(0);
-		// 會顯示在瀏覽器上
 		cookie.setPath("/");
-		// 將Cookie 物件加入Response 中
+		// 將Cookie 物件加入Response 中		
 		response.addCookie(cookie);
+
 		// 移除session
 		session.removeAttribute("logState");
 		session.invalidate();
 		System.out.println("已清除session");
-		return "delete Cookie";
+		return "logout";
 	}
 }
