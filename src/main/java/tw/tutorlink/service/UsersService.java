@@ -72,6 +72,7 @@ public class UsersService {
 			ud.setUserName(name);
 			ud.setPhone(phone);
 			ud.setCity(city);
+			System.out.println(ud.getCity());
 			udDAO.save(ud);
 			return ud;
 		}

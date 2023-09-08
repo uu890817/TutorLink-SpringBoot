@@ -120,7 +120,7 @@ public class UserDetail {
 	}
 
 	public void setCity(String city) {
-		city = city;
+		this.city = city;
 	}
 
 	public Date getCreateDate() {

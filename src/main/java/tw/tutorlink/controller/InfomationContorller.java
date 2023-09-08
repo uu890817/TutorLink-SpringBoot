@@ -26,14 +26,10 @@ public class InfomationContorller {
 	@ResponseBody
 	public InfomationDTO infomation(HttpSession session, @CookieValue("UsersId") String cookie) {
 		Users loggedInUser = (Users) session.getAttribute("logState");
-		Users result = new Users();
 		int userid = loggedInUser.getUsersId();
 		System.out.println("Session取得的ID : "+userid);
-		int cookieid = Integer.parseInt(cookie);
-		System.out.println("Cookie取得的ID : " + cookieid);
 		InfomationDTO iDTO = uService.findByIdDetail(userid);
 		return iDTO;
-//		return null;
 	}
 
 	@PostMapping("/send")
