@@ -39,6 +39,7 @@ public class RouterVerify {
 				}
 			}
 		}
+		// 找不到cookie，代表沒登入或者cookie時間已到，清除session
 		session.removeAttribute("logState");
 		session.invalidate();
 		return "loginAgain";

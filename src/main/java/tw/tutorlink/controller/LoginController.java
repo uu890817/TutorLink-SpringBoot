@@ -150,7 +150,7 @@ public class LoginController {
 		// 設置過期時間為0
 		cookie.setMaxAge(0);
 		cookie.setPath("/");
-		// 將Cookie 物件加入Response 中
+		// 將Cookie 物件加入Response 中		
 		response.addCookie(cookie);
 
 		// 移除session
