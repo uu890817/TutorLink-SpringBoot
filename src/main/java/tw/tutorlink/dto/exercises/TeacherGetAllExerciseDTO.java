@@ -1,12 +1,12 @@
 package tw.tutorlink.dto.exercises;
 
-import tw.tutorlink.bean.ExerciseConfig;
 import tw.tutorlink.bean.Exercises;
 
 public class TeacherGetAllExerciseDTO {
 
 	private Integer exerId;
 	private String lessonName;
+	private Integer lessonId;
 	private String exerName;
 	private Integer exerType;
 //	private Exercises e;
@@ -19,6 +19,7 @@ public class TeacherGetAllExerciseDTO {
 		this.exerId = exercises.getExerId();
 		if (exercises.getLesson() != null) {
 			this.lessonName = exercises.getLesson().getLessonName();
+			this.lessonId = exercises.getLesson().getLessonId();
 		}
 
 		this.exerName = exercises.getExerName();
@@ -26,20 +27,12 @@ public class TeacherGetAllExerciseDTO {
 			this.exerType = exercises.getExerciseConfig().getType();
 		}
 		
-//		this.e = exercises;
 	}
 
 	public Integer getExerType() {
 		return exerType;
 	}
-//
-//	public Exercises getE() {
-//		return e;
-//	}
-//
-//	public void setE(Exercises e) {
-//		this.e = e;
-//	}
+
 
 	public void setExerType(Integer exerType) {
 		this.exerType = exerType;
@@ -68,4 +61,13 @@ public class TeacherGetAllExerciseDTO {
 	public void setExerName(String exerName) {
 		this.exerName = exerName;
 	}
+
+	public Integer getLessonId() {
+		return lessonId;
+	}
+
+	public void setLessonId(Integer lessonId) {
+		this.lessonId = lessonId;
+	}
+	
 }
