@@ -30,7 +30,7 @@ public class ExerciseConfig {
 
 	
 	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "ExerPerId", referencedColumnName = "exerPerId")
+	@JoinColumn(name = "ExerConfigId", referencedColumnName = "exerConfigId")
 	private ExercisePermissions exercisePermissions;
 
 	@Column(name = "Type")

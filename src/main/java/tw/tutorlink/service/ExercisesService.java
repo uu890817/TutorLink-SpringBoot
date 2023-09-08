@@ -9,9 +9,11 @@ import org.springframework.stereotype.Service;
 
 import tw.tutorlink.bean.Exercises;
 import tw.tutorlink.bean.Lessons;
+import tw.tutorlink.bean.OrderItem;
 import tw.tutorlink.dto.exercises.TeacherGetAllExerciseDTO;
 import tw.tutorlink.dto.exercises.TeacherGetAllLessonsNameDTO;
 import tw.tutorlink.dto.exercises.TeacherGetExerciseInfoDTO;
+import tw.tutorlink.dto.exercises.TeacherGetLessonStudentDTO;
 import tw.tutorlink.repository.ExercisesDAO;
 
 @Service
@@ -65,5 +67,34 @@ public class ExercisesService {
 		eDAO.deleteById(eId);
 		return "OK";
 	}
+	
+	
+	
+	public List<TeacherGetLessonStudentDTO> getStudentByLessonId(Integer lessonId) {
+		List<TeacherGetLessonStudentDTO> students = new ArrayList<>();
+		List<OrderItem> orders = eDAO.findOrderByLessonId(lessonId);
+		
+		for(OrderItem order: orders) {
+			if(order.getOrderStates() != 0) {
+				break;
+			}
+			 TeacherGetLessonStudentDTO tDTO = new TeacherGetLessonStudentDTO(order);
+			 students.add(tDTO);
+		}
+		
+		
+//		eDAO.findOrderByLessonId(lessonId)
+		
+		return students;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 }
