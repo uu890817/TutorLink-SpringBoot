@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import tw.tutorlink.bean.UserDetail;
 import tw.tutorlink.bean.Users;
+import tw.tutorlink.dto.user.InfomationDTO;
 import tw.tutorlink.repository.UserDetailDAO;
 import tw.tutorlink.repository.UsersDAO;
 
@@ -46,10 +47,18 @@ public class UsersService {
 	public Users findUsersByID(Integer uID) {
 		return uDAO.findById(uID).get();
 	}
-
-	public Users findByIdDetail(Integer id) {
-
-		return uDAO.findByIdDetail(id);
+	
+	// 查詢個人資料使用
+	public InfomationDTO findByIdDetail(Integer id) {
+		Users user = uDAO.findByIdDetail(id);
+		InfomationDTO iDTO = new InfomationDTO(user);
+		System.out.println(iDTO.getCity());
+		System.out.println(iDTO.getPhone());
+		System.out.println(iDTO.getUserEmail());
+		System.out.println(iDTO.getUserName());
+		System.out.println(iDTO.getBirthday());
+		System.out.println(iDTO.getUsersId());
+		return iDTO;
 	}
 
 	public UserDetail setData(int uID, String name, String phone, String city, long birth) {
