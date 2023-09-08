@@ -37,10 +37,10 @@ public class LessonsService {
 		return lDAO.findAll();
 	}
 	//靠UserID查這位User全部課程資料
-	public List<Lessons> getUserAllLessons(int id){
+	public List<Lessons> getUserAllLessons(int id,boolean lessonType){
 		Users user = uDAO.findById(id);
 		if(user!=null) {	
-			return uDAO.findById(id).getLesson();
+			return lDAO.findByUsers_UsersIdAndLessonType(user.getUsersId(), lessonType);
 		}
 		return null;
 	}

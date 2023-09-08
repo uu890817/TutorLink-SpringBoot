@@ -25,11 +25,24 @@ public class LessonDetailService {
 		return ldDAO.findAll();
 	}
 	
-	//靠ID查詢課程明細
+	//靠課程明細ID查詢課程明細
 	public LessonDetail findLessonDetailById(LessonDetail lessonDetail){
 		Optional<LessonDetail> LessonDetail = ldDAO.findById(lessonDetail.getLessonDetailId());
 		if(LessonDetail.isPresent()) {
 			return LessonDetail.get();
+		}
+		return null;
+	}
+	
+	//靠課程ID查詢課程明細
+	public LessonDetail findLessonDetailByLessonId(int id) {
+		Lessons lesson = lDAO.findById(id);
+		if(lesson!=null) {
+			Optional<LessonDetail> lD =	ldDAO.findById(lesson.getLessonId());
+			if(lD.isPresent()) {
+				return lD.get();
+			}
+			
 		}
 		return null;
 	}

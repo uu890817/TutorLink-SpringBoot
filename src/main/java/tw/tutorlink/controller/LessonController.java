@@ -141,7 +141,8 @@ try {
 	@GetMapping(path="/allLessons",produces="application/json;charset=UTF-8")
 	public List<Lessons> findAllLessons(HttpSession session) {
 		Users loggedInUser = (Users) session.getAttribute("logState");
-		return lService.getUserAllLessons(loggedInUser.getUsersId());
+		boolean lesson = true;
+		return lService.getUserAllLessons(loggedInUser.getUsersId(),lesson);
 	}
 	
 	
@@ -177,6 +178,12 @@ try {
 	public LessonDetail findLessonDetail(@RequestBody LessonDetail lessonDetail) {
 		return ldService.findLessonDetailById(lessonDetail);
 	}
+	
+	//靠課程ID查詢課程明細
+		@GetMapping(path="/findLessonDetailByLessonId",produces="application/json;charset=UTF-8")
+		public LessonDetail findLessonDetail(@RequestParam("lessonId")int id) {
+			return ldService.findLessonDetailByLessonId(id);
+		}
 	
 	//課程明細修改
 	@PutMapping(path="/updateLessonDetail",produces="application/json;charset=UTF-8")
