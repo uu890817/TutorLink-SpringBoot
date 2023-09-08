@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import jakarta.servlet.http.HttpSession;
 import tw.tutorlink.bean.CourseQA;
 import tw.tutorlink.bean.LessonDetail;
@@ -168,7 +170,7 @@ public class VideoCourseController {
 	
 	//新增多筆影片
 	@PostMapping(path="/uploadVideo",produces="application/json;charset=UTF-8")
-	public String uploadVideo(@RequestParam("videos") List<VideoUploadDTO> videoDTOs) {
+	public String uploadVideo(@RequestParam("videoList") List<VideoUploadDTO> videoDTOs) {
 		try {
 			for (VideoUploadDTO videoDTO : videoDTOs) {
 				// 检查文件不為空
@@ -241,6 +243,65 @@ public class VideoCourseController {
 	        return "影片上傳失败";
 	    }
 	}
+	
+//	@PostMapping(path="/uploadOneVideo",produces="application/json;charset=UTF-8")
+//	public Video insertVideo(@RequestParam("videoFile")MultipartFile videoFile,
+//			@RequestParam("chapterName")String chapterName,@RequestParam("sort")Integer sort,
+//			@RequestParam("lessonDetail")LessonDetail lessonDetail) throws IllegalStateException, IOException {
+//		Video video = null;
+//		if (videoFile != null && !videoFile.isEmpty()) {
+//            String fileName = generateUniqueFileName(videoFile.getOriginalFilename());
+//            String savePath = "c:/temp/upload/";
+//            File saveFile = new File(savePath + fileName);
+//            videoFile.transferTo(saveFile);
+//            System.out.println("影片以傳入資料夾");
+//
+//            // 创建 Video 对象并设置属性
+//            video = new Video();
+//            video.setLessonDetail(lessonDetail);
+//            video.setSort(sort);
+//            video.setChapterName(chapterName);
+//            video.setCourseUrl(saveFile.getAbsolutePath());
+//
+//            // 使用 videoService 保存 Video 对象到数据库
+//            
+//        }
+//		return vService.insertVideo(video);
+//	}
+	
+	@PostMapping(path = "/uploadOneVideo", produces = "application/json;charset=UTF-8")
+	public ResponseEntity<Video> insertVideo(@RequestParam("videoFile") MultipartFile videoFile,
+	        @RequestParam("chapterName") String chapterName, @RequestParam("sort") Integer sort,
+	        @RequestParam("lessonDetail") String lessonDetail) throws IllegalStateException, IOException {
+	    if (videoFile != null && !videoFile.isEmpty()) {
+	        String fileName = generateUniqueFileName(videoFile.getOriginalFilename());
+	        String savePath = "c:/temp/upload/";
+	        File saveFile = new File(savePath + fileName);
+	        videoFile.transferTo(saveFile);
+	        System.out.println("影片已傳入資料夾");
+
+	        // 创建 Video 对象并设置属性
+	        Video video = new Video();
+//	        video.setLessonDetail(lessonDetail);
+	        video.setSort(sort);
+	        video.setChapterName(chapterName);
+	        video.setCourseUrl(saveFile.getAbsolutePath());
+	        
+	     // 解析 lessonDetail JSON 字符串为 LessonDetail 对象
+            ObjectMapper objectMapper = new ObjectMapper();
+            LessonDetail lessonDetailObject = objectMapper.readValue(lessonDetail, LessonDetail.class);
+            video.setLessonDetail(lessonDetailObject);
+
+	        // 使用 videoService 保存 Video 对象到数据库
+	        Video savedVideo = vService.insertVideo(video);
+
+	        return ResponseEntity.ok(savedVideo);
+	    } else {
+	        // 处理没有上传视频文件的情况
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+	    }
+	}
+
 
 
     // 生成一个唯一的文件名，避免文件名衝突

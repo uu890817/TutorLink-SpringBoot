@@ -2,7 +2,9 @@ package tw.tutorlink.controller;
 
 import java.io.File;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.apache.commons.io.FilenameUtils;
@@ -84,7 +86,7 @@ public class LessonController {
 	
 	//課程新增
 	@PostMapping(path="/lessons",produces="application/json;charset=UTF-8")
-	public ResponseEntity<Lessons> insertLesson(HttpSession session,@RequestParam("lessonName")String lessonName,@RequestParam("subject")Subject subject,
+	public ResponseEntity<Integer> insertLesson(HttpSession session,@RequestParam("lessonName")String lessonName,@RequestParam("subject")Subject subject,
 			@RequestParam("lessonType")boolean lessonType,@RequestParam(name="image",required = false)MultipartFile image,@RequestParam("price")Integer price,
 			@RequestParam(name="imformation",defaultValue="")String imformation,@RequestParam(name="meetingURL",defaultValue="")String meetingUrl,
 			@RequestParam(name="video",required = false)MultipartFile courseUrl,@RequestParam(name="createTime",required = false)Date createTime,@RequestParam(name="courseTotalTime",defaultValue="")Integer courseTotalTime,
@@ -98,7 +100,7 @@ try {
 		if (!image.isEmpty()) {
             // 保存文件到本地文件夾
             String imageFileName = generateUniqueFileName(image.getOriginalFilename());
-            String savePath = "c:/temp/upload/image";
+            String savePath = "c:/temp/upload/image/";
             File saveFile = new File(savePath + imageFileName);
             image.transferTo(saveFile);
             System.out.println("圖片已存入本地資料夾");
@@ -111,7 +113,7 @@ try {
 		    LD = new LessonDetail(imformation, meetingUrl, "", createTime, courseTotalTime,language);
 		} else {
 		    String videoFileName = generateUniqueFileName(courseUrl.getOriginalFilename());
-		    String savePath = "c:/temp/upload/video";
+		    String savePath = "c:/temp/upload/video/";
 		    File saveFile = new File(savePath + videoFileName);
 		    courseUrl.transferTo(saveFile);
 		    String videoSavePath = saveFile.getAbsolutePath();
@@ -119,20 +121,29 @@ try {
 		    LD = new LessonDetail(imformation, meetingUrl, videoSavePath, createTime, courseTotalTime,language);
 		}
 
+			Lessons savedLesson = lService.insertLesson(loggedInUser.getUsersId(),lesson,LD);
+			// 创建一个包含LessonDetailId的响应JSON对象
+//        	Map<String, Object> response = new HashMap<>();
+//        	response.put("lessonDetailId", savedLesson.getLessondetail().getLessonDetailId());
 
-            Lessons savedLesson = lService.insertLesson(loggedInUser.getUsersId(),lesson,LD);
-            return ResponseEntity.status(HttpStatus.CREATED).body(savedLesson);
+        	Integer response = savedLesson.getLessondetail().getLessonDetailId();
+            return ResponseEntity.status(HttpStatus.CREATED).body(response);
 	
 	}catch(Exception e) {
 		e.printStackTrace();
 		  return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 	}
 	}
-	//課程全部查詢
+	
+	
+	
+	//單一使用者課程全部查詢
 	@GetMapping(path="/allLessons",produces="application/json;charset=UTF-8")
 	public List<Lessons> findAllLessons(HttpSession session) {
-		return lService.getUserAllLessons(session);
+		Users loggedInUser = (Users) session.getAttribute("logState");
+		return lService.getUserAllLessons(loggedInUser.getUsersId());
 	}
+	
 	
 	//課程單筆查詢
 	@GetMapping(path="/findLessons",produces="application/json;charset=UTF-8")
@@ -149,6 +160,7 @@ try {
 	//課程刪除
 	@DeleteMapping(path="/deleteLessons",produces="application/json;charset=UTF-8")
 	public String deleteLessons(@RequestBody Lessons lesson) {
+		System.out.println("lessonID "+lesson.getLessonId());
 		return lService.deleteLessons(lesson);
 	}
 	
@@ -180,7 +192,6 @@ try {
         return uniqueName;
     }
 	
-	
-	
+
 	
 }	

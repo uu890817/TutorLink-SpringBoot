@@ -37,9 +37,12 @@ public class LessonsService {
 		return lDAO.findAll();
 	}
 	//靠UserID查這位User全部課程資料
-	public List<Lessons> getUserAllLessons(HttpSession session){
-		Users loggedInUser = (Users) session.getAttribute("logState");
-		return loggedInUser.getLesson();
+	public List<Lessons> getUserAllLessons(int id){
+		Users user = uDAO.findById(id);
+		if(user!=null) {	
+			return uDAO.findById(id).getLesson();
+		}
+		return null;
 	}
 	
 	//靠課程ID查詢資料

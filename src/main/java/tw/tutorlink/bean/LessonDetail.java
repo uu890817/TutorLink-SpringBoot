@@ -41,7 +41,7 @@ public class LessonDetail {
 	@Column(name = "CreateTime", columnDefinition = "Date")
 	private Date createTime;
 
-	@Column(name = "CourseUrl", columnDefinition = "varchar(100)")
+	@Column(name = "CourseUrl", columnDefinition = "varchar(Max)")
 	private String courseUrl;
 	
 	@Column(name = "Language", columnDefinition = "nvarchar(50)")
