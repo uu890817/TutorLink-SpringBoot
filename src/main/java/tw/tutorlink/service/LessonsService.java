@@ -108,7 +108,12 @@ public class LessonsService {
 	}
 	
 	//用User找課程
-	public List<Lessons> findByUsers(Users user){
-		return lDAO.findByUsers(user);
+	public List<Lessons> findByUsers(Users userId){
+		return lDAO.findByUsers(userId);
+	}
+	
+	//用UsersId找課程
+	public List<Lessons> findByUserIdAndLessonType(Integer userId,boolean lessonType){
+		return lDAO.findByUsers_UsersIdAndLessonType(userId,lessonType);
 	}
 }

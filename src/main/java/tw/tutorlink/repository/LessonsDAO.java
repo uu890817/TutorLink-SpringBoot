@@ -12,4 +12,6 @@ public interface LessonsDAO extends JpaRepository<Lessons, Integer> {
 	List<Lessons> findByLessonNameContaining(String lessonName);
 	
 	List<Lessons> findByUsers(Users users);
+	
+	List<Lessons> findByUsers_UsersIdAndLessonType(Integer userId,boolean lessonType);
 }
