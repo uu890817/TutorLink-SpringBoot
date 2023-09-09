@@ -1,6 +1,7 @@
 package tw.tutorlink.service;
 
-import org.hibernate.internal.build.AllowSysOut;
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +26,10 @@ public class UsersService {
 		if (users != null) {
 			// 不為空，驗證傳入資料及查詢的資料是否吻合
 			if (users.getGoogleSubId().equals(sub) && users.getUserEmail().equals(mail)) {
+				// 驗證成功，寫入登入時間
+				UserDetail ud = users.getUserDetail();
+				ud.setLastLoginTime(new Date());
+				udDAO.save(ud);
 				// 吻合及回傳Bean
 				return users;
 			}

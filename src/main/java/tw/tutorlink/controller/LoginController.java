@@ -80,25 +80,18 @@ public class LoginController {
 
 		// 利用google回傳token中的唯一識別碼及Mail是否存在資料庫中
 		Users user = uService.googleLogin(sub, mail);
-		String usersid = user.getUsersId().toString();
 
-		// --- 登入前確保cookie都已清空 ---
-		Cookie cookieclear = new Cookie("UsersId", "");
-		cookieclear.setMaxAge(0);
-		cookieclear.setPath("/");
-		response.addCookie(cookieclear);
-
-		// 重新建立cookie
-		Cookie cookie = new Cookie("UsersId", usersid);
-		cookie.setMaxAge(3600);
-		cookie.setPath("/");
-		// 回傳cookie
-		response.addCookie(cookie);
-
-		// ----------- 建立session -----------
-		// 當回傳不為空值時，代表資料存在，寫入整個bean進session
 		if (user != null) {
-			// 設定session存在時間
+			String usersid = user.getUsersId().toString();
+//			// --- 登入前確保cookie都已清空 ---
+//			Cookie cookieclear = new Cookie("UsersId", "");
+//			cookieclear.setMaxAge(0);
+//			cookieclear.setPath("/");
+//			response.addCookie(cookieclear);
+			Cookie cookie = new Cookie("UsersId", usersid);
+			cookie.setMaxAge(3600);
+			cookie.setPath("/");
+			response.addCookie(cookie);
 			session.setMaxInactiveInterval(600);
 			session.setAttribute("logState", user);
 			return "google";
