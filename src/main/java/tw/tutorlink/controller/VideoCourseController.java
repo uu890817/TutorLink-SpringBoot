@@ -2,8 +2,11 @@ package tw.tutorlink.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,9 +17,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.servlet.http.HttpSession;
@@ -24,6 +29,7 @@ import tw.tutorlink.bean.CourseQA;
 import tw.tutorlink.bean.LessonDetail;
 import tw.tutorlink.bean.LessonPost;
 import tw.tutorlink.bean.Lessons;
+import tw.tutorlink.bean.StudentWillLearn;
 import tw.tutorlink.bean.Subject;
 import tw.tutorlink.bean.Users;
 import tw.tutorlink.bean.Video;
@@ -33,6 +39,7 @@ import tw.tutorlink.service.CourseQAService;
 import tw.tutorlink.service.LessonDetailService;
 import tw.tutorlink.service.LessonPostService;
 import tw.tutorlink.service.LessonsService;
+import tw.tutorlink.service.StudentWillLearnService;
 import tw.tutorlink.service.VideoNoteService;
 import tw.tutorlink.service.VideoService;
 
@@ -62,6 +69,9 @@ public class VideoCourseController {
 	
 	@Autowired
 	private VideoNoteService vnService;
+	
+	@Autowired
+	private StudentWillLearnService swlService;
 	
 	//-------------------課程-------------------
 	//新增影片課程
@@ -118,10 +128,28 @@ public class VideoCourseController {
 		}
 	}
 	
+	//新增willLearn
+	@PostMapping(path="/willLearn")
+	public List<StudentWillLearn> insertWillLearn(@RequestBody Map<String, List<String>> requestBody,@RequestParam("id")Integer lessonId) {
+		System.out.println(requestBody); 
+		List<String> willLearnList = requestBody.get("willLearnList");
+//		String[] willLearnArray = willLearnList.split(","); // 使用逗号作为分隔符，可以根据实际情况修改
+//
+		List<StudentWillLearn> insertedWillLearnList = new ArrayList<>();
+		    
+		    for (String willLearn : willLearnList) {
+		        StudentWillLearn studentWillLearn = swlService.insertStudentWillLearn(willLearn, lessonId);
+		        insertedWillLearnList.add(studentWillLearn);
+		    }
+
+		    return insertedWillLearnList;
+		
+	}
+	
 	
 	
 	//取得老師發佈的課程
-	@GetMapping(path="/videoLessons",produces="application/json;charset=UTF-8")
+	@GetMapping(path="/VideoLessons",produces="application/json;charset=UTF-8")
 	public List<Lessons> getLessonsByTeacher(HttpSession session){
 		Users loggedInUser = (Users) session.getAttribute("logState");
 		int userId = loggedInUser.getUsersId();
@@ -271,6 +299,7 @@ public class VideoCourseController {
 //		return vService.insertVideo(video);
 //	}
 	
+	//目前新增影片Controller
 	@PostMapping(path = "/uploadOneVideo", produces = "application/json;charset=UTF-8")
 	public ResponseEntity<Video> insertVideo(@RequestParam("videoFile") MultipartFile videoFile,
 	        @RequestParam("chapterName") String chapterName, @RequestParam("sort") Integer sort,
@@ -323,32 +352,46 @@ public class VideoCourseController {
         return qaService.getCourseQAByUser(loggedInUser);
     }
     
+    //取得課程問答
+    @GetMapping(path="/courseQA/{lessonsId}",produces="application/json;charset=UTF-8")
+    public List<CourseQA> getCourseQAByCourse(@PathVariable("lessonsId") Integer lessonsId){
+    	return qaService.getCourseQAByLessonId(lessonsId);
+    }
+    
     //學生新增提出問題
-    @PostMapping(path="/courseQA",produces="application/json;charset=UTF-8")
-    public ResponseEntity<CourseQA> createCourseQA(@RequestBody CourseQA courseQA,HttpSession session) {
+    @PostMapping(path="/courseQA/{lessonId}",produces="application/json;charset=UTF-8")
+    public ResponseEntity<CourseQA> createCourseQA(@PathVariable("lessonId") Integer lessonId,@RequestBody CourseQA courseQA,HttpSession session) {
+    	Users user = new Users();
     	Users loggedInUser = (Users) session.getAttribute("logState");
+    	user.setUsersId(loggedInUser.getUsersId());
+    	Lessons lesson = new Lessons();
+    	lesson.setLessonId(lessonId);
     	CourseQA savedcourseQA = new CourseQA();
-    	savedcourseQA.setUsers(loggedInUser);
-    	savedcourseQA.setLesson(courseQA.getLesson());
+    	savedcourseQA.setUsers(user);
+    	savedcourseQA.setLesson(lesson);
         savedcourseQA.setTitle(courseQA.getTitle());
         savedcourseQA.setQuestion(courseQA.getQuestion());
+        savedcourseQA.setTime(courseQA.getTime());
 
-        // 執行其他必要的操作，例如設置 Users 和 Lessons，處理時間等等
+        CourseQA savedCourseQA = qaService.saveCourseQA(savedcourseQA);
 
-        // 將新的 CourseQA 對象保存到資料庫
-        CourseQA savedCourseQA = qaService.saveCourseQA(courseQA);
-
-        // 返回新的 CourseQA 對象，您可以包含其他信息，例如新增的 ID
         return ResponseEntity.ok(savedCourseQA);
     }
+    
     
     //-------------Post--------------------
     
     //取得老師發佈過的公告
-    @GetMapping(path="/coursePost",produces="application/json;charset=UTF-8")
+    @GetMapping(path="/coursePostByUser",produces="application/json;charset=UTF-8")
     public List<LessonPost> getPostByUser(HttpSession session) {
     	Users loggedInUser = (Users) session.getAttribute("logState");
     	return lpService.findLessPostByUsers(loggedInUser.getUsersId());
+    }
+    
+    //取得課程公告
+    @GetMapping(path="/coursePostByCourse/{lessonId}",produces="application/json;charset=UTF-8")
+    public List<LessonPost> getPostByCourse(@PathVariable("lessonId") Integer lessonId){
+    	return lpService.findLessonPost(lessonId);
     }
     
     //新增一筆公告
@@ -366,21 +409,31 @@ public class VideoCourseController {
     //-------------Note---------------------
     
     //取得使用者在這部影片的筆記
-    @GetMapping(path="/videoNote",produces="application/json;charset=UTF-8")
-    public List<VideoNote> getNoteByUserVideo(Integer videoId,HttpSession session){
+    @GetMapping(path="/videoNote/{videoId}",produces="application/json;charset=UTF-8")
+    public List<VideoNote> getNoteByUserVideo(@PathVariable("videoId") Integer videoId,HttpSession session){
     	Users loggedInUser = (Users) session.getAttribute("logState");
     	return vnService.findByLessonAndUser(videoId, loggedInUser.getUsersId());
     }
     
     //新增筆記
-    @PostMapping(path="/videoNote",produces="application/json;charset=UTF-8")
-    public VideoNote inserVideoNote(@RequestBody VideoNote videoNote) {
-    	return vnService.createVideoNote(videoNote);
+    @PostMapping(path="/videoNote/{videoId}",produces="application/json;charset=UTF-8")
+    public VideoNote inserVideoNote(@PathVariable("videoId")Integer videoId,@RequestBody VideoNote videoNote,HttpSession session) {
+    	Users user = new Users();
+    	Users loggedInUser = (Users) session.getAttribute("logState");
+    	user.setUsersId(loggedInUser.getUsersId());
+    	Video video = new Video();
+    	video.setVideoId(videoId);
+    	VideoNote savedvideoNote = new VideoNote();
+    	savedvideoNote.setTimeLine(videoNote.getTimeLine());
+    	savedvideoNote.setNoteContent(videoNote.getNoteContent());
+    	savedvideoNote.setUsers(user);
+    	savedvideoNote.setVideo(video);
+    	return vnService.createVideoNote(savedvideoNote);
     }
     
     //刪除筆記
     @DeleteMapping(path="/videoNote/{videoNoteId}",produces="application/json;charset=UTF-8")
-    public void deleteVideoNote(@PathVariable Integer videoNoteId) {
+    public void deleteVideoNote(@PathVariable("videoNoteId") Integer videoNoteId) {
     	vnService.deleteVideoNote(videoNoteId);
     }
     

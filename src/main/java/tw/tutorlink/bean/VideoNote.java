@@ -1,5 +1,7 @@
 package tw.tutorlink.bean;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -20,10 +22,12 @@ public class VideoNote {
 	private Integer videoNoteId;
 	
 	@ManyToOne
+	@JsonIgnore
 	@JoinColumn(name="VideoId",referencedColumnName = "videoId")
 	private Video video;
 	
 	@ManyToOne
+	@JsonIgnore
 	@JoinColumn(name = "UsersId", referencedColumnName = "usersId",nullable = false)
 	private Users users;
 	
