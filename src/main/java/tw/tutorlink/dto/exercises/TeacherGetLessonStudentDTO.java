@@ -1,6 +1,5 @@
 package tw.tutorlink.dto.exercises;
 
-import tw.tutorlink.bean.ExerciseConfig;
 import tw.tutorlink.bean.ExercisePermissions;
 import tw.tutorlink.bean.OrderItem;
 
@@ -9,26 +8,21 @@ public class TeacherGetLessonStudentDTO {
 	private Integer usersId;
 	private String userName;
 	private Integer exerPerId;
-	private ExerciseConfig exerConfig;
+//	private ExerciseConfig exerConfig;
 	private ExercisePermissions exerPermissions;
 	
 	public TeacherGetLessonStudentDTO() {
 	}
 	
-	public TeacherGetLessonStudentDTO(OrderItem order) {
+	public TeacherGetLessonStudentDTO(OrderItem order, ExercisePermissions exercisePermissions) {
 		this.usersId = order.getUsers().getUsersId();
 		if(order.getUsers().getUserDetail() != null) {
 			this.userName = order.getUsers().getUserDetail().getUserName();
 		}
-		
-		if(order.getUsers().getExercisePermissions().size() != 0) {
-		this.exerPermissions = order.getUsers().getExercisePermissions().get(0);
+		if(exercisePermissions != null) {
+			this.exerPermissions = exercisePermissions;
 		}
-//		if(order.getUsers().getExercisePermissions() != null) {
-//			this.exerPerId = order.getUsers().getExercisePermissions();
-//		}
-		
-//		this.exerConfig = order;
+
 	}
 
 	public Integer getUsersId() {
@@ -61,14 +55,6 @@ public class TeacherGetLessonStudentDTO {
 
 	public void setExerPerId(Integer exerPerId) {
 		this.exerPerId = exerPerId;
-	}
-
-	public ExerciseConfig getExerConfig() {
-		return exerConfig;
-	}
-
-	public void setExerConfig(ExerciseConfig exerConfig) {
-		this.exerConfig = exerConfig;
 	}
 
 	
