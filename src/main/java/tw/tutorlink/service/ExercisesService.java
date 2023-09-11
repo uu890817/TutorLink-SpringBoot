@@ -10,6 +10,7 @@ import tw.tutorlink.bean.ExercisePermissions;
 import tw.tutorlink.bean.Exercises;
 import tw.tutorlink.bean.Lessons;
 import tw.tutorlink.bean.OrderItem;
+import tw.tutorlink.dto.exercises.StudentGetExerciseDTO;
 import tw.tutorlink.dto.exercises.TeacherGetAllExerciseDTO;
 import tw.tutorlink.dto.exercises.TeacherGetAllLessonsNameDTO;
 import tw.tutorlink.dto.exercises.TeacherGetExerciseInfoDTO;
@@ -24,6 +25,8 @@ public class ExercisesService {
 	@Autowired
 	private ExercisePermissionsDAO epDAO;
 
+//	SELECT-----------------------------------------------------------------------------------------------
+	// TEACHER
 	public List<TeacherGetAllExerciseDTO> getTeacherExercise(Integer usersId) {
 		List<TeacherGetAllExerciseDTO> tDTOs = new ArrayList<>();
 		List<Exercises> exers = eDAO.findByUsers(usersId);
@@ -44,35 +47,9 @@ public class ExercisesService {
 		return tDTOs;
 	}
 
-	public Exercises insertNewExercise(Exercises esercise) {
-		Exercises result = eDAO.save(esercise);
-		if (result != null) {
-			return result;
-		}
-		return null;
-	}
-
 	public TeacherGetExerciseInfoDTO getExerciseByExerId(Integer exerId) {
 		TeacherGetExerciseInfoDTO tDTO = new TeacherGetExerciseInfoDTO(eDAO.findExercisesByExerId(exerId));
 		return tDTO;
-	}
-
-	public Exercises updateExercise(Exercises esercise) {
-		Exercises result = eDAO.save(esercise);
-		if (result != null) {
-			return result;
-		}
-		return null;
-	}
-
-	public String deleteExercise(Integer eId) {
-		eDAO.deleteById(eId);
-		return "OK";
-	}
-	
-	public String deleteExercisePermission(Integer epId) {
-		epDAO.deleteById(epId);
-		return "OK";
 	}
 
 	public List<OrderItem> getStudentByLessonId(Integer lessonId) {
@@ -84,4 +61,43 @@ public class ExercisesService {
 		return eDAO.findExercisePermissionsByLessonIdAndUserId(eId, uId);
 	}
 
+	// STUDENT
+//	public StudentGetExerciseDTO studentGetExerciseByExerId(Integer eId) {
+//		StudentGetExerciseDTO sDTO = new StudentGetExerciseDTO(eDAO.findExercisesByExerId(eId));
+//		return sDTO;
+//	}
+
+//	INSERT-----------------------------------------------------------------------------------------------
+	public Exercises insertNewExercise(Exercises esercise) {
+		Exercises result = eDAO.save(esercise);
+		if (result != null) {
+			return result;
+		}
+		return null;
+	}
+
+//	UPDATE-----------------------------------------------------------------------------------------------
+	public Exercises updateExercise(Exercises esercise) {
+		Exercises result = eDAO.save(esercise);
+		if (result != null) {
+			return result;
+		}
+		return null;
+	}
+
+//	DELETE-----------------------------------------------------------------------------------------------
+	public String deleteExercise(Integer eId) {
+		eDAO.deleteById(eId);
+		return "OK";
+	}
+
+	public String deleteExercisePermission(Integer epId) {
+		epDAO.deleteById(epId);
+		return "OK";
+	}
+
+	public StudentGetExerciseDTO studentGetExerciseByExerId(int i) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

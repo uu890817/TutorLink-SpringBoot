@@ -27,8 +27,7 @@ public interface ExercisesDAO extends JpaRepository<Exercises, Integer> {
 	
 	@Query("FROM ExercisePermissions ep WHERE ep.exercises.exerId = :eId AND ep.users.usersId = :uId")
 	public ExercisePermissions findExercisePermissionsByLessonIdAndUserId(@Param("eId") Integer eId, @Param("uId") Integer uId);
-	
-	
+
 	
 	
 	
