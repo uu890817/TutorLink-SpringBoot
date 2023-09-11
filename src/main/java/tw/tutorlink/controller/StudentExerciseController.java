@@ -6,9 +6,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.servlet.http.HttpSession;
+import tw.tutorlink.bean.Exercises;
 import tw.tutorlink.bean.Users;
 import tw.tutorlink.dto.exercises.ResponseDTO;
 import tw.tutorlink.service.ExercisePermissionsService;
+import tw.tutorlink.service.ExercisesService;
 
 @RestController
 @RequestMapping("/student")
@@ -16,12 +18,12 @@ public class StudentExerciseController {
 
 	@Autowired
 	ExercisePermissionsService epService;
-
+	@Autowired
+	ExercisesService eService;
 
 	@GetMapping("/test")
-	public ResponseDTO testApi() {
-		ResponseDTO rDTO = new ResponseDTO(epService.studentGetAllExercise(2), 200, "OK");
-		return rDTO;
+	public Exercises testApi() {
+		return eService.studentGetExerciseByExerId(1);
 	}
 	
 	
