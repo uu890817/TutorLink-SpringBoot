@@ -1,20 +1,31 @@
 package tw.tutorlink.controller;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -29,6 +40,7 @@ import tw.tutorlink.bean.CourseQA;
 import tw.tutorlink.bean.LessonDetail;
 import tw.tutorlink.bean.LessonPost;
 import tw.tutorlink.bean.Lessons;
+import tw.tutorlink.bean.OrderItem;
 import tw.tutorlink.bean.StudentWillLearn;
 import tw.tutorlink.bean.Subject;
 import tw.tutorlink.bean.Users;
@@ -39,12 +51,16 @@ import tw.tutorlink.service.CourseQAService;
 import tw.tutorlink.service.LessonDetailService;
 import tw.tutorlink.service.LessonPostService;
 import tw.tutorlink.service.LessonsService;
+import tw.tutorlink.service.OrderItemService;
 import tw.tutorlink.service.StudentWillLearnService;
 import tw.tutorlink.service.VideoNoteService;
 import tw.tutorlink.service.VideoService;
 
 import org.apache.commons.io.FilenameUtils;
 import java.util.UUID;
+import java.util.stream.Collectors;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 
 
@@ -72,6 +88,9 @@ public class VideoCourseController {
 	
 	@Autowired
 	private StudentWillLearnService swlService;
+	
+	@Autowired
+	private OrderItemService oiService;
 	
 	//-------------------課程-------------------
 	//新增影片課程
@@ -146,6 +165,12 @@ public class VideoCourseController {
 		
 	}
 	
+	//取得這門課程for課名
+	@GetMapping(path="/findLessonByLessonId/{lessonId}",produces="application/json;charset=UTF-8")
+	public Lessons getLessonByLessonId(@PathVariable("lessonId") Integer lessonId) {
+		Lessons lesson = lService.findByLessonId(lessonId).get();
+		return lesson;
+	}
 	
 	
 	//取得老師發佈的課程
@@ -155,6 +180,15 @@ public class VideoCourseController {
 		int userId = loggedInUser.getUsersId();
 		boolean lesson = false;
 		return lService.findByUserIdAndLessonType(userId,lesson);
+	}
+	
+	//取得學生購買的課程
+	@GetMapping(path="/studentVideoLesson",produces="application/json;charset=UTF-8")
+	public List<Lessons> getLessonByStudent(HttpSession session){
+		Users loggedInUser = (Users) session.getAttribute("logState");
+		int userId = loggedInUser.getUsersId();
+//		return oiService.findByUserId(userId);
+		return null;
 	}
 	
 	
@@ -197,6 +231,65 @@ public class VideoCourseController {
 	public List<Video> findVideoByCourse(@PathVariable Integer courseId) {
 		return vService.findVideoByLesson(courseId);
 	}
+	
+	//取得課程影片檔
+	@GetMapping(path="/findVideoUrl/{courseId}",produces="application/json;charset=UTF-8")
+	public List<String> findVideoUrl(@PathVariable("courseId") Integer courseId) {
+		List<Video> videos = vService.findVideoByLesson(courseId);
+//		List<InputStream> videoInputStreams = getVideoInputStreams(videos);
+//		return videoInputStreams;
+		List<String> videoUrls = getVideoUrls(videos);
+	    return videoUrls;
+	}
+	
+	private List<String> getVideoUrls(List<Video> videos) {
+	    return videos.stream().map(video -> video.getCourseUrl()).collect(Collectors.toList());
+	}
+	
+	//取得單一筆影片檔
+	@GetMapping(path="/getVideo/{videoid}")
+	public ResponseEntity<InputStreamResource> getVideo(@PathVariable("videoid") Integer videoId) {
+		InputStream videoInputStream = getVideoInputStreamByVideoId(videoId);
+		
+		if(videoInputStream != null) {
+			InputStreamResource videoResource = new InputStreamResource(videoInputStream);
+			return ResponseEntity.ok().contentType(MediaType.parseMediaType("video/mp4")).body(videoResource);
+		}else {
+			return ResponseEntity.notFound().build();
+		}
+	}
+	
+	public InputStream getVideoInputStreamByVideoId(Integer videoid) {
+	    // 假设您的视频信息存储在数据库中，videoRepository 是用于访问数据库的 repository
+	    Optional<Video> videoOptional = vService.findVideoById(videoid);
+
+	    if (videoOptional.isPresent()) {
+	        Video video = videoOptional.get();
+	        String videoFilePath = video.getCourseUrl(); // 假设您的 Video 对象包含文件路径信息
+
+	        // 使用您的方法将文件路径转换为 InputStream
+	        InputStream videoInputStream = convertLocalFilePathToInputStream(videoFilePath);
+
+	        return videoInputStream;
+	    } else {
+	        // 处理未找到视频的情况，返回 null 或其他适当的响应
+	        return null;
+	    }
+	}
+
+	public InputStream convertLocalFilePathToInputStream(String localFilePath) {
+        try {
+            InputStream inputStream = new FileInputStream(localFilePath);
+            return inputStream;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null; 
+        }
+    }
+
+	
+
+
 	
 	//新增多筆影片
 	@PostMapping(path="/uploadVideo",produces="application/json;charset=UTF-8")
@@ -376,6 +469,20 @@ public class VideoCourseController {
         CourseQA savedCourseQA = qaService.saveCourseQA(savedcourseQA);
 
         return ResponseEntity.ok(savedCourseQA);
+    }
+    
+    //老師回答問題
+    @PutMapping(path="/courseQA/{qaId}",produces="application/json;charset=UTF-8")
+    public ResponseEntity<CourseQA> addAnswer(@PathVariable("qaId") Integer qaId, @RequestBody CourseQA updatedQA){
+    	CourseQA existingQA = qaService.getCourseQAById(qaId);
+    	
+    	if (existingQA == null) {
+            return ResponseEntity.notFound().build();
+        }
+    	
+    	existingQA.setAnswer(updatedQA.getAnswer());
+    	CourseQA updatedRecord = qaService.saveCourseQA(existingQA);
+    	return ResponseEntity.ok(updatedRecord);
     }
     
     

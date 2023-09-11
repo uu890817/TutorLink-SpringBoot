@@ -116,4 +116,8 @@ public class LessonsService {
 	public List<Lessons> findByUserIdAndLessonType(Integer userId,boolean lessonType){
 		return lDAO.findByUsers_UsersIdAndLessonType(userId,lessonType);
 	}
+	//用lessonId找課
+	public Optional<Lessons> findByLessonId(Integer lessonId) {
+		return lDAO.findById(lessonId);
+	}
 }

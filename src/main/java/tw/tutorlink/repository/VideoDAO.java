@@ -13,4 +13,5 @@ public interface VideoDAO extends JpaRepository<Video, Integer> {
 	
 	//刪除此課程所有影片
 	List<Video> deleteByLessonDetail_LessonDetailId(Integer lessonDetailId);
+	
 }

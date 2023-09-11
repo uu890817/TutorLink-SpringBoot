@@ -1,7 +1,9 @@
 package tw.tutorlink.service;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,6 +21,10 @@ public class VideoService {
 	
 	@Autowired
 	private VideoDAO vDAO;
+	
+	public Optional<Video> findVideoById(Integer videoid) {
+		return vDAO.findById(videoid);
+	}
 	
 	//新增一部影片
 	public Video insertVideo(Video video) {
@@ -58,6 +64,16 @@ public class VideoService {
     public List<Video> saveAllVideos(List<Video> videos) {
         return vDAO.saveAll(videos);
     }
+    
+    //將影片轉成InputStream
+//    public InputStream getVideoInputStream(Video video) {
+//        String courseUrl = video.getCourseUrl();
+//        InputStream inputStream = convertLocalFilePathToInputStream(courseUrl);
+//        
+//        return inputStream;
+//    }
+    
+    
 
 
 }

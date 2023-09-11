@@ -24,5 +24,5 @@ public interface LessonsDAO extends JpaRepository<Lessons, Integer> {
 	@Query("from Lessons l join l.lessondetail where lessonId = :id")
 	public Lessons findByIdDetail(@Param("id")int id);
 	
-
+	
 }
