@@ -2,6 +2,7 @@ package tw.tutorlink.bean;
 
 import java.util.Date;
 
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -11,43 +12,46 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import lombok.Data;
 
 @Entity
-@Table(name = "ShoppingCart")
+@Table(name = "CartItem")
 public class CartItem {
 
-	//購物車項目流水號
+	// 購物車項目流水號
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "CartId")
 	private Integer cartId;
 
-	//課程編號
-	@ManyToOne
-	@JoinColumn(name="LessonId",referencedColumnName = "lessonId", nullable = false)
-	private Lessons lesson;
+	// 數量
+	@Column(name = "Quantity")
+	private Integer quantity;
 
-	//哪個使用者的購物車
+	// 商品放入購物車時間
+	@Column(name = "AddTime", columnDefinition = "date")
+	private Date addTime;
+
+	// 狀態
+	@Column(name = "Status")
+	private Integer status;
+
+	// 哪個使用者的購物車
 	@ManyToOne
-	@JoinColumn(name = "UsersId", referencedColumnName = "usersId",nullable = false)
+	@JoinColumn(name = "UsersId", referencedColumnName = "usersId", nullable = false)
 	private Users users;
 
-	//數量
-	@Column(name="Quantity")
-	private Integer quantity;
-	
+	// 課程編號
+	@ManyToOne
+	@JoinColumn(name = "LessonId", referencedColumnName = "lessonId", nullable = false)
+	private Lessons lesson;
+
 	@OneToOne
-	@JoinColumn(name="CalenderId",referencedColumnName = "calenderId")
+	@JoinColumn(name = "CalenderId", referencedColumnName = "calenderId")
 	private Calender calender;
 	
-	//商品放入購物車時間
-	@Column(name="AddTime",columnDefinition = "date")
-	private Date addTime;
-		
-	//狀態
-	@Column(name="Status")
-	private Integer status;
+
+	// 關聯性欄位-----------------------------------------------------
+	
 
 	public Integer getCartId() {
 		return cartId;

@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpSession;
 import tw.tutorlink.bean.CartItem;
 import tw.tutorlink.bean.Exercises;
 import tw.tutorlink.bean.Subject;
+import tw.tutorlink.bean.Users;
 import tw.tutorlink.service.CartService;
 import tw.tutorlink.service.LessonDetailService;
 import tw.tutorlink.service.LessonsService;
@@ -34,6 +35,7 @@ public class ShoppingCartController {
 	@GetMapping("/step1")
 	@ResponseBody
 	public List<CartItem> getMyShoppingCart(HttpSession session) {
-		return cService.getAllShoppingCartItem(session);
+		Users loggedInUser = (Users) session.getAttribute("logState");
+		return cService.getUserShoppingCart(loggedInUser.getUsersId());
 	}
 }

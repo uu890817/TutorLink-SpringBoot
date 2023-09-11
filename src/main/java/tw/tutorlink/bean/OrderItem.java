@@ -39,8 +39,8 @@ public class OrderItem {
 	@Column(name="OrederStates")
 	private Integer orderStates;
 	
-	@Column(name="Coupon")
-	private String coupon;
+//	@Column(name="Coupon")
+//	private String coupon;
 	
 	@Column(name = "CreateTime", nullable = false)
 	private Date createTime;
