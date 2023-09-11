@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import tw.tutorlink.bean.ExercisePermissions;
 import tw.tutorlink.dto.exercises.StudentGetAllExerciseDTO;
+import tw.tutorlink.dto.exercises.StudentGetExerciseDTO;
 import tw.tutorlink.repository.ExercisePermissionsDAO;
 
 @Service
@@ -33,6 +34,13 @@ public class ExercisePermissionsService {
 		
 		return sDTOs;
 	}
+	
+	
+	public StudentGetExerciseDTO studentGetExerciseByExerId(Integer epId) {
+		StudentGetExerciseDTO sDTO = new StudentGetExerciseDTO(epDAO.findExercisePermissionsByepId(epId));
+		return sDTO;
+	}
+	
 	
 	
 }

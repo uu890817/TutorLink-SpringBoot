@@ -1,42 +1,54 @@
 package tw.tutorlink.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import jakarta.servlet.http.HttpSession;
 import tw.tutorlink.bean.CartItem;
-import tw.tutorlink.bean.Users;
+import tw.tutorlink.dto.cart.CartItemDTO;
 import tw.tutorlink.repository.CartDAO;
-import tw.tutorlink.repository.UsersDAO;
 
 @Service
 public class CartService {
 
 	@Autowired
 	private CartDAO cDAO;
-	
-	@Autowired
-	private UsersDAO uDAO;
-	
-	@Autowired
-	private UsersService uService;
-	
-	//查看購物車
-	public List<CartItem> getAllShoppingCartItem(HttpSession session){
-		Users loggedInUser = (Users) session.getAttribute("logState");
-		List<CartItem> cart = loggedInUser.getCart();
-		return cart;
-	}
-	
-	//刪除購物車
-	public List<CartItem> deleteShoppingCartItem(HttpSession session) {
-		Users loggedInUser = (Users) session.getAttribute("logState");
-		List<CartItem> cart = loggedInUser.getCart();
-		return cart;
-	}
-	
 
+	// 新增商品至購物車
+	public CartItem insertNewCartItem(CartItem item) {
+		CartItem result = cDAO.save(item);
+		if (result != null) {
+			return result;
+		}
+		return null;
+	}
+
+	// 刪除購物車商品
+	public String deleteCartItem(Integer cId) {
+		cDAO.deleteById(cId);
+		return "OK";
+	}
+
+	// 使用者購物車商品
+	public List<CartItemDTO> getUserShoppingCart(int id) {
+		List<CartItemDTO> cDTOs = new ArrayList<>();
+		List<CartItem> citems = cDAO.findByUsers(id);
+		for (CartItem citem : citems) {
+			CartItemDTO cDTO = new CartItemDTO(citem);
+			cDTOs.add(cDTO);
+		}
+		return cDTOs;
+	}
+
+	// 更新購物車商品
+	public CartItem updateCartItem(CartItem item) {
+		CartItem result = cDAO.save(item);
+		if (result != null) {
+			return result;
+		}
+		return null;
+	}
 
 }

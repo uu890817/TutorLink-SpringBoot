@@ -3,33 +3,41 @@ package tw.tutorlink.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import tw.tutorlink.bean.Subject;
+import jakarta.servlet.http.HttpSession;
+import tw.tutorlink.bean.Users;
+import tw.tutorlink.dto.cart.CartItemDTO;
 import tw.tutorlink.service.CartService;
-import tw.tutorlink.service.LessonDetailService;
-import tw.tutorlink.service.LessonsService;
-import tw.tutorlink.service.SubjectService;
 
 @RestController
-@RequestMapping("/cart")
+@RequestMapping("/shoppingcart")
 public class ShoppingCartController {
-	@Autowired
-	private SubjectService sService;
-	
-	@Autowired
-	private LessonsService lService;
-	
-	@Autowired
-	private LessonDetailService ldService;
 	
 	@Autowired
 	private CartService cService;
-
-//	@GetMapping(path="/member/shoppingcart/step1",produces="application/json;charset=UTF-8")
-//	public List<Subject> findAllSubjects(){
-//		return cService.getAll();
-//	}
+	
+	@GetMapping("/step1")
+	@ResponseBody
+	public List<CartItemDTO> getMyShoppingCart(HttpSession session) {
+		Users loggedInUser = (Users) session.getAttribute("logState");
+		return cService.getUserShoppingCart(loggedInUser.getUsersId());
+	}
+	
+	@GetMapping("/CartItem")
+	public List<CartItemDTO> testApi() {
+		return cService.getUserShoppingCart(6);
+	}
+	
+	@DeleteMapping(path = "/deleteCartItem/{cId}")
+	public String deleteCartItem(@PathVariable Integer cId) {
+		System.out.println(cId);
+		return cService.deleteCartItem(cId);
+	}
+	
 }

@@ -1,6 +1,9 @@
 package tw.tutorlink.bean;
 
+import java.util.Date;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -24,23 +27,48 @@ public class Calender {
 
 	@ManyToOne
 	@JoinColumn(name = "UsersId", referencedColumnName = "usersId", nullable = false)
-	@JsonIgnore
+	@JsonIgnoreProperties({ "userPassword", "userEmail", "userType", "googleSubId", "applyTeacher", "lesson", "order",
+		"comment", "Cart", "report", "favorite", "exercises", "calender", "vacation", "question", "lessonPost",
+		"videoNote", "courseQA", "cart","exercisePermissions","userDetail" })
 	private Users users;
 
 	@ManyToOne
 	@JoinColumn(name = "LessonId", referencedColumnName = "lessonId", nullable = false)
-	@JsonIgnore
+	@JsonIgnoreProperties({ "subject", "lessonType", "price", "image", "lessondetail", "order",
+		"shoppingCart", "report", "favorite", "exercises", "calender", "studentWillLearn", "courseQA" })
 	private Lessons lesson;
-	
-	@Column(name = "lessonTimeStr")
-	private String lessonTimeStr;
 	
 	
 	@Column(name = "LessonTime")
-	private String lessonTime;
+	private Date lessonTime;
 	
 	@OneToOne(mappedBy = "calender", cascade = CascadeType.ALL)
 	private OrderItem orderitem;
+	
+	//付款狀態 0:未付款 1:已付款 2:已逾期
+	@Column(name = "LessonType")
+	private Integer lessonType;
+
+	public Calender() {
+	}
+
+	
+	public Calender(Users users, Lessons lesson, Date lessonTime, OrderItem orderitem, Integer lessonType) {
+		this.users = users;
+		this.lesson = lesson;
+		this.lessonTime = lessonTime;
+		this.orderitem = orderitem;
+		this.lessonType = lessonType;
+	}
+
+
+	public Integer getLessonType() {
+		return lessonType;
+	}
+
+	public void setLessonType(Integer lessonType) {
+		this.lessonType = lessonType;
+	}
 
 	public Integer getCalenderId() {
 		return calenderId;
@@ -66,19 +94,11 @@ public class Calender {
 		this.lesson = lesson;
 	}
 
-	public String getLessonTimeStr() {
-		return lessonTimeStr;
-	}
-
-	public void setLessonTimeStr(String lessonTimeStr) {
-		this.lessonTimeStr = lessonTimeStr;
-	}
-
-	public String getLessonTime() {
+	public Date getLessonTime() {
 		return lessonTime;
 	}
 
-	public void setLessonTime(String lessonTime) {
+	public void setLessonTime(Date lessonTime) {
 		this.lessonTime = lessonTime;
 	}
 

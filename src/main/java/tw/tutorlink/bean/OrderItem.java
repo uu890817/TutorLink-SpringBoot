@@ -47,8 +47,8 @@ public class OrderItem {
 	@Column(name="OrederStates")
 	private Integer orderStates;
 	
-	@Column(name="Coupon")
-	private String coupon;
+//	@Column(name="Coupon")
+//	private String coupon;
 	
 	@Column(name = "CreateTime", nullable = false)
 	private Date createTime;
@@ -99,14 +99,6 @@ public class OrderItem {
 
 	public void setOrderStates(Integer orderStates) {
 		this.orderStates = orderStates;
-	}
-
-	public String getCoupon() {
-		return coupon;
-	}
-
-	public void setCoupon(String coupon) {
-		this.coupon = coupon;
 	}
 
 	public Date getCreateTime() {
