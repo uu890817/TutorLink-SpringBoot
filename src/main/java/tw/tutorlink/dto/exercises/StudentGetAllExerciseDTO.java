@@ -1,20 +1,23 @@
 package tw.tutorlink.dto.exercises;
 
-import java.util.List;
-
 import tw.tutorlink.bean.ExerciseConfig;
 import tw.tutorlink.bean.ExercisePermissions;
-import tw.tutorlink.bean.Exercises;
-import tw.tutorlink.bean.StudentAnswers;
 
 public class StudentGetAllExerciseDTO {
 
 	private Integer exerPerId;
-	private Exercises exercises;
+	
+	private Integer exerId;
+	private String exerName;
+	
+	private String subjectContent;
+	private String lessonName;
+	
 	private ExerciseConfig exerciseConfig;
+	
 	private Integer score;
 	private Integer overwriteScore;
-	private List<StudentAnswers> studentAnswers;
+
 
 	public StudentGetAllExerciseDTO() {
 
@@ -22,13 +25,22 @@ public class StudentGetAllExerciseDTO {
 
 	public StudentGetAllExerciseDTO(ExercisePermissions ep) {
 		this.exerPerId = ep.getExerPerId();
-		this.exercises = ep.getExercises();
-		this.exerciseConfig = ep.getExerciseConfig();
+		
+		this.exerId = ep.getExercises().getExerId();
+		this.exerName = ep.getExercises().getExerName();
+		
+		this.subjectContent = ep.getExercises().getLesson().getSubject().getSubjectContent();
+		this.lessonName = ep.getExercises().getLesson().getLessonName();
+		
+		ExerciseConfig ec = ep.getExerciseConfig();
+		ec.setExercisePermissions(null);
+		this.exerciseConfig = ec;
+		
 		this.score = ep.getScore();
 		this.overwriteScore = ep.getOverwriteScore();
-		
 	}
 
+	
 	public Integer getExerPerId() {
 		return exerPerId;
 	}
@@ -37,12 +49,36 @@ public class StudentGetAllExerciseDTO {
 		this.exerPerId = exerPerId;
 	}
 
-	public Exercises getExercises() {
-		return exercises;
+	public Integer getExerId() {
+		return exerId;
 	}
 
-	public void setExercises(Exercises exercises) {
-		this.exercises = exercises;
+	public void setExerId(Integer exerId) {
+		this.exerId = exerId;
+	}
+
+	public String getExerName() {
+		return exerName;
+	}
+
+	public void setExerName(String exerName) {
+		this.exerName = exerName;
+	}
+
+	public String getSubjectContent() {
+		return subjectContent;
+	}
+
+	public void setSubjectContent(String subjectContent) {
+		this.subjectContent = subjectContent;
+	}
+
+	public String getLessonName() {
+		return lessonName;
+	}
+
+	public void setLessonName(String lessonName) {
+		this.lessonName = lessonName;
 	}
 
 	public ExerciseConfig getExerciseConfig() {
@@ -69,14 +105,9 @@ public class StudentGetAllExerciseDTO {
 		this.overwriteScore = overwriteScore;
 	}
 
-	public List<StudentAnswers> getStudentAnswers() {
-		return studentAnswers;
-	}
-
-	public void setStudentAnswers(List<StudentAnswers> studentAnswers) {
-		this.studentAnswers = studentAnswers;
-	}
-
+	
+	
+	
 	
 	
 	

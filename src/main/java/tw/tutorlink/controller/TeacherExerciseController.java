@@ -53,15 +53,11 @@ public class TeacherExerciseController {
 
 	@GetMapping("/myAllExercise")
 	@ResponseBody
-	public List<TeacherGetAllExerciseDTO> getMyExercise(HttpSession session, @CookieValue("UsersId") String cookie) {
+	public List<TeacherGetAllExerciseDTO> getMyExercise(HttpSession session) {
 		Users uSession = (Users) session.getAttribute("logState");
 		if (uSession != null) {
 			System.err.println("Session" + uSession.getUsersId());
 			return eService.getTeacherExercise(uSession.getUsersId());
-		}
-		if (cookie != null) {
-			System.err.println("Cookie" + cookie);
-			return eService.getTeacherExercise(Integer.parseInt(cookie));
 		}
 		return null;
 	}
