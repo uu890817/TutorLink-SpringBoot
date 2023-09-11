@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import tw.tutorlink.bean.Calender;
 import tw.tutorlink.bean.Lessons;
-import tw.tutorlink.bean.Report;
 import tw.tutorlink.bean.Users;
 import tw.tutorlink.repository.CalenderDAO;
 import tw.tutorlink.repository.LessonsDAO;
