@@ -111,11 +111,11 @@ public class LoginController {
 		if (result.equals("103")) {
 			Users user = uService.checkMail(mail);
 			String usersid = user.getUsersId().toString();
-			// --- 登入前確保cookie都已清空 ---
-			Cookie cookieclear = new Cookie("UsersId", "");
-			cookieclear.setMaxAge(0);
-			cookieclear.setPath("/");
-			response.addCookie(cookieclear);
+////			 --- 登入前確保cookie都已清空 ---
+//			Cookie cookieclear = new Cookie("UsersId", "");
+//			cookieclear.setMaxAge(0);
+//			cookieclear.setPath("/");
+//			response.addCookie(cookieclear);
 
 			// 重新建立cookie
 			Cookie cookie = new Cookie("UsersId", usersid);
