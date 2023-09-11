@@ -48,6 +48,8 @@ public class InfomationContorller {
 		return "ok";
 	}
 
+	
+	// --- 修改/驗證密碼用 ---
 	@PostMapping("/pwdverifty")
 	@ResponseBody
 	public String pwd(@RequestBody String str, HttpSession session, @CookieValue("UsersId") String cookie,
@@ -62,5 +64,19 @@ public class InfomationContorller {
 //			return "fail";
 //		}
 		return "ok";
+	}
+	
+	// --- 回傳UserType ---
+	@PostMapping("/type")
+	@ResponseBody
+	public Integer type(HttpSession session) {
+		Users loggedInUser = (Users) session.getAttribute("logState");
+		int userid = loggedInUser.getUsersId();
+		Users result = uService.findUsersByID(userid);
+		if(result!=null)
+		{
+			return result.getUserType();
+		}
+		return null;
 	}
 }
