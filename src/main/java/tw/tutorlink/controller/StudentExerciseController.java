@@ -2,6 +2,7 @@ package tw.tutorlink.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -9,6 +10,7 @@ import jakarta.servlet.http.HttpSession;
 import tw.tutorlink.bean.Exercises;
 import tw.tutorlink.bean.Users;
 import tw.tutorlink.dto.exercises.ResponseDTO;
+import tw.tutorlink.dto.exercises.StudentGetExerciseDTO;
 import tw.tutorlink.service.ExercisePermissionsService;
 import tw.tutorlink.service.ExercisesService;
 
@@ -22,8 +24,8 @@ public class StudentExerciseController {
 	ExercisesService eService;
 
 	@GetMapping("/test")
-	public Exercises testApi() {
-		return eService.studentGetExerciseByExerId(1);
+	public StudentGetExerciseDTO testApi() {
+		return epService.studentGetExerciseByExerId(1);
 	}
 	
 	
@@ -37,7 +39,10 @@ public class StudentExerciseController {
 		return new ResponseDTO(null, 500, "請登入");
 	}
 		
-	
+	@GetMapping("/doExercise/{epId}")
+	public StudentGetExerciseDTO getExercise(@PathVariable Integer epId) {
+		return epService.studentGetExerciseByExerId(epId);
+	}
 	
 	
 	
