@@ -101,14 +101,6 @@ public class OrderItem {
 		this.orderStates = orderStates;
 	}
 
-	public String getCoupon() {
-		return coupon;
-	}
-
-	public void setCoupon(String coupon) {
-		this.coupon = coupon;
-	}
-
 	public Date getCreateTime() {
 		return createTime;
 	}
