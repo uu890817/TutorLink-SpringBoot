@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import tw.tutorlink.bean.Calender;
 import tw.tutorlink.bean.Lessons;
-import tw.tutorlink.bean.Report;
+import tw.tutorlink.bean.LessonsDTO;
 import tw.tutorlink.bean.Users;
 import tw.tutorlink.service.CalenderService;
 
@@ -22,6 +22,8 @@ import tw.tutorlink.service.CalenderService;
 public class CalenderController {
 	@Autowired
 	private CalenderService cService;
+	
+	private LessonsDTO lDTO;
 	
 	// 透過使用者查詢行事曆
 	@GetMapping("/calender/findbyuser")
@@ -87,4 +89,16 @@ public class CalenderController {
 		return "刪除成功";
 	}
 	
+	
+	// 透過使用者查詢行事曆
+	@GetMapping("/calender")
+	@ResponseBody
+	public List<LessonsDTO> findCalenderWithLessonsByUsersId(@RequestParam("uid") Integer id) {
+		if (id != null) {
+			List<LessonsDTO> l = cService.findLessonsByUsersId(id);
+			return l;
+		} else {
+			return null;
+		}
+	}
 }

@@ -18,4 +18,5 @@ public interface CalenderDAO extends JpaRepository<Calender, Integer> {
 	
 	@Query("SELECT c FROM Lessons l JOIN l.calender c WHERE l.lessonId = :lessonId")
 	List<Calender> findCalenderListByLessonId(@Param("lessonId") Integer lessonId);
+	
 }

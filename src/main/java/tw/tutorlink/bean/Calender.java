@@ -3,6 +3,7 @@ package tw.tutorlink.bean;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -26,12 +27,15 @@ public class Calender {
 
 	@ManyToOne
 	@JoinColumn(name = "UsersId", referencedColumnName = "usersId", nullable = false)
-	@JsonIgnore
+	@JsonIgnoreProperties({ "userPassword", "userEmail", "userType", "googleSubId", "applyTeacher", "lesson", "order",
+		"comment", "Cart", "report", "favorite", "exercises", "calender", "vacation", "question", "lessonPost",
+		"videoNote", "courseQA", "cart","exercisePermissions","userDetail" })
 	private Users users;
 
 	@ManyToOne
 	@JoinColumn(name = "LessonId", referencedColumnName = "lessonId", nullable = false)
-	@JsonIgnore
+	@JsonIgnoreProperties({ "subject", "lessonType", "price", "image", "lessondetail", "order",
+		"shoppingCart", "report", "favorite", "exercises", "calender", "studentWillLearn", "courseQA" })
 	private Lessons lesson;
 	
 	
