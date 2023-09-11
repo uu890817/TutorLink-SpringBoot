@@ -52,9 +52,9 @@ public class Exercises {
 	@OneToOne(cascade = CascadeType.ALL, mappedBy = "exercises")
 	private ExerciseConfig exerciseConfig;
 	
-	@JsonIgnoreProperties("exercises")
-	@OneToOne(cascade = CascadeType.ALL, mappedBy = "exercises")
-	private ExercisePermissions exercisePermissions;
+	@JsonIgnore
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "exercises")
+	private List<ExercisePermissions> exercisePermissions;
 	
 	@JsonIgnoreProperties("exercises")
 	@OneToMany(mappedBy = "exercises", cascade = CascadeType.ALL)
@@ -117,11 +117,13 @@ public class Exercises {
 		this.topics = topics;
 	}
 
-	public ExercisePermissions getExercisePermissions() {
+
+
+	public List<ExercisePermissions> getExercisePermissions() {
 		return exercisePermissions;
 	}
 
-	public void setExercisePermissions(ExercisePermissions exercisePermissions) {
+	public void setExercisePermissions(List<ExercisePermissions> exercisePermissions) {
 		this.exercisePermissions = exercisePermissions;
 	}
 

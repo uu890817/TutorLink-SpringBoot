@@ -3,6 +3,7 @@ package tw.tutorlink.bean;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -31,11 +32,13 @@ public class ExercisePermissions {
 	private Exercises exercises;
 	
 	@ManyToOne
+	@JsonIgnore
 	@JoinColumn(name = "UsersId", referencedColumnName = "usersId", nullable = false)
 	private Users users;
 	
 	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name="ExerPerId",referencedColumnName = "exerPerId")
+	@JsonIgnoreProperties({"exercisePermissions", "exerciseConfig"})
+	@JoinColumn(name="ExerConfigId",referencedColumnName = "exerConfigId")
 	private ExerciseConfig exerciseConfig;
 	
 	@Column(name="Score")
@@ -44,6 +47,72 @@ public class ExercisePermissions {
 	@Column(name="OverwriteScore")
 	private Integer overwriteScore;
 	
+	@JsonIgnoreProperties("ExercisePermissions")
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "exercisePermissions")
 	private List<StudentAnswers> studentAnswers;
+
+	
+	public Integer getExerPerId() {
+		return exerPerId;
+	}
+
+	public void setExerPerId(Integer exerPerId) {
+		this.exerPerId = exerPerId;
+	}
+
+	public Exercises getExercises() {
+		return exercises;
+	}
+
+	public void setExercises(Exercises exercises) {
+		this.exercises = exercises;
+	}
+
+	public Users getUsers() {
+		return users;
+	}
+
+	public void setUsers(Users users) {
+		this.users = users;
+	}
+
+	public ExerciseConfig getExerciseConfig() {
+		return exerciseConfig;
+	}
+
+	public void setExerciseConfig(ExerciseConfig exerciseConfig) {
+		this.exerciseConfig = exerciseConfig;
+	}
+
+	public Integer getScore() {
+		return score;
+	}
+
+	public void setScore(Integer score) {
+		this.score = score;
+	}
+
+	public Integer getOverwriteScore() {
+		return overwriteScore;
+	}
+
+	public void setOverwriteScore(Integer overwriteScore) {
+		this.overwriteScore = overwriteScore;
+	}
+
+	public List<StudentAnswers> getStudentAnswers() {
+		return studentAnswers;
+	}
+
+	public void setStudentAnswers(List<StudentAnswers> studentAnswers) {
+		this.studentAnswers = studentAnswers;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
 }

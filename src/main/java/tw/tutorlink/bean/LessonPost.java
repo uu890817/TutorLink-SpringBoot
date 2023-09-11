@@ -1,5 +1,7 @@
 package tw.tutorlink.bean;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -19,10 +21,12 @@ public class LessonPost {
 	private Integer lessonPostId;
 	
 	@ManyToOne
+	@JsonIgnore
 	@JoinColumn(name = "UsersId", referencedColumnName = "usersId",nullable = false)
 	private Users users;
 
 	@ManyToOne
+	@JsonIgnore
 	@JoinColumn(name="LessonDetailId",referencedColumnName = "lessonDetailId")
 	private LessonDetail lessonDetail;
 	

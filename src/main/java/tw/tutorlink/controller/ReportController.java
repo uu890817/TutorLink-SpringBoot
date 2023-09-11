@@ -35,7 +35,7 @@ public class ReportController {
 	// 查詢使用者所有評論
 	@GetMapping("/report/selectbyuser")
 	@ResponseBody
-	public List<Report> findCommentListByUsersId(@RequestParam("uid") Integer uid) {
+	public List<Report> findReportListByUsersId(@RequestParam("uid") Integer uid) {
 		if (uid != null) {
 			List<Report> fScore = rService.findReportListByUsersId(uid);
 			return fScore;
@@ -47,7 +47,7 @@ public class ReportController {
 	// 查詢課程所有評論
 	@GetMapping("/report/selectbylesson")
 	@ResponseBody
-	public List<Report> findCommentListByLessonId(@RequestParam("lid") Integer lid) {
+	public List<Report> findReportListByLessonId(@RequestParam("lid") Integer lid) {
 		if (lid != null) {
 			List<Report> fScore = rService.findReportListByLessonId(lid);
 			return fScore;
@@ -59,9 +59,9 @@ public class ReportController {
 	// 新增單一評論
 	@PostMapping(path = "/report", produces = "application/json;charset=UTF-8")
 	@ResponseBody
-	public String InsertScore(@RequestBody Report sc) {
+	public String InsertReport(@RequestBody Report sc) {
 		Users user = rService.findUserId(3);
-		Lessons lesson = rService.findLessonsById(8);
+		Lessons lesson = rService.findLessonsById(2);
 		sc.setStatus(0);
 		sc.setUsers(user);
 		sc.setLesson(lesson);
@@ -72,7 +72,7 @@ public class ReportController {
 	// 刪除單筆評論
 	@DeleteMapping("/report/delete")
 	@ResponseBody
-	public String deleteScore(@RequestParam("id") Integer id) {
+	public String deleteReport(@RequestParam("id") Integer id) {
 		Report report = rService.findById(id);
 		if (report == null) {
 			return "沒有這筆資料";
