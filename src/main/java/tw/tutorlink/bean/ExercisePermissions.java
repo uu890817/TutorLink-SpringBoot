@@ -37,7 +37,7 @@ public class ExercisePermissions {
 	private Users users;
 	
 	@OneToOne(cascade = CascadeType.ALL)
-	@JsonIgnoreProperties("ExercisePermissions")
+	@JsonIgnoreProperties({"exercisePermissions", "exerciseConfig"})
 	@JoinColumn(name="ExerConfigId",referencedColumnName = "exerConfigId")
 	private ExerciseConfig exerciseConfig;
 	
