@@ -61,7 +61,7 @@ public class ReportController {
 	@ResponseBody
 	public String InsertReport(@RequestBody Report sc) {
 		Users user = rService.findUserId(3);
-		Lessons lesson = rService.findLessonsById(8);
+		Lessons lesson = rService.findLessonsById(2);
 		sc.setStatus(0);
 		sc.setUsers(user);
 		sc.setLesson(lesson);
