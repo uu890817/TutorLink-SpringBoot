@@ -6,7 +6,7 @@ import java.util.List;
 import tw.tutorlink.bean.CartItem;
 
 public class CartItemDTO {
-
+	private Integer cartId;
 
 	private String lessonName;
 
@@ -41,6 +41,13 @@ public class CartItemDTO {
 		this.addTime=item.getAddTime();
 		this.status=item.getStatus();
 		this.selectedTimes=item.getSelectedTimes();
+	}
+	public Integer getCartId() {
+		return cartId;
+	}
+
+	public void setCartId(Integer cartId) {
+		this.cartId = cartId;
 	}
 
 	public Integer getQuantity() {
