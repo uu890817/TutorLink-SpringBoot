@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import tw.tutorlink.bean.Lessons;
+
 import tw.tutorlink.bean.Users;
 
 public interface LessonsDAO extends JpaRepository<Lessons, Integer> {
@@ -24,5 +25,7 @@ public interface LessonsDAO extends JpaRepository<Lessons, Integer> {
 	@Query("from Lessons l join l.lessondetail where lessonId = :id")
 	public Lessons findByIdDetail(@Param("id")int id);
 	
+//	@Query("SELECT new tw.tutorlink.bean.LessonsDTO(l, u) FROM Lessons l JOIN l.users u WHERE l.id = :lessonId")
+//	public LessonsDTO findLessonsWithTeacherByLessonId(@Param("lessonId") Integer lessonId);
 
 }
