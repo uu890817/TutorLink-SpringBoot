@@ -16,22 +16,13 @@ public class CartService {
 	@Autowired
 	private CartDAO cDAO;
 
-	// 新增商品至購物車
-	public CartItem insertNewCartItem(CartItem item) {
-		CartItem result = cDAO.save(item);
-		if (result != null) {
-			return result;
-		}
-		return null;
-	}
-
 	// 刪除購物車商品
 	public String deleteCartItem(Integer cId) {
 		cDAO.deleteById(cId);
 		return "OK";
 	}
 
-	// 使用者購物車商品
+	// 查詢使用者購物車商品
 	public List<CartItemDTO> getUserShoppingCart(int id) {
 		List<CartItemDTO> cDTOs = new ArrayList<>();
 		List<CartItem> citems = cDAO.findByUsers(id);
@@ -50,5 +41,14 @@ public class CartService {
 		}
 		return null;
 	}
-
+	
+	
+//	// 新增商品至購物車
+//	public CartItem insertNewCartItem(CartItem item) {
+//		CartItem result = cDAO.save(item);
+//		if (result != null) {
+//			return result;
+//		}
+//		return null;
+//	}
 }
