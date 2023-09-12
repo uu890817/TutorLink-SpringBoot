@@ -1,19 +1,27 @@
 package tw.tutorlink.controller;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.bind.DefaultValue;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,7 +35,7 @@ import tw.tutorlink.bean.LessonDetail;
 import tw.tutorlink.bean.Lessons;
 import tw.tutorlink.bean.Subject;
 import tw.tutorlink.bean.Users;
-
+import tw.tutorlink.bean.Video;
 import tw.tutorlink.service.LessonDetailService;
 import tw.tutorlink.service.LessonsService;
 import tw.tutorlink.service.SubjectService;
@@ -146,11 +154,25 @@ public class LessonController {
 	}
 
 	// 課程單筆查詢
-	@GetMapping(path = "/findLessons", produces = "application/json;charset=UTF-8")
-	public Lessons findLesson(@RequestBody Lessons lesson) {
-		return lService.findLessonsById(lesson);
-	}
+	@PostMapping(path = "/findLessons/{lessonId}", produces = "application/json;charset=UTF-8")
+	public Lessons findLesson(@PathVariable("lessonId")Integer id) {
+		Lessons lesson = lService.findByLessonId(id).get();
+		String imagePath = lesson.getImage();
+		try {
+			
+			byte[] fileBytes = readFileToByteArray(imagePath);
 
+	        // 將檔案內容轉換為Base64
+	        String base64Image = Base64.getEncoder().encodeToString(fileBytes);
+
+	        lesson.setImage(base64Image);
+		}catch(IOException e){
+			e.printStackTrace();
+			
+		}
+		return lesson;
+	}
+	
 	// 課程修改
 	@PutMapping(path = "/updateLessons", produces = "application/json;charset=UTF-8")
 	public Lessons updateLesson(@RequestBody Lessons lesson) {
@@ -197,5 +219,15 @@ public class LessonController {
 		String uniqueName = baseName + "-" + UUID.randomUUID().toString() + "." + extension;
 		return uniqueName;
 	}
+	//讀取檔案內容並返回位元組陣列
+	private byte[] readFileToByteArray(String filePath) throws IOException {
+	    File file = new File(filePath);
+	    FileInputStream fis = new FileInputStream(file);
+	    byte[] fileBytes = new byte[(int) file.length()];
+	    fis.read(fileBytes);
+	    fis.close();
+	    return fileBytes;
+	}
+	
 
 }
