@@ -79,4 +79,18 @@ public class InfomationContorller {
 		}
 		return null;
 	}
+	
+	@PostMapping("/username")
+	@ResponseBody
+	public String username(HttpSession session) {
+		Users loggedInUser = (Users) session.getAttribute("logState");
+		int userid = loggedInUser.getUsersId();
+		InfomationDTO result = uService.findByIdDetail(userid);
+		if(result!=null)
+		{
+			System.out.println(result.getUserName());
+			return result.getUserName();
+		}
+		return null;
+	}
 }
