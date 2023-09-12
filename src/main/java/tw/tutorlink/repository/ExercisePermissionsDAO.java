@@ -17,4 +17,6 @@ public interface ExercisePermissionsDAO extends JpaRepository<ExercisePermission
 	
 	@Query("FROM ExercisePermissions ep WHERE ep.exerPerId = :epId")
 	public ExercisePermissions findExercisePermissionsByepId(@Param("epId") Integer epId);
+
+	
 }
