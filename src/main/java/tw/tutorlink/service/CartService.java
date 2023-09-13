@@ -15,6 +15,9 @@ public class CartService {
 
 	@Autowired
 	private CartDAO cDAO;
+	
+	@Autowired
+	private CartItem cItem;
 
 	// 刪除購物車商品
 	public String deleteCartItem(Integer cId) {
@@ -34,15 +37,16 @@ public class CartService {
 	}
 
 	// 更新購物車商品
-	public CartItem updateCartItem(CartItem item) {
-		CartItem result = cDAO.save(item);
+	public CartItem updateCartItem(CartItemDTO item) {
+		cItem.setQuantity(item.getQuantity());
+		cItem.setSelectedTimes(item.getSelectedTimes());
+		CartItem result = cDAO.save(cItem);
 		if (result != null) {
 			return result;
 		}
 		return null;
 	}
-	
-	
+
 //	// 新增商品至購物車
 //	public CartItem insertNewCartItem(CartItem item) {
 //		CartItem result = cDAO.save(item);
