@@ -47,5 +47,9 @@ public class ExercisePermissionsService {
 	}
 	
 	
+	public ExercisePermissions studentGetFinishExercise(Integer epId, Integer uId) {
+		return epDAO.findFinishExercisePermissions(epId, uId);
+	}
+	
 	
 }

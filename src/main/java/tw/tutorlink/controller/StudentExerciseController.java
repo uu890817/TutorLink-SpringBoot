@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 import jakarta.servlet.http.HttpSession;
 import tw.tutorlink.bean.ExercisePermissions;
 import tw.tutorlink.bean.StudentAnswers;
-import tw.tutorlink.bean.Topics;
 import tw.tutorlink.bean.Users;
 import tw.tutorlink.dto.exercises.ResponseDTO;
 import tw.tutorlink.dto.exercises.StudentGetExerciseDTO;
@@ -51,15 +50,24 @@ public class StudentExerciseController {
 	}
 
 	@GetMapping("/doExercise/{epId}")
-	public StudentGetExerciseDTO getExercise(@PathVariable Integer epId) {
-		return epService.studentGetExerciseByExerId(epId);
+	public ResponseDTO getExercise(@PathVariable Integer epId) {
+		return new ResponseDTO(epService.studentGetExerciseByExerId(epId), 200, "OK");
+	}
+
+	@GetMapping("/getFinishExercise/{epId}")
+	public ResponseDTO getFinishExercise(@PathVariable Integer epId, HttpSession session) {
+		Users uSession = (Users) session.getAttribute("logState");
+		if (uSession != null) {
+
+		}
+		return new ResponseDTO(epService.studentGetFinishExercise(epId, uSession.getUsersId()), 200, "OK");
 	}
 
 	@PostMapping("/sendExercise")
-	public boolean sendExercise(@RequestBody List<StudentAnswers> sAns, HttpSession session) {
+	public String sendExercise(@RequestBody List<StudentAnswers> sAns, HttpSession session) {
 		Double eachScore = (double) (Math.round(100 / sAns.size() * 100) / 100);
 		System.out.println(eachScore);
-		Integer Finalscore =  100;
+		Integer Finalscore = 100;
 		Integer wrongTopic = 0;
 		Users uSession = (Users) session.getAttribute("logState");
 		Users u = new Users();
@@ -69,37 +77,49 @@ public class StudentExerciseController {
 			List<String> answer = tService.getAnswer(ans.getTopics().getTopicsId());
 			String[] splitAnswer = ans.getAnswer().split("<AND>");
 			boolean hasWrong = false;
+			int correctCount = 0;
 			for (String ansStr : answer) {
-				System.out.println("ans:" + ansStr);
+				System.err.println("ans:" + ansStr);
 				for (int i = 0; i < splitAnswer.length; i++) {
 					if (!ansStr.equals(splitAnswer[i])) {
 						hasWrong = true;
+					} else {
+						correctCount++;
 					}
 					System.err.println("正確: " + ansStr + "錯誤: " + splitAnswer[i] + " " + hasWrong);
 				}
 			}
+			System.err.println("correctCount" + correctCount);
+			System.err.println("answer.size()" + answer.size());
+			if(correctCount == answer.size()) {
+				hasWrong = false;
+			}
+			if(splitAnswer.length > answer.size()) {
+				hasWrong = true;
+			}
 			if (hasWrong) {
 				wrongTopic++;
 			}
-			
-			
+
 			ans.setUsers(u);
 			String result = saService.insertStudentAns(ans);
 			if (!result.equals("OK")) {
 				isErr = true;
 			}
 		}
-		
-		
+
 		Finalscore = (int) (Finalscore - (wrongTopic * eachScore));
-		ExercisePermissions epResult = epService.getExercisePermissionsByepId(sAns.get(0).getExercisePermissions().getExerPerId());
+		if(sAns.size() == wrongTopic) {
+			Finalscore = 0;
+		}
+		ExercisePermissions epResult = epService
+				.getExercisePermissionsByepId(sAns.get(0).getExercisePermissions().getExerPerId());
 		epResult.setScore(Finalscore);
 		epService.shareExercise(epResult);
-		
-		
+
 		System.err.println("錯誤數:" + wrongTopic);
 		System.err.println("總分:" + Finalscore);
-		return isErr;
+		return isErr? "Error" : "OK";
 	}
 
 }
