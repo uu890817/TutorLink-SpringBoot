@@ -48,6 +48,7 @@ public class ShoppingCartController {
 	//更新使用者購物車商品
 	@PutMapping(path = "/updateItemCount/{cId}", produces = "application/json;charset=UTF-8")
 	public String updateCartItem(HttpSession session,@RequestBody CartItemDTO cDTO) {
+		System.out.println(cDTO.getQuantity());
 		cService.updateCartItem(cDTO);
 		return null;
 	}

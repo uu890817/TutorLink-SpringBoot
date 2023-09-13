@@ -15,9 +15,6 @@ public class CartService {
 
 	@Autowired
 	private CartDAO cDAO;
-	
-	@Autowired
-	private CartItem cItem;
 
 	// 刪除購物車商品
 	public String deleteCartItem(Integer cId) {
@@ -37,10 +34,14 @@ public class CartService {
 	}
 
 	// 更新購物車商品
-	public CartItem updateCartItem(CartItemDTO item) {
-		cItem.setQuantity(item.getQuantity());
-		cItem.setSelectedTimes(item.getSelectedTimes());
-		CartItem result = cDAO.save(cItem);
+	public CartItem updateCartItem(CartItemDTO cDTO) {
+//		System.out.println(cDTO.getCartId());
+//		System.out.println(cDTO.getSelectedTimes());
+//		System.out.println(cDTO.getQuantity());
+		CartItem findById = cDAO.findBycId(cDTO.getCartId());
+		findById.setQuantity(cDTO.getQuantity());
+		findById.setSelectedTimes(cDTO.getSelectedTimes());
+		CartItem result = cDAO.save(findById);
 		if (result != null) {
 			return result;
 		}

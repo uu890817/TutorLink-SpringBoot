@@ -85,7 +85,9 @@ public class CartItem {
             this.selectedTimes = "[]"; // 或者使用其他默認值
         }
     }
-
+	
+	public CartItem() {}
+    
 	public Integer getCartId() {
 		return cartId;
 	}
