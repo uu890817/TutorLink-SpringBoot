@@ -95,7 +95,7 @@ public class LessonController {
 	public ResponseEntity<Integer> insertLesson(HttpSession session, @RequestParam("lessonName") String lessonName,
 			@RequestParam("subject") Subject subject, @RequestParam("lessonType") boolean lessonType,
 			@RequestParam(name = "image", required = false) MultipartFile image, @RequestParam("price") Integer price,
-			@RequestParam(name = "imformation", defaultValue = "") String imformation,
+			@RequestParam(name = "information", defaultValue = "") String information,
 			@RequestParam(name = "meetingURL", defaultValue = "") String meetingUrl,
 			@RequestParam(name = "video", required = false) MultipartFile courseUrl,
 			@RequestParam(name = "createTime", required = false) Date createTime,
@@ -120,7 +120,7 @@ public class LessonController {
 				lesson = new Lessons(lessonName, subject, lessonType, imageSavePath, price);
 			}
 			if (courseUrl == null || courseUrl.isEmpty()) {
-				LD = new LessonDetail(imformation, meetingUrl, "", createTime, courseTotalTime, language);
+				LD = new LessonDetail(information, meetingUrl, "", createTime, courseTotalTime, language);
 			} else {
 				String videoFileName = generateUniqueFileName(courseUrl.getOriginalFilename());
 				String savePath = "c:/temp/upload/video/";
@@ -128,7 +128,7 @@ public class LessonController {
 				courseUrl.transferTo(saveFile);
 				String videoSavePath = saveFile.getAbsolutePath();
 
-				LD = new LessonDetail(imformation, meetingUrl, videoSavePath, createTime, courseTotalTime, language);
+				LD = new LessonDetail(information, meetingUrl, videoSavePath, createTime, courseTotalTime, language);
 			}
 
 			Lessons savedLesson = lService.insertLesson(loggedInUser.getUsersId(), lesson, LD);

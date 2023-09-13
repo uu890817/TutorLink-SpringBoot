@@ -80,4 +80,9 @@ public class LessonDetailService {
 	
 	
 	}
+	
+	//查課程影片url
+	public String findPreVideo(Integer lessonId) {
+		return ldDAO.findCourseUrlByLessonId(lessonId);
+	}
 }
