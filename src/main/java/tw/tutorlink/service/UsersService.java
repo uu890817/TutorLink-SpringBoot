@@ -1,6 +1,7 @@
 package tw.tutorlink.service;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -44,6 +45,8 @@ public class UsersService {
 			add.setGoogleSubId(sub);
 			add.setUserType(1);
 			ud.setUsers(add);
+			ud.setTeacherState(1);
+			ud.setCreateDate(new Date());
 			uDAO.save(add);
 			users = uDAO.findByGoogleSubId(sub);
 			return users;
@@ -151,4 +154,18 @@ public class UsersService {
 		// 信箱不存在或者信箱輸入錯誤
 		return "100";
 	}
+
+// ----- 管理者頁面查詢全部 -----
+	public List<Users> findAllUsers(int start, int rows) {
+		if (start == 0 && rows == 0) {
+			return uDAO.findAll();
+		}
+//		return uDAO.findPagin(start,rows);
+		return null;
+	}
+
+	public long count() {
+		return uDAO.count();
+	}
+
 }

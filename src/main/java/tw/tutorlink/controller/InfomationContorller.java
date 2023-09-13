@@ -32,6 +32,8 @@ public class InfomationContorller {
 		return iDTO;
 	}
 
+	
+	// 使用者設定個人資料用
 	@PostMapping("/send")
 	@ResponseBody
 	public String data(@RequestBody String str, HttpSession session, @CookieValue("UsersId") String cookie) {
@@ -66,7 +68,7 @@ public class InfomationContorller {
 		return "ok";
 	}
 	
-	// --- 回傳UserType ---
+	// --- 回傳UserType，如果是老師就不會顯示申請老師頁面，且可以切換學生/老師頁面 ---
 	@PostMapping("/type")
 	@ResponseBody
 	public Integer type(HttpSession session) {
@@ -80,6 +82,7 @@ public class InfomationContorller {
 		return null;
 	}
 	
+	// 用在使用者頁面彈出視窗顯示名字用
 	@PostMapping("/username")
 	@ResponseBody
 	public String username(HttpSession session) {

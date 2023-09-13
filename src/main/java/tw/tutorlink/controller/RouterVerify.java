@@ -25,17 +25,21 @@ public class RouterVerify {
 		for (Cookie cookie : cookies) {
 			System.out.println(cookie.getName() + ": " + cookie.getValue());
 			if (cookie.getName().equals("UsersId")) {
-				System.out.println("cookie: " + cookie.getValue());
-				userId = Integer.parseInt(cookie.getValue());
-				Users result = uService.findUsersByID(userId);
-
-				if (session.getAttribute("logState") == null) {
-					session.setAttribute("logState", result);
-					session.setMaxInactiveInterval(600);
-					return "loginOk";
+				if (session.getAttribute("logState") != null && userId != -1) {
+					return "伺服器已重啟，請重新登入";
 				} else {
-					// cookie存在且session存在 (網頁重新整理，且不關網頁或重啟server的情況)
-					return "alreadylogin";
+					System.out.println("cookie: " + cookie.getValue());
+					userId = Integer.parseInt(cookie.getValue());
+					Users result = uService.findUsersByID(userId);
+
+					if (session.getAttribute("logState") == null) {
+						session.setAttribute("logState", result);
+						session.setMaxInactiveInterval(600);
+						return "loginOk";
+					} else {
+						// cookie存在且session存在 (網頁重新整理，且不關網頁或重啟server的情況)
+						return "alreadylogin";
+					}
 				}
 			}
 		}
