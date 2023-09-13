@@ -18,6 +18,11 @@ public class ExercisePermissionsService {
 	private ExercisePermissionsDAO epDAO;
 	
 	
+	public ExercisePermissions getExercisePermissionsByepId(Integer epId) {
+		return epDAO.findExercisePermissionsByepId(epId);
+	}
+	
+	
 	public ExercisePermissions shareExercise(ExercisePermissions exercisePermissions) {
 		ExercisePermissions result = epDAO.save(exercisePermissions);
 		return (result != null) ? result: null;

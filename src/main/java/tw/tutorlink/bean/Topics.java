@@ -45,8 +45,8 @@ public class Topics {
 	@OneToMany(mappedBy = "topics",cascade = CascadeType.ALL)
 	private List<Options> options;
 	
-	@OneToOne(cascade = CascadeType.ALL, mappedBy = "topics")
-	private StudentAnswers studentAnswers;
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "topics")
+	private  List<StudentAnswers> studentAnswers;
 
 	public Integer getTopicsId() {
 		return topicsId;
@@ -88,13 +88,23 @@ public class Topics {
 		this.options = options;
 	}
 
-	public StudentAnswers getStudentAnswers() {
+	public Integer getSortId() {
+		return sortId;
+	}
+
+	public void setSortId(Integer sortId) {
+		this.sortId = sortId;
+	}
+
+	public List<StudentAnswers> getStudentAnswers() {
 		return studentAnswers;
 	}
 
-	public void setStudentAnswers(StudentAnswers studentAnswers) {
+	public void setStudentAnswers(List<StudentAnswers> studentAnswers) {
 		this.studentAnswers = studentAnswers;
 	}
+
+
 	
 	
 	

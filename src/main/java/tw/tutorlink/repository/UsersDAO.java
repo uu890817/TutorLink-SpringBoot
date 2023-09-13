@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import tw.tutorlink.bean.ApplyTeacher;
 import tw.tutorlink.bean.Users;
 
 public interface UsersDAO extends JpaRepository<Users, Integer> {
@@ -24,4 +25,7 @@ public interface UsersDAO extends JpaRepository<Users, Integer> {
 
 	@Query("from Users where userPassword = :pwd and userEmail = :mail" )
 	public Users findByPwd(@Param("pwd") String pwd ,@Param("mail") String mail);
+	
+	@Query("from Users u join u.applyTeacher where usersId = :id ")
+	public Users checkId(int id);
 }

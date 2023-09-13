@@ -41,6 +41,7 @@ public class CartItemDTO {
 		this.addTime=item.getAddTime();
 		this.status=item.getStatus();
 		this.selectedTimes=item.getSelectedTimes();
+		this.cartId=item.getCartId();
 	}
 	public Integer getCartId() {
 		return cartId;

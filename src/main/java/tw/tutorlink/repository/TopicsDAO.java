@@ -14,7 +14,8 @@ public interface TopicsDAO extends JpaRepository<Topics, Integer> {
 	@Query("FROM Topics t WHERE t.exercises.exerId = :tid")
 	public List<Topics> findByExerciseId(@Param("tid") Integer tid);
 	
-	
+	@Query("FROM Topics t WHERE t.topicsId = :tid")
+	public Topics findBytId (@Param("tid") Integer tid);
 	
 	
 	

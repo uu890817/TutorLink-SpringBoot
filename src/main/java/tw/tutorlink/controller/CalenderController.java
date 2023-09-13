@@ -22,8 +22,7 @@ import tw.tutorlink.service.CalenderService;
 public class CalenderController {
 	@Autowired
 	private CalenderService cService;
-	
-	private LessonsDTO lDTO;
+
 	
 	// 透過使用者查詢行事曆
 	@GetMapping("/calender/findbyuser")
