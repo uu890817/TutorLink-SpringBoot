@@ -39,4 +39,12 @@ public interface LessonsDAO extends JpaRepository<Lessons, Integer> {
 	
 	@Query("SELECT u FROM Lessons l JOIN l.users u WHERE l.lessonId = :lessonId")
 	Users findUserByLessonId(@Param("lessonId")Integer lessonId);
+	
+	//subject找課程
+	@Query("FROM Lessons WHERE subject.subjectId = :subjectId AND lessonType = :lessonType")
+	List<Lessons> findLessonsBySubIdAndType(@Param("subjectId") Integer subjectId,@Param("lessonType") boolean lessonType);
+	
+	//Type找課程
+	@Query("FROM Lessons WHERE lessonType = :lessonType")
+	List<Lessons> findLessonsByType(@Param("lessonType") boolean lessonType);
 }

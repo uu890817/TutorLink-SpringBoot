@@ -129,16 +129,32 @@ public class LessonsService {
 	}
 	
 	//找老師
-//	public UserDetail findUserByLessonId(Integer lessonId) {
-//        Integer userId = lDAO.findUserIdByLessonId(lessonId);
-//        System.out.println(userId);
-//
-//        if (userId != null) {
-//            return udDAO.findByUsers_usersId(userId);
-//        } else {
-//            return null;
-//        }
-//    }
-	//課程id找老師資料
+	public UserDetail findUserByLessonId(Integer lessonId) {
+        Integer userId = lDAO.findUserIdByLessonId(lessonId);
+        System.out.println(userId);
+
+        if (userId != null) {
+            return udDAO.findByUsers_usersId(userId);
+        } else {
+            return null;
+        }
+    }
+	
+	//Subject找課程
+	public List<Lessons> findLessonsBySubIdAndType(Integer subjectId,boolean type){
+		return lDAO.findLessonsBySubIdAndType(subjectId,type);
+	}
+	
+	//type找影片課程
+	public List<Lessons> findVideoLessonsByType(){
+		return lDAO.findLessonsByType(false);
+	}
+	
+	//type找線上課程
+	public List<Lessons> findOnlineLessonsByType() {
+		return lDAO.findLessonsByType(true);
+	}
+	
+	
 	
 }

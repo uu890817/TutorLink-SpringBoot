@@ -52,8 +52,8 @@ public class UserDetail {
 	@Column(name="IdCard",columnDefinition = "nvarchar(50)")
 	private String idCard;
 
-	@Column(name = "TeacherState",columnDefinition = "bit")
-	private boolean teacherState;
+	@Column(name = "TeacherState")
+	private Integer  teacherState;
 	// 是否為老師的狀態，是、不是、審核中
 
 	@Column(name = "LastLoginTime")
@@ -139,11 +139,11 @@ public class UserDetail {
 		this.idCard = idCard;
 	}
 
-	public boolean isTeacherState() {
+	public Integer getTeacherState() {
 		return teacherState;
 	}
 
-	public void setTeacherState(boolean teacherState) {
+	public void setTeacherState(Integer teacherState) {
 		this.teacherState = teacherState;
 	}
 

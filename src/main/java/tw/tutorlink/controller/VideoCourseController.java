@@ -201,26 +201,60 @@ public class VideoCourseController {
 	}
 	
 	//課程找講師資訊
-//	@GetMapping(path="/teacherInfo/{lessonId}",produces="application/json;charset=UTF-8")
-//	public UserDetail findTeacherByLesson(Integer lessonId) {
-//		return lService.findUserByLessonId(lessonId);
+	@GetMapping(path="/teacherInfo/{lessonId}",produces="application/json;charset=UTF-8")
+	public UserDetail findTeacherByLesson(@PathVariable("lessonId") Integer lessonId) {
+		return lService.findUserByLessonId(lessonId);
+	}
+	
+//	@GetMapping(path="/teacherName/{lessonId}",produces="application/json;charset=UTF-8")
+//	public String findTeacherByLesson(@PathVariable("lessonId") Integer lessonId) {
+//		
 //	}
 	
 	//課程找講師資訊
-	@GetMapping(path="/teacherInfo/{lessonId}",produces="application/json;charset=UTF-8")
-	public VideoCourseDTO findTeacherByLessonId(@PathVariable("lessonId") Integer lessonId) {
-		Lessons lesson = lService.findByLessonId(lessonId).get();
-		if(lesson == null) {
-			return null;
-		}
-		Integer teacherId = lesson.getUsers().getUsersId();
-		
-		Users teacher = uService.findUsersByID(teacherId);
-		if(teacher == null) {
-			return null;
-		}
-		VideoCourseDTO videoCourseDTO = new VideoCourseDTO(lesson, teacher);
-		return videoCourseDTO;
+//	@GetMapping(path="/teacherInfo/{lessonId}",produces="application/json;charset=UTF-8")
+//	public VideoCourseDTO findTeacherByLessonId(@PathVariable("lessonId") Integer lessonId) {
+//		Lessons lesson = lService.findByLessonId(lessonId).get();
+//		if(lesson == null) {
+//			return null;
+//		}
+//		Integer teacherId = lesson.getUsers().getUsersId();
+//		
+//		Users teacher = uService.findUsersByID(teacherId);
+//		if(teacher == null) {
+//			return null;
+//		}
+//		VideoCourseDTO videoCourseDTO = new VideoCourseDTO(lesson, teacher);
+//		return videoCourseDTO;
+//	}
+	//用科目找影片課程
+	@GetMapping(path="/findVideoLessonsBySub/{subid}",produces="application/json;charset=UTF-8")
+	public List<Lessons> findByVideoLessonBySub(@PathVariable("subid") Integer subject){
+		return lService.findLessonsBySubIdAndType(subject,false);
+	}
+	
+	//用科目找線上課程
+	@GetMapping(path = "/findOnlineLessonsBySub/{subid}", produces = "application/json;charset=UTF-8")
+	public List<Lessons> findByOnlineLessonBySub(@PathVariable("subid") Integer subject) {
+		return lService.findLessonsBySubIdAndType(subject,true);
+	}
+	
+	//找全部課程
+	@GetMapping(path="/findAllLesson",produces="application/json;charset=UTF-8")
+	public List<Lessons> findAllLesson(){
+		return lService.getAllLessons();
+	}
+	
+	//找全部影片課程
+	@GetMapping(path="/findVideoLesson",produces="application/json;charset=UTF-8")
+	public List<Lessons> findVideoLesson() {
+		return lService.findVideoLessonsByType();
+	}
+	
+	//找全部線上課程
+	@GetMapping(path = "/findOnlineLesson", produces = "application/json;charset=UTF-8")
+	public List<Lessons> findOnlineLesson() {
+		return lService.findOnlineLessonsByType();
 	}
 	
 	
