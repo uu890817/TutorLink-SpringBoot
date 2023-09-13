@@ -27,7 +27,7 @@ public class ExercisePermissions {
 	private Integer exerPerId;
 	
 	@ManyToOne
-	@JsonIgnore
+	@JsonIgnoreProperties({"exercisePermissions", "topics", "exerciseConfig", "question", "lesson"})
 	@JoinColumn(name = "ExerId", referencedColumnName = "exerId")
 	private Exercises exercises;
 	

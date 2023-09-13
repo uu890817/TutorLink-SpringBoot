@@ -43,16 +43,19 @@ import tw.tutorlink.bean.Lessons;
 import tw.tutorlink.bean.OrderItem;
 import tw.tutorlink.bean.StudentWillLearn;
 import tw.tutorlink.bean.Subject;
+import tw.tutorlink.bean.UserDetail;
 import tw.tutorlink.bean.Users;
 import tw.tutorlink.bean.Video;
+import tw.tutorlink.bean.VideoCourseDTO;
 import tw.tutorlink.bean.VideoNote;
-import tw.tutorlink.bean.VideoUploadDTO;
 import tw.tutorlink.service.CourseQAService;
 import tw.tutorlink.service.LessonDetailService;
 import tw.tutorlink.service.LessonPostService;
 import tw.tutorlink.service.LessonsService;
 import tw.tutorlink.service.OrderItemService;
 import tw.tutorlink.service.StudentWillLearnService;
+import tw.tutorlink.service.UserDetailService;
+import tw.tutorlink.service.UsersService;
 import tw.tutorlink.service.VideoNoteService;
 import tw.tutorlink.service.VideoService;
 
@@ -91,6 +94,12 @@ public class VideoCourseController {
 	
 	@Autowired
 	private OrderItemService oiService;
+	
+	@Autowired
+	private UsersService uService;
+	
+	@Autowired
+	private UserDetailService udService;
 	
 	//-------------------課程-------------------
 	//新增影片課程
@@ -191,6 +200,63 @@ public class VideoCourseController {
 		return null;
 	}
 	
+	//課程找講師資訊
+	@GetMapping(path="/teacherInfo/{lessonId}",produces="application/json;charset=UTF-8")
+	public UserDetail findTeacherByLesson(@PathVariable("lessonId") Integer lessonId) {
+		return lService.findUserByLessonId(lessonId);
+	}
+	
+//	@GetMapping(path="/teacherName/{lessonId}",produces="application/json;charset=UTF-8")
+//	public String findTeacherByLesson(@PathVariable("lessonId") Integer lessonId) {
+//		
+//	}
+	
+	//課程找講師資訊
+//	@GetMapping(path="/teacherInfo/{lessonId}",produces="application/json;charset=UTF-8")
+//	public VideoCourseDTO findTeacherByLessonId(@PathVariable("lessonId") Integer lessonId) {
+//		Lessons lesson = lService.findByLessonId(lessonId).get();
+//		if(lesson == null) {
+//			return null;
+//		}
+//		Integer teacherId = lesson.getUsers().getUsersId();
+//		
+//		Users teacher = uService.findUsersByID(teacherId);
+//		if(teacher == null) {
+//			return null;
+//		}
+//		VideoCourseDTO videoCourseDTO = new VideoCourseDTO(lesson, teacher);
+//		return videoCourseDTO;
+//	}
+	//用科目找影片課程
+	@GetMapping(path="/findVideoLessonsBySub/{subid}",produces="application/json;charset=UTF-8")
+	public List<Lessons> findByVideoLessonBySub(@PathVariable("subid") Integer subject){
+		return lService.findLessonsBySubIdAndType(subject,false);
+	}
+	
+	//用科目找線上課程
+	@GetMapping(path = "/findOnlineLessonsBySub/{subid}", produces = "application/json;charset=UTF-8")
+	public List<Lessons> findByOnlineLessonBySub(@PathVariable("subid") Integer subject) {
+		return lService.findLessonsBySubIdAndType(subject,true);
+	}
+	
+	//找全部課程
+	@GetMapping(path="/findAllLesson",produces="application/json;charset=UTF-8")
+	public List<Lessons> findAllLesson(){
+		return lService.getAllLessons();
+	}
+	
+	//找全部影片課程
+	@GetMapping(path="/findVideoLesson",produces="application/json;charset=UTF-8")
+	public List<Lessons> findVideoLesson() {
+		return lService.findVideoLessonsByType();
+	}
+	
+	//找全部線上課程
+	@GetMapping(path = "/findOnlineLesson", produces = "application/json;charset=UTF-8")
+	public List<Lessons> findOnlineLesson() {
+		return lService.findOnlineLessonsByType();
+	}
+	
 	
 	//-----------------影片--------------------
 	
@@ -286,44 +352,63 @@ public class VideoCourseController {
             return null; 
         }
     }
+	
+	//取得預覽影片
+	@GetMapping(path="/preVideo/{lessonId}")
+	public ResponseEntity<InputStreamResource> getPreVideo(@PathVariable("lessonId") Integer lessonId){
+		InputStream videoInputStream = getPreVideoInputStreamByLessonId(lessonId);
+		if(videoInputStream != null) {
+			InputStreamResource videoResource = new InputStreamResource(videoInputStream);
+			return ResponseEntity.ok().contentType(MediaType.parseMediaType("video/mp4")).body(videoResource);
+		}else {
+			return ResponseEntity.notFound().build();
+		}
+	}
+	
+	public InputStream getPreVideoInputStreamByLessonId(Integer lessonId) {
+		String videoFilePath = ldService.findPreVideo(lessonId);
+		System.out.println(videoFilePath);
+		InputStream videoInputStream = convertLocalFilePathToInputStream(videoFilePath);
+		return videoInputStream;
+	}
 
 	
 
 
 	
 	//新增多筆影片
-	@PostMapping(path="/uploadVideo",produces="application/json;charset=UTF-8")
-	public String uploadVideo(@RequestParam("videoList") List<VideoUploadDTO> videoDTOs) {
-		try {
-			for (VideoUploadDTO videoDTO : videoDTOs) {
-				// 检查文件不為空
-				if (videoDTO.getVideoFile() != null && !videoDTO.getVideoFile().isEmpty()) {
-					// 生成一个唯一的文件名
-					String fileName = generateUniqueFileName( videoDTO.getVideoFile().getOriginalFilename());
-
-					// 保存文件到本地文件夾
-					String savePath = "c:/temp/upload/";
-					File saveFile = new File(savePath + fileName);
-					videoDTO.getVideoFile().transferTo(saveFile);
-
-					// 創建一个Video對象並設置courseUrl為文件的保存路徑
-					Video video = new Video();
-					video.setLessonDetail(videoDTO.getLessonDetail());
-					video.setSort(videoDTO.getSort());
-					video.setChapterName(videoDTO.getChapterName());
-					video.setCourseUrl(saveFile.getAbsolutePath());
-
-					// 使用videoService保存Video对象到数据库
-					vService.insertVideo(video);
-				}
-
-			}
-			return "影片上傳成功";
-		} catch (IOException e) {
-			e.printStackTrace();
-			return "影片上傳失败";
-		}
-	}
+//	@PostMapping(path="/uploadVideo",produces="application/json;charset=UTF-8")
+//	public String uploadVideo(@RequestParam("videoList") List<VideoUploadDTO> videoDTOs) {
+//		try {
+//			for (VideoUploadDTO videoDTO : videoDTOs) {
+//				// 检查文件不為空
+//				if (videoDTO.getVideoFile() != null && !videoDTO.getVideoFile().isEmpty()) {
+//					// 生成一个唯一的文件名
+//					String fileName = generateUniqueFileName( videoDTO.getVideoFile().getOriginalFilename());
+//
+//					// 保存文件到本地文件夾
+//					String savePath = "c:/temp/upload/";
+//					File saveFile = new File(savePath + fileName);
+//					videoDTO.getVideoFile().transferTo(saveFile);
+//
+//					// 創建一个Video對象並設置courseUrl為文件的保存路徑
+//					Video video = new Video();
+//					video.setLessonDetail(videoDTO.getLessonDetail());
+//					video.setSort(videoDTO.getSort());
+//					video.setChapterName(videoDTO.getChapterName());
+//					video.setCourseUrl(saveFile.getAbsolutePath());
+//
+//					// 使用videoService保存Video对象到数据库
+//					vService.insertVideo(video);
+//				}
+//
+//			}
+//			return "影片上傳成功";
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//			return "影片上傳失败";
+//		}
+//	}
 	
 	/////////////////
 	@PostMapping(path = "/uploadVideo2", produces = "application/json;charset=UTF-8")
