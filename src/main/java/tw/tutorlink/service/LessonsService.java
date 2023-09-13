@@ -10,9 +10,12 @@ import org.springframework.stereotype.Service;
 import jakarta.servlet.http.HttpSession;
 import tw.tutorlink.bean.LessonDetail;
 import tw.tutorlink.bean.Lessons;
+import tw.tutorlink.bean.UserDetail;
 import tw.tutorlink.bean.Users;
+import tw.tutorlink.bean.VideoCourseDTO;
 import tw.tutorlink.repository.LessonDetailDAO;
 import tw.tutorlink.repository.LessonsDAO;
+import tw.tutorlink.repository.UserDetailDAO;
 import tw.tutorlink.repository.UsersDAO;
 
 @Service
@@ -26,6 +29,9 @@ public class LessonsService {
 	
 	@Autowired
 	private LessonDetailDAO ldDAO;
+	
+	@Autowired
+	private UserDetailDAO udDAO;
 	
 	
 //	public LessonsService(LessonsDAO lDAO) {
@@ -120,4 +126,18 @@ public class LessonsService {
 	public Optional<Lessons> findByLessonId(Integer lessonId) {
 		return lDAO.findById(lessonId);
 	}
+	
+	//找老師
+//	public UserDetail findUserByLessonId(Integer lessonId) {
+//        Integer userId = lDAO.findUserIdByLessonId(lessonId);
+//        System.out.println(userId);
+//
+//        if (userId != null) {
+//            return udDAO.findByUsers_usersId(userId);
+//        } else {
+//            return null;
+//        }
+//    }
+	//課程id找老師資料
+	
 }

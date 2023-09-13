@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import tw.tutorlink.bean.Lessons;
 
 import tw.tutorlink.bean.Users;
+import tw.tutorlink.bean.VideoCourseDTO;
 
 public interface LessonsDAO extends JpaRepository<Lessons, Integer> {
 	
@@ -29,4 +30,13 @@ public interface LessonsDAO extends JpaRepository<Lessons, Integer> {
 //	@Query("SELECT new tw.tutorlink.bean.LessonsDTO(l, u) FROM Lessons l JOIN l.users u WHERE l.id = :lessonId")
 //	public LessonsDTO findLessonsWithTeacherByLessonId(@Param("lessonId") Integer lessonId);
 
+	//課程id找老師
+	@Query("SELECT u FROM Lessons l LEFT JOIN l.users u WHERE l.lessonId = :lessonId")
+    Users findUsersByLessonId(@Param("lessonId") Integer lessonId);
+	
+	@Query("SELECT l.users.usersId FROM Lessons l WHERE l.lessonId = :lessonId")
+	Integer findUserIdByLessonId(@Param("lessonId") Integer lessonId);
+	
+	@Query("SELECT u FROM Lessons l JOIN l.users u WHERE l.lessonId = :lessonId")
+	Users findUserByLessonId(@Param("lessonId")Integer lessonId);
 }
