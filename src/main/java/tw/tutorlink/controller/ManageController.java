@@ -58,7 +58,7 @@ public class ManageController {
 				JSONObject item = new JSONObject().put("UsersId", user.getUsersId())
 						.put("UserEmail", user.getUserEmail()).put("UserPassword", user.getUserPassword())
 						.put("UserName", user.getUserDetail().getUserName()).put("UserType", type)
-						.put("LastLoginTime", user.getUserDetail().getLastLoginTime())
+						.put("LastLoginTime", user.getUserDetail().getNewLoginTime())
 						.put("TeacherState", review);
 				array = array.put(item);
 			}

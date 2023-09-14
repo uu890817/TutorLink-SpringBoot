@@ -32,7 +32,8 @@ public class UsersService {
 			if (users.getGoogleSubId().equals(sub) && users.getUserEmail().equals(mail)) {
 				// 驗證成功，寫入登入時間
 				UserDetail ud = users.getUserDetail();
-				ud.setLastLoginTime(new Date());
+				ud.setLastLoginTime(users.getUserDetail().getNewLoginTime());
+				ud.setNewLoginTime(new Date());
 				udDAO.save(ud);
 				// 吻合及回傳Bean
 				return users;
@@ -105,6 +106,7 @@ public class UsersService {
 	}
 
 	public Users checkMail(String mail) {
+		
 		return uDAO.findByMail(mail);
 	}
 
@@ -121,7 +123,9 @@ public class UsersService {
 			user.getUserDetail().setUserName(name);
 			user.setUserPassword(pwd);
 			user.setUserType(1);
+			ud.setTeacherState(1);
 			uDAO.save(user);
+			udDAO.save(ud);
 			return user;
 		}
 		return null;
@@ -145,6 +149,9 @@ public class UsersService {
 					if (usermail.getUserPassword() == userpwd.getUserPassword()) {
 						// 先驗證撈出來的兩組密碼吻合，在各別與前端送的密碼做驗證
 						if (usermail.getUserPassword().equals(pwd) && userpwd.getUserPassword().equals(pwd)) {
+							usermail.getUserDetail().setLastLoginTime(usermail.getUserDetail().getNewLoginTime());
+							usermail.getUserDetail().setNewLoginTime(new Date());
+							uDAO.save(usermail);
 							return "103";
 						}
 						return "102";
