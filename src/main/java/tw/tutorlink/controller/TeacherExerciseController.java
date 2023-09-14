@@ -85,8 +85,7 @@ public class TeacherExerciseController {
 		List<OrderItem> orders = eService.getStudentByLessonId(lId);
 		
 		
-		
-		
+	
 		for(OrderItem order: orders) {
 			if(order.getOrderStates() != 0) {
 				break;
@@ -159,7 +158,7 @@ public class TeacherExerciseController {
 
 	@DeleteMapping(path = "/deleteExercisePermissions/{epId}")
 	public String deleteExercisePermissions(@PathVariable Integer epId) {
-
+		System.err.println(epId);
 		return eService.deleteExercisePermission(epId);
 	}
 }

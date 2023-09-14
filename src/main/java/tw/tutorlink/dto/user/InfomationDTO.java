@@ -10,6 +10,7 @@ public class InfomationDTO {
 	private Long birthday;
 	private String phone;
 	private String city;
+	private String googletoken;
 	public InfomationDTO() {
 		
 	}
@@ -23,6 +24,7 @@ public class InfomationDTO {
 			this.city = user.getUserDetail().getCity();
 		}
 		this.userEmail=user.getUserEmail();
+		this.googletoken=user.getGoogleSubId();
 	}
 
 	public Integer getUsersId() {
@@ -71,6 +73,14 @@ public class InfomationDTO {
 
 	public void setCity(String city) {
 		this.city = city;
+	}
+
+	public String getGoogletoken() {
+		return googletoken;
+	}
+
+	public void setGoogletoken(String googletoken) {
+		this.googletoken = googletoken;
 	}
 	
 }

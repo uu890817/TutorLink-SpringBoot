@@ -1,6 +1,7 @@
 package tw.tutorlink.service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -89,20 +90,29 @@ public class LessonsService {
 	}
 	
 	//修改課程
-	public Lessons updateLesson(Lessons lesson) {
-		Optional<Lessons> lessons = lDAO.findById(lesson.getLessonId());
-		if(lessons.isPresent()) {
-		Lessons result = lessons.get();
-			result.setSubject(lesson.getSubject());
-			result.setLessonName(lesson.getLessonName());
-			result.setLessonType(lesson.getLessonType());
-			result.setImage(lesson.getImage());
+	public Lessons updateLesson(Integer id,Lessons lesson, LessonDetail lessondetail) {
+			Lessons lessons = lDAO.findById(id).get();
+			System.out.println("132");
 			
-			return lDAO.save(result);
+			System.out.println(lessons);
+			if(lessons!=null) {
+				lessons.setLessonName(lesson.getLessonName());
+				lessons.setImage(lesson.getImage());
+				lessons.setPrice(lesson.getPrice());
+				lessons.getLessondetail().setImformation(lessondetail.getImformation());
+				lessons.getLessondetail().setMeetingUrl(lessondetail.getMeetingUrl());
+				lessons.getLessondetail().setCreateTime(new Date());
+				lessons.getLessondetail().setLanguage(lessondetail.getLanguage());
+				lessons.getLessondetail().setCourseUrl(lessondetail.getCourseUrl());
+				lDAO.save(lessons);
+				return lessons;
+			}
+			
+			return null;
+			
 		}
 		
-		return null;
-	}
+		
 	
 	//刪除課程
 	public String deleteLessons(Lessons lesson) {

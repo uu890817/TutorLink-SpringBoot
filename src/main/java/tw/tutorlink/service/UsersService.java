@@ -1,8 +1,12 @@
 package tw.tutorlink.service;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import tw.tutorlink.bean.UserDetail;
@@ -28,7 +32,8 @@ public class UsersService {
 			if (users.getGoogleSubId().equals(sub) && users.getUserEmail().equals(mail)) {
 				// 驗證成功，寫入登入時間
 				UserDetail ud = users.getUserDetail();
-				ud.setLastLoginTime(new Date());
+				ud.setLastLoginTime(users.getUserDetail().getNewLoginTime());
+				ud.setNewLoginTime(new Date());
 				udDAO.save(ud);
 				// 吻合及回傳Bean
 				return users;
@@ -44,6 +49,8 @@ public class UsersService {
 			add.setGoogleSubId(sub);
 			add.setUserType(1);
 			ud.setUsers(add);
+			ud.setTeacherState(1);
+			ud.setCreateDate(new Date());
 			uDAO.save(add);
 			users = uDAO.findByGoogleSubId(sub);
 			return users;
@@ -99,6 +106,7 @@ public class UsersService {
 	}
 
 	public Users checkMail(String mail) {
+		
 		return uDAO.findByMail(mail);
 	}
 
@@ -115,7 +123,9 @@ public class UsersService {
 			user.getUserDetail().setUserName(name);
 			user.setUserPassword(pwd);
 			user.setUserType(1);
+			ud.setTeacherState(1);
 			uDAO.save(user);
+			udDAO.save(ud);
 			return user;
 		}
 		return null;
@@ -139,6 +149,9 @@ public class UsersService {
 					if (usermail.getUserPassword() == userpwd.getUserPassword()) {
 						// 先驗證撈出來的兩組密碼吻合，在各別與前端送的密碼做驗證
 						if (usermail.getUserPassword().equals(pwd) && userpwd.getUserPassword().equals(pwd)) {
+							usermail.getUserDetail().setLastLoginTime(usermail.getUserDetail().getNewLoginTime());
+							usermail.getUserDetail().setNewLoginTime(new Date());
+							uDAO.save(usermail);
 							return "103";
 						}
 						return "102";
@@ -151,4 +164,20 @@ public class UsersService {
 		// 信箱不存在或者信箱輸入錯誤
 		return "100";
 	}
+
+// ----- 管理者頁面查詢全部 -----
+	// 分頁使用
+	public List<Users> findAllUsers(int page, int rows) {
+		if (page == 0 && rows == 0) {
+			return uDAO.findAll();
+		}
+		Pageable pageable = PageRequest.of(page, rows);
+		Page<Users> result = uDAO.findAll(pageable);
+		return result.getContent();
+	}
+
+	public long count() {
+		return uDAO.count();
+	}
+
 }

@@ -6,6 +6,12 @@ import java.util.List;
 import tw.tutorlink.bean.CartItem;
 
 public class CartItemDTO {
+	
+	public CartItemDTO() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
 	private Integer cartId;
 
 	private String lessonName;

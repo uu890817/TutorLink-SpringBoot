@@ -1,10 +1,11 @@
 package tw.tutorlink.repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import tw.tutorlink.bean.ApplyTeacher;
 import tw.tutorlink.bean.Users;
 
 public interface UsersDAO extends JpaRepository<Users, Integer> {
@@ -28,4 +29,10 @@ public interface UsersDAO extends JpaRepository<Users, Integer> {
 	
 	@Query("from Users u join u.applyTeacher where usersId = :id ")
 	public Users checkId(int id);
+	
+	//查詢該資料表總筆數
+	public long count ();
+	
+	// 分頁使用方法
+	public Page<Users> findAll(Pageable pageable);
 }
