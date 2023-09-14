@@ -47,6 +47,10 @@ public class OrderItem {
 	@Column(name="OrederStates")
 	private Integer orderStates;
 	
+	@ManyToOne
+	@JoinColumn(name="CartId",referencedColumnName = "cartId", nullable = false)
+	private CartItem cartItem;
+	
 //	@Column(name="Coupon")
 //	private String coupon;
 	

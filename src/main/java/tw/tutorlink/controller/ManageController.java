@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import tw.tutorlink.bean.ApplyTeacher;
 import tw.tutorlink.bean.Users;
+import tw.tutorlink.service.ApplyTeacherService;
 import tw.tutorlink.service.UsersService;
 
 @RestController
@@ -22,6 +24,9 @@ public class ManageController {
 
 	@Autowired
 	private UsersService uService;
+	
+	@Autowired
+	private ApplyTeacherService atService;
 
 	@PostMapping("/allusers")
 	@ResponseBody
@@ -63,4 +68,20 @@ public class ManageController {
 		return responseJson.toString();
 	}
 
+	
+	@PostMapping("/allapply")
+	@ResponseBody
+	public String allapply(@RequestBody String json) {
+		// 回傳給前端的Jsno物件
+				JSONObject responseJson = new JSONObject();
+				// 取資料表總筆數
+				long count = uService.count();
+				JsonObject jsondadta = JsonParser.parseString(json).getAsJsonObject();
+				int start = jsondadta.get("start").getAsInt();
+				int rows = jsondadta.get("rows").getAsInt();
+				JSONArray array = new JSONArray();
+				List<ApplyTeacher> apply = atService.findAllApply(start,rows);
+		
+		return null;
+	}
 }

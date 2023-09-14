@@ -4,6 +4,9 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import tw.tutorlink.bean.UserDetail;
@@ -156,12 +159,14 @@ public class UsersService {
 	}
 
 // ----- 管理者頁面查詢全部 -----
-	public List<Users> findAllUsers(int start, int rows) {
-		if (start == 0 && rows == 0) {
+	// 分頁使用
+	public List<Users> findAllUsers(int page, int rows) {
+		if (page == 0 && rows == 0) {
 			return uDAO.findAll();
 		}
-//		return uDAO.findPagin(start,rows);
-		return null;
+		Pageable pageable = PageRequest.of(page, rows);
+		Page<Users> result = uDAO.findAll(pageable);
+		return result.getContent();
 	}
 
 	public long count() {

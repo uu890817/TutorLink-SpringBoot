@@ -29,6 +29,9 @@ public class InfomationContorller {
 		int userid = loggedInUser.getUsersId();
 		System.out.println("Session取得的ID : "+userid);
 		InfomationDTO iDTO = uService.findByIdDetail(userid);
+		if(iDTO.getGoogletoken()!=null) {
+			iDTO.setGoogletoken("google");
+		}
 		return iDTO;
 	}
 

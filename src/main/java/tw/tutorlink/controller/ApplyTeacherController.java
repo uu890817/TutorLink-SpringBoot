@@ -57,6 +57,7 @@ public class ApplyTeacherController {
 							salary, good);
 					return "ok";
 				}
+				return "申請人姓名有異";
 			}
 		}
 		return null;
