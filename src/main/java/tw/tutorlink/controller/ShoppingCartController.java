@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.servlet.http.HttpSession;
+import tw.tutorlink.bean.CartItem;
 import tw.tutorlink.bean.Users;
 import tw.tutorlink.dto.cart.CartItemDTO;
 import tw.tutorlink.service.CartService;
@@ -35,7 +37,8 @@ public class ShoppingCartController {
 	@ResponseBody
 	public List<CartItemDTO> getMyShoppingCart(HttpSession session) {
 		Users loggedInUser = (Users) session.getAttribute("logState");
-		return cService.getUserShoppingCart(loggedInUser.getUsersId());
+//		return cService.getUserShoppingCart(loggedInUser.getUsersId());
+		return cService.getUserShoppingCart(6);
 	}
 	
 	//刪除使用者購物車商品
@@ -53,12 +56,12 @@ public class ShoppingCartController {
 		return null;
 	}
 	
-//	// 加入購物車
-//	@PostMapping("/add")
-//	public String addToCart(HttpSession session,@RequestBody CartItem cartItem) {
-//		Users loggedInUser = (Users) session.getAttribute("logState");
-//		cService.insertNewCartItem(cartItem);
-//		return "加入購物車成功";
-//	}
+	// 加入購物車
+	@PostMapping("/add")
+	public String addToCart(HttpSession session,@RequestBody CartItem cartItem) {
+		Users loggedInUser = (Users) session.getAttribute("logState");
+		cService.insertNewCartItem(cartItem);
+		return "加入購物車成功";
+	}
 	
 }
