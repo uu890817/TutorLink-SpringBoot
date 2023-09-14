@@ -206,27 +206,12 @@ public class VideoCourseController {
 		return lService.findUserByLessonId(lessonId);
 	}
 	
-//	@GetMapping(path="/teacherName/{lessonId}",produces="application/json;charset=UTF-8")
-//	public String findTeacherByLesson(@PathVariable("lessonId") Integer lessonId) {
-//		
-//	}
-	
-	//課程找講師資訊
-//	@GetMapping(path="/teacherInfo/{lessonId}",produces="application/json;charset=UTF-8")
-//	public VideoCourseDTO findTeacherByLessonId(@PathVariable("lessonId") Integer lessonId) {
-//		Lessons lesson = lService.findByLessonId(lessonId).get();
-//		if(lesson == null) {
-//			return null;
-//		}
-//		Integer teacherId = lesson.getUsers().getUsersId();
-//		
-//		Users teacher = uService.findUsersByID(teacherId);
-//		if(teacher == null) {
-//			return null;
-//		}
-//		VideoCourseDTO videoCourseDTO = new VideoCourseDTO(lesson, teacher);
-//		return videoCourseDTO;
-//	}
+	//刪除課程
+	@DeleteMapping(path="/delVideoLessons/{lessonId}",produces="application/json;charset=UTF-8")
+	public void deleteVideoLesson(@PathVariable("lessonId") Integer lessonId) {
+		lService.deleteLessonById(lessonId);
+	}
+
 	//用科目找影片課程
 	@GetMapping(path="/findVideoLessonsBySub/{subid}",produces="application/json;charset=UTF-8")
 	public List<Lessons> findByVideoLessonBySub(@PathVariable("subid") Integer subject){
@@ -587,9 +572,20 @@ public class VideoCourseController {
     }
     
     //新增一筆公告
-    @PostMapping(path="/coursePost",produces="application/json;charset=UTF-8")
-    public LessonPost insertPost(@RequestBody LessonPost lessonPost) {
-    	return lpService.createLessonPost(lessonPost);
+    @PostMapping(path="/coursePost/{lessonDetailId}",produces="application/json;charset=UTF-8")
+    public LessonPost insertPost(@PathVariable("lessonDetailId")Integer lessonDetailId,@RequestBody LessonPost lessonPost,HttpSession session) {
+    	Users user = new Users();
+    	Users loggedInUser = (Users) session.getAttribute("logState");
+    	user.setUsersId(loggedInUser.getUsersId());
+    	LessonDetail detail = new LessonDetail();
+    	detail.setLessonDetailId(lessonDetailId);
+    	LessonPost post = new LessonPost();
+    	post.setUsers(user);
+    	post.setLessonDetail(detail);
+    	post.setPostContent(lessonPost.getPostContent());
+    	post.setTitle(lessonPost.getTitle());
+    	
+    	return lpService.createLessonPost(post);
     }
     
     //刪除一筆公告

@@ -47,4 +47,5 @@ public interface LessonsDAO extends JpaRepository<Lessons, Integer> {
 	//Type找課程
 	@Query("FROM Lessons WHERE lessonType = :lessonType")
 	List<Lessons> findLessonsByType(@Param("lessonType") boolean lessonType);
+	
 }
