@@ -35,8 +35,8 @@ public class LessonDetailService {
 	}
 	
 	//靠課程ID查詢課程明細
-	public LessonDetail findLessonDetailByLessonId(int id) {
-		Lessons lesson = lDAO.findById(id);
+	public LessonDetail findLessonDetailByLessonId(Integer id) {
+		Lessons lesson = lDAO.findById(id).get();
 		if(lesson!=null) {
 			Optional<LessonDetail> lD =	ldDAO.findById(lesson.getLessonId());
 			if(lD.isPresent()) {

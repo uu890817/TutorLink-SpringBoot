@@ -84,6 +84,7 @@ public class Lessons {
 
 	// Getter/Setter-----------------------------------------------
 	public Lessons() {
+		
 	}
 	
 	
@@ -94,7 +95,11 @@ public class Lessons {
 		this.price = price;
 		this.image = image;
 	}
-	
+	public Lessons (String lessonName,String image,Integer price) {
+		this.lessonName = lessonName;
+		this.price = price;
+		this.image = image;
+	}
 	
 
 	public Integer getLessonId() {

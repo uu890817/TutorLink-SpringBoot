@@ -1,6 +1,12 @@
 package tw.tutorlink.controller;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.configurationprocessor.json.JSONException;
+import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,15 +33,14 @@ public class InfomationContorller {
 	public InfomationDTO infomation(HttpSession session, @CookieValue("UsersId") String cookie) {
 		Users loggedInUser = (Users) session.getAttribute("logState");
 		int userid = loggedInUser.getUsersId();
-		System.out.println("Session取得的ID : "+userid);
+		System.out.println("Session取得的ID : " + userid);
 		InfomationDTO iDTO = uService.findByIdDetail(userid);
-		if(iDTO.getGoogletoken()!=null) {
+		if (iDTO.getGoogletoken() != null) {
 			iDTO.setGoogletoken("google");
 		}
 		return iDTO;
 	}
 
-	
 	// 使用者設定個人資料用
 	@PostMapping("/send")
 	@ResponseBody
@@ -53,7 +58,6 @@ public class InfomationContorller {
 		return "ok";
 	}
 
-	
 	// --- 修改/驗證密碼用 ---
 	@PostMapping("/pwdverifty")
 	@ResponseBody
@@ -70,7 +74,7 @@ public class InfomationContorller {
 //		}
 		return "ok";
 	}
-	
+
 	// --- 回傳UserType，如果是老師就不會顯示申請老師頁面，且可以切換學生/老師頁面 ---
 	@PostMapping("/type")
 	@ResponseBody
@@ -78,13 +82,12 @@ public class InfomationContorller {
 		Users loggedInUser = (Users) session.getAttribute("logState");
 		int userid = loggedInUser.getUsersId();
 		Users result = uService.findUsersByID(userid);
-		if(result!=null)
-		{
+		if (result != null) {
 			return result.getUserType();
 		}
 		return null;
 	}
-	
+
 	// 用在使用者頁面彈出視窗顯示名字用
 	@PostMapping("/username")
 	@ResponseBody
@@ -92,11 +95,32 @@ public class InfomationContorller {
 		Users loggedInUser = (Users) session.getAttribute("logState");
 		int userid = loggedInUser.getUsersId();
 		InfomationDTO result = uService.findByIdDetail(userid);
-		if(result!=null)
-		{
+		if (result != null) {
 			System.out.println(result.getUserName());
 			return result.getUserName();
 		}
 		return null;
+	}
+
+	@PostMapping("/logintime")
+	@ResponseBody
+	public String logintime(HttpSession session) throws JSONException, ParseException {
+		Users loggedInUser = (Users) session.getAttribute("logState");
+		int userid = loggedInUser.getUsersId();
+		Users result = uService.findUsersByID(userid);
+		String lastLoginTime = result.getUserDetail().getLastLoginTime().toString();
+		String newLoginTime = result.getUserDetail().getNewLoginTime().toString();
+		SimpleDateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+		
+		Date lastLoginOriginalDate = originalFormat.parse(lastLoginTime);
+		Date newLoginOriginalDate = originalFormat.parse(newLoginTime);
+		
+		 // 創建SimpleDateFormat對象以格式化日期時間
+        SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy年MM月dd日 HH:mm	");
+        String formattedlastDateTime = outputFormat.format(lastLoginOriginalDate);
+        String formattednewDateTime = outputFormat.format(newLoginOriginalDate);
+		JSONObject item = new JSONObject().put("LastLoginTime", formattedlastDateTime)
+				.put("NewLoginTime", formattednewDateTime);
+		return item.toString();
 	}
 }

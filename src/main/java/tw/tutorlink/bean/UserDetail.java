@@ -58,6 +58,9 @@ public class UserDetail {
 
 	@Column(name = "LastLoginTime")
 	private Date lastLoginTime;
+	
+	@Column(name = "NewLoginTime")
+	private Date newLoginTime;
 
 	public Integer getUserDetailId() {
 		return userDetailId;
@@ -153,6 +156,14 @@ public class UserDetail {
 
 	public void setLastLoginTime(Date lastLoginTime) {
 		this.lastLoginTime = lastLoginTime;
+	}
+
+	public Date getNewLoginTime() {
+		return newLoginTime;
+	}
+
+	public void setNewLoginTime(Date newLoginTime) {
+		this.newLoginTime = newLoginTime;
 	}
 
 }
