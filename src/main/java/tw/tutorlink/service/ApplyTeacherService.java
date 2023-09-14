@@ -1,5 +1,7 @@
 package tw.tutorlink.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,9 +20,12 @@ public class ApplyTeacherService {
 
 	public String applyTeacher(int id, String name, String idNumber, String country, String lessons, String langs,
 			String exp, String jobstate, String hours, String salary, String advantage) {
+
+		System.out.println("到service");
 		Users result = uDAO.findById(id);
 		if (result != null) {
 			ApplyTeacher at = new ApplyTeacher();
+			System.out.println("還沒寫進資料庫");
 			at.setUsers(result);
 			at.setIdNumber(idNumber);
 			at.setExp(exp);
@@ -31,8 +36,11 @@ public class ApplyTeacherService {
 			at.setLangs(langs);
 			at.setSalary(salary);
 			at.setAdvantage(advantage);
-			at.setState("審核中");
+			at.setState("已申請");
+			result.getUserDetail().setTeacherState(2);
 			atDAO.save(at);
+			uDAO.save(result);
+			System.out.println("已寫進資料庫");
 			return "ok";
 		}
 
@@ -44,6 +52,11 @@ public class ApplyTeacherService {
 		if (result != null) {
 			return "已申請";
 		}
+		return null;
+	}
+
+	public List<ApplyTeacher> findAllApply(int start, int rows) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 }

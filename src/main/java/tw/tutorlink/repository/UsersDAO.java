@@ -1,5 +1,7 @@
 package tw.tutorlink.repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -31,7 +33,6 @@ public interface UsersDAO extends JpaRepository<Users, Integer> {
 	//查詢該資料表總筆數
 	public long count ();
 	
-//	public Users findPagin(int start, int rows);
-
-
+	// 分頁使用方法
+	public Page<Users> findAll(Pageable pageable);
 }
