@@ -92,6 +92,7 @@ public class ExercisesService {
 	}
 
 	public String deleteExercisePermission(Integer epId) {
+		System.out.println(epId);
 		epDAO.deleteById(epId);
 		return "OK";
 	}
