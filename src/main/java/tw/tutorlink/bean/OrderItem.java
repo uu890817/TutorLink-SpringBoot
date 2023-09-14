@@ -25,7 +25,7 @@ public class OrderItem {
 	private Integer orderId;
 
 	@ManyToOne
-	@JsonIgnore
+	@JsonIgnoreProperties({"order", "shoppingCart", "calender"})
 	@JoinColumn(name="LessonId",referencedColumnName = "lessonId", nullable = false)
 	private Lessons lesson;
 
@@ -35,15 +35,15 @@ public class OrderItem {
 	private Users users;
 	
 	@OneToOne
-	@JsonIgnore
+	@JsonIgnoreProperties({"orderitem", "calender"})
 	@JoinColumn(name="CalenderId",referencedColumnName = "calenderId")
 	private Calender calender;
 	
 	@Column(name="OrederStates")
 	private Integer orderStates;
 	
-	@ManyToOne
-	@JsonIgnore
+	@ManyToOne 
+	@JsonIgnoreProperties({"order", "lesson"})
 	@JoinColumn(name="CartId",referencedColumnName = "cartId", nullable = false)
 	private CartItem cartItem;
 	

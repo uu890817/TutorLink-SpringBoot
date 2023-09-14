@@ -18,4 +18,7 @@ public interface CartDAO extends JpaRepository<CartItem, Integer> {
 
 	@Query("FROM CartItem c  WHERE c.status = :status AND c.users.usersId = :usersId")
 	public List<CartItem> findShoppingCart(@Param("usersId") Integer usersId, @Param("status") Integer status);
+	
+	@Query("FROM CartItem c  WHERE c.users.usersId = :usersId AND c.status=2")
+	public List<CartItem> findOrder(@Param("usersId") Integer usersId);
 }

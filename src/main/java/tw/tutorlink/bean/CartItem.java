@@ -62,11 +62,15 @@ public class CartItem {
 	@Column(name = "SelectedTimes", length = 2000) // 適當指定字串長度
 	private String selectedTimes;
 
+	@JsonIgnoreProperties({ "cartItem" })
 	@OneToMany(mappedBy = "cartItem", cascade = CascadeType.ALL)
 	private List<OrderItem> order;
 
 	// 關聯性欄位-----------------------------------------------------
 
+	public CartItem() {
+	}
+	
 	public List<Long> getSelectedTimes() {
 		// 在需要使用時，將存儲的字串轉換回毫秒數的時間陣列
 		// 你可以使用適當的方法將字串解析為毫秒數的時間陣列
@@ -95,31 +99,12 @@ public class CartItem {
 		}
 	}
 
-	public CartItem() {
-	}
-
 	public Integer getCartId() {
 		return cartId;
 	}
 
 	public void setCartId(Integer cartId) {
 		this.cartId = cartId;
-	}
-
-	public Lessons getLesson() {
-		return lesson;
-	}
-
-	public void setLesson(Lessons lesson) {
-		this.lesson = lesson;
-	}
-
-	public Users getUsers() {
-		return users;
-	}
-
-	public void setUsers(Users users) {
-		this.users = users;
 	}
 
 	public Integer getQuantity() {
@@ -146,15 +131,33 @@ public class CartItem {
 		this.status = status;
 	}
 
-	public List<OrderItem> getOrderItem() {
+	public Users getUsers() {
+		return users;
+	}
+
+	public void setUsers(Users users) {
+		this.users = users;
+	}
+
+	public Lessons getLesson() {
+		return lesson;
+	}
+
+	public void setLesson(Lessons lesson) {
+		this.lesson = lesson;
+	}
+
+	public List<OrderItem> getOrder() {
 		return order;
 	}
 
-	public void setOrderItem(List<OrderItem> order) {
+	public void setOrder(List<OrderItem> order) {
 		this.order = order;
 	}
 
 	public void setSelectedTimes(String selectedTimes) {
 		this.selectedTimes = selectedTimes;
 	}
+
 }
+

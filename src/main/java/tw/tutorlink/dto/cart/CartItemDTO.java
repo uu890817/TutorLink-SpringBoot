@@ -43,7 +43,7 @@ public class CartItemDTO {
 		this.status=item.getStatus();
 		this.selectedTimes=item.getSelectedTimes();
 		this.cartId=item.getCartId();
-		this.orderItem=item.getOrderItem();
+		this.orderItem=item.getOrder();
 	}
 	public Integer getCartId() {
 		return cartId;
