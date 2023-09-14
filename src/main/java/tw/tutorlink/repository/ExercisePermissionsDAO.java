@@ -22,5 +22,4 @@ public interface ExercisePermissionsDAO extends JpaRepository<ExercisePermission
 	public ExercisePermissions findFinishExercisePermissions(@Param("epId") Integer epId, @Param("uId") Integer uId);
 	
 	
-	
 }
