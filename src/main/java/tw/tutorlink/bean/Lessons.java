@@ -95,7 +95,7 @@ public class Lessons {
 		this.price = price;
 		this.image = image;
 	}
-	public Lessons (String lessonName,String image,Integer price) {
+	public Lessons (String lessonName,Subject subject,String image,Integer price) {
 		this.lessonName = lessonName;
 		this.price = price;
 		this.image = image;

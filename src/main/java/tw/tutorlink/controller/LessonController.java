@@ -181,7 +181,8 @@ public class LessonController {
 			@RequestParam(name = "meetingURL", defaultValue = "") String meetingUrl,
 			@RequestParam(name = "video", required = false) MultipartFile courseUrl,
 			@RequestParam(name = "courseTotalTime", defaultValue = "") Integer courseTotalTime,
-			@RequestParam(name = "language", defaultValue = "") String language) {
+			@RequestParam(name = "language", defaultValue = "") String language,
+			@RequestParam("subject") Subject subject) {
 			System.out.println("123");
 		try {
 			
@@ -201,7 +202,7 @@ public class LessonController {
 				String imageSavePath = saveFile.getAbsolutePath();
 				System.out.println(lessonName + " " + image + " ");
 				
-				lesson = new Lessons(lessonName,imageSavePath, price);
+				lesson = new Lessons(lessonName,subject,imageSavePath, price);
 				
 			}
 			

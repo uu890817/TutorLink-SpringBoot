@@ -99,6 +99,7 @@ public class LessonsService {
 				lessons.setLessonName(lesson.getLessonName());
 				lessons.setImage(lesson.getImage());
 				lessons.setPrice(lesson.getPrice());
+				lessons.setSubject(lesson.getSubject());
 				lessons.getLessondetail().setImformation(lessondetail.getImformation());
 				lessons.getLessondetail().setMeetingUrl(lessondetail.getMeetingUrl());
 				lessons.getLessondetail().setCreateTime(new Date());
