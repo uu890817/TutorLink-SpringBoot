@@ -75,7 +75,7 @@ public class LessonsService {
 		System.out.println("會員ID : "+user);
 		if(user!=null) {
 			lesson.setUsers(user);
-			lesson.setLessondetail(lessonDetail);		
+			lesson.setLessondetail(lessonDetail);
 			lDAO.save(lesson);
 			return lesson;
 
@@ -166,6 +166,9 @@ public class LessonsService {
 		return lDAO.findLessonsByType(true);
 	}
 	
+	public void deleteLessonById(Integer lessonId) {
+        lDAO.deleteById(lessonId);
+    }
 	
 	
 }
