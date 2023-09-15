@@ -41,9 +41,9 @@ public class CartItem {
 	private Date addTime;
 
 	// 狀態
-	//	0:購物車
-	//	1:未結帳
-	//	2:已結帳(訂單)
+	// 0:購物車
+	// 1:未結帳
+	// 2:已結帳(訂單)
 	@Column(name = "Status")
 	private Integer status;
 
@@ -65,9 +65,9 @@ public class CartItem {
 	@JsonIgnoreProperties({ "cartItem" })
 	@OneToMany(mappedBy = "cartItem", cascade = CascadeType.ALL)
 	private List<OrderItem> order;
-	
-	//付款方式
-	//1:Line Pay
+
+	// 付款方式
+	// 1:Line Pay
 	@Column(name = "Payment")
 	private Integer payment;
 
@@ -75,7 +75,7 @@ public class CartItem {
 
 	public CartItem() {
 	}
-	
+
 	public List<Long> getSelectedTimes() {
 		// 在需要使用時，將存儲的字串轉換回毫秒數的時間陣列
 		// 你可以使用適當的方法將字串解析為毫秒數的時間陣列
@@ -173,4 +173,3 @@ public class CartItem {
 	}
 
 }
-
