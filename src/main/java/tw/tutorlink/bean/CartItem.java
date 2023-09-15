@@ -66,6 +66,8 @@ public class CartItem {
 	@OneToMany(mappedBy = "cartItem", cascade = CascadeType.ALL)
 	private List<OrderItem> order;
 	
+	//付款方式
+	//1:Line Pay
 	@Column(name = "Payment")
 	private Integer payment;
 
@@ -160,6 +162,14 @@ public class CartItem {
 
 	public void setSelectedTimes(String selectedTimes) {
 		this.selectedTimes = selectedTimes;
+	}
+
+	public Integer getPayment() {
+		return payment;
+	}
+
+	public void setPayment(Integer payment) {
+		this.payment = payment;
 	}
 
 }

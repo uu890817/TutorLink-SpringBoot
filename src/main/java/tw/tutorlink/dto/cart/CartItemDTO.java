@@ -33,6 +33,8 @@ public class CartItemDTO {
 	
 	private List<OrderItem> orderItem;
 	
+	private Integer payment;
+	
 	public CartItemDTO(CartItem item) {
 		this.lessonName=item.getLesson().getLessonName();
 		this.lessonType=item.getLesson().getLessonType();
@@ -44,6 +46,7 @@ public class CartItemDTO {
 		this.selectedTimes=item.getSelectedTimes();
 		this.cartId=item.getCartId();
 		this.orderItem=item.getOrder();
+		this.payment=item.getPayment();
 	}
 	public Integer getCartId() {
 		return cartId;
@@ -124,5 +127,11 @@ public class CartItemDTO {
 
 	public void setSelectedTimes(List<Long> selectedTimes) {
 		this.selectedTimes = selectedTimes;
+	}
+	public Integer getPayment() {
+		return payment;
+	}
+	public void setPayment(Integer payment) {
+		this.payment = payment;
 	}
 }
