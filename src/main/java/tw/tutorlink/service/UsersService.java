@@ -179,4 +179,14 @@ public class UsersService {
 		return uDAO.count();
 	}
 
+	public Users findMail(int userid, String mail, int randomNumber) {
+		Users result = uDAO.findByMail(mail);
+		if(result!=null) {
+			result.setRamdonVerify(randomNumber);
+			result.setExpiredTime(new Date());
+			uDAO.save(result);
+		}
+		return result;
+	}
+
 }
