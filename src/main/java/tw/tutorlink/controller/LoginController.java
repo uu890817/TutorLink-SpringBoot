@@ -7,11 +7,14 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -31,6 +34,9 @@ public class LoginController {
 
 	@Autowired
 	private UsersService uService;
+	
+	@Autowired
+	private RestTemplate restTemplate;
 
 	@SuppressWarnings("unused")
 	@PostMapping("/googlelogin")
@@ -133,7 +139,7 @@ public class LoginController {
 		// 設置過期時間為0
 		cookie.setMaxAge(0);
 		cookie.setPath("/");
-		// 將Cookie 物件加入Response 中		
+		// 將Cookie 物件加入Response 中
 		response.addCookie(cookie);
 
 		// 移除session
@@ -141,5 +147,21 @@ public class LoginController {
 		session.invalidate();
 		System.out.println("已清除session");
 		return "logout";
+	}
+
+	// ----------- 機器人驗證 -----------
+	@PostMapping("/recaptchaV2")
+	@ResponseBody
+	public String recaptchaV2(@RequestBody Object obj) {
+		String url = "https://www.google.com/recaptcha/api/siteverify";
+		String secretKey = "6LceDCUoAAAAAPZuxH6zvQ4lwNp8b1v3WiBaXSRw";
+
+		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+		params.add("secret", secretKey);
+		params.add("response", obj.toString());
+	
+		String result = restTemplate.postForObject(url,params,String.class);
+				
+		return result;
 	}
 }
