@@ -26,16 +26,23 @@ public class CartService {
 	public boolean deleteAllCartItem(Integer uId) {
 		return cDAO.deleteCartByUserId(uId);
 	}
-	
+
 	// 查詢使用者購物車商品
-	public List<CartItemDTO> getUserShoppingCart(int id) {
+	public List<CartItemDTO> getUserShoppingCart(int uid) {
 		List<CartItemDTO> cDTOs = new ArrayList<>();
-		List<CartItem> citems = cDAO.findByUsers(id);
+		List<CartItem> citems = cDAO.findByUsers(uid);
 		for (CartItem citem : citems) {
 			CartItemDTO cDTO = new CartItemDTO(citem);
 			cDTOs.add(cDTO);
 		}
 		return cDTOs;
+	}
+
+	// 查詢單筆購物車商品
+	public CartItemDTO getShoppingCart(int cid) {
+		CartItem citem = cDAO.findBycId(cid);
+		CartItemDTO cDTO = new CartItemDTO(citem);
+		return cDTO;
 	}
 
 	// 更新購物車商品
@@ -57,5 +64,9 @@ public class CartService {
 			return result;
 		}
 		return null;
+	}
+
+	public CartItem findByCartId(Integer cartId) {
+		return cDAO.findBycId(cartId);
 	}
 }

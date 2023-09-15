@@ -63,7 +63,7 @@ public class CartItem {
 	private String selectedTimes;
 
 	@JsonIgnoreProperties({ "cartItem" })
-	@OneToMany(mappedBy = "cartItem", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "cartItem", cascade = CascadeType.DETACH)
 	private List<OrderItem> order;
 
 	// 付款方式
