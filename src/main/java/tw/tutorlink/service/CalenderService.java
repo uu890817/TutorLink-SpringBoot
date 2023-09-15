@@ -44,12 +44,13 @@ public class CalenderService {
 	}
 	
 	
-	public void insertByTimes(Date date, Users users , Lessons lesson) {
+	public Calender insertByTimes(Date date, Users users , Lessons lesson) {
 		Calender cd = new Calender();
 		cd.setLessonTime(date);
 		cd.setLesson(lesson);
 		cd.setUsers(users);
 		cDAO.save(cd);
+		return cd;
 	}
 
 	// 使用者ID查詢

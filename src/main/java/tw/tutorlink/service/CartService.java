@@ -23,8 +23,12 @@ public class CartService {
 	}
 
 	// 刪除購物車所有商品
-	public boolean deleteAllCartItem(Integer uId) {
-		return cDAO.deleteCartByUserId(uId);
+	public void deleteAllCartItem(Integer uid) {
+		List<CartItem> citems = cDAO.findByUsers(uid);
+		for (CartItem citem : citems) {
+			citem.setStatus(2);
+			CartItem result = cDAO.save(citem);
+		}
 	}
 
 	// 查詢使用者購物車商品

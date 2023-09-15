@@ -88,12 +88,17 @@ public class ShoppingCartController {
 	@PostMapping(path = "/pay", produces = "application/json;charset=UTF-8")
 	public String pay(HttpSession session, @RequestBody CartToOrder cartToOrder) {
 		Users loggedInUser = (Users) session.getAttribute("logState");
-//		boolean ifSuccess = cService.deleteAllCartItem(loggedInUser.getUsersId());
+		System.out.println(cartToOrder);
+		cService.deleteAllCartItem(loggedInUser.getUsersId());
 		OrderItem orderItem = new OrderItem();
 		orderItem.setCartItem(cService.findByCartId(cartToOrder.getCartId()));
 		orderItem.setCreateTime(cartToOrder.getCreateTime());
 		orderItem.setLesson(lessonService.AddLessonIntoCartById(cartToOrder.getLessonId()));
 		orderItem.setUsers(loggedInUser);
+		orderItem.setOrderStates(0);
+		if(orderItem.getLesson().getLessonType()) {
+			orderItem.setCalender(calenderService.insertByTimes(cartToOrder.getCalender(), loggedInUser, lessonService.AddLessonIntoCartById(cartToOrder.getLessonId())));
+		}
 		oService.insertOrderItem(orderItem);
 		return "結帳成功";
 	}

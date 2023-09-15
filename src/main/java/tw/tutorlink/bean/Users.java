@@ -58,7 +58,7 @@ public class Users{
 	private List<Lessons> lesson;
 
 //	@JsonIgnore
-	@OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "users", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
 	private List<OrderItem> order;
 
 //	@JsonIgnore
@@ -86,7 +86,7 @@ public class Users{
 	private List<ExercisePermissions> exercisePermissions;
 
 //	@JsonIgnore
-	@OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "users", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
 	private List<Calender> calender;
 
 //	@JsonIgnore
