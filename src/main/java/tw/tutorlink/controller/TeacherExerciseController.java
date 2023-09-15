@@ -81,22 +81,10 @@ public class TeacherExerciseController {
 	}
 
 	@GetMapping("/getStudents/{lId}/{eId}")
-	public List<CartItem> getStudentsByLesson(@PathVariable Integer lId, @PathVariable Integer eId) {
-//		List<TeacherGetLessonStudentDTO> tDTOs = new ArrayList<>();
-		List<CartItem> carts = eService.getStudentByLessonId(lId);
+	public List<TeacherGetLessonStudentDTO> getStudentsByLesson(@PathVariable Integer lId, @PathVariable Integer eId) {
+		List<TeacherGetLessonStudentDTO> tDTOs = eService.getStudentByLessonId(lId, eId);
 		
-		
-	
-//		for(OrderItem order: orders) {
-//			if(order.getOrderStates() != 0) {
-//				break;
-//			}
-//			ExercisePermissions exercisePermissions = eService.getExercisePermissionsByUIdAndLId(eId, order.getUsers().getUsersId());
-//			tDTOs.add(new TeacherGetLessonStudentDTO(order, exercisePermissions));
-//		}
-//		
-		
-		return carts;
+		return tDTOs;
 	}
 
 	@PostMapping(path = "/newExercise", produces = "application/json;charset=UTF-8")

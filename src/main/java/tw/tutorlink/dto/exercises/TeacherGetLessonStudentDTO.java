@@ -1,28 +1,22 @@
 package tw.tutorlink.dto.exercises;
 
+import tw.tutorlink.bean.CartItem;
+import tw.tutorlink.bean.ExerciseConfig;
 import tw.tutorlink.bean.ExercisePermissions;
-import tw.tutorlink.bean.OrderItem;
 
 public class TeacherGetLessonStudentDTO {
 
 	private Integer usersId;
 	private String userName;
 	private Integer exerPerId;
-//	private ExerciseConfig exerConfig;
+	private ExerciseConfig exerConfig;
 	private ExercisePermissions exerPermissions;
 	
 	public TeacherGetLessonStudentDTO() {
 	}
 	
-	public TeacherGetLessonStudentDTO(OrderItem order, ExercisePermissions exercisePermissions) {
-		this.usersId = order.getUsers().getUsersId();
-		if(order.getUsers().getUserDetail() != null) {
-			this.userName = order.getUsers().getUserDetail().getUserName();
-		}
-		if(exercisePermissions != null) {
-			this.exerPermissions = exercisePermissions;
-		}
-
+	public TeacherGetLessonStudentDTO(CartItem cartItem, ExercisePermissions exercisePermissions) {
+		
 	}
 
 	public Integer getUsersId() {
@@ -58,7 +52,14 @@ public class TeacherGetLessonStudentDTO {
 	}
 
 	
-	
+	public ExerciseConfig getExerConfig() {
+		return exerConfig;
+	}
+
+	public void setExerConfig(ExerciseConfig exerConfig) {
+		this.exerConfig = exerConfig;
+	}
+
 	
 	
 	

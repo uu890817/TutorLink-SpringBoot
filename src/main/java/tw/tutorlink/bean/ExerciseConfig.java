@@ -29,7 +29,7 @@ public class ExerciseConfig {
 	private Exercises exercises;
 
 	
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.DETACH)
 	@JoinColumn(name = "ExerConfigId", referencedColumnName = "exerConfigId")
 	private ExercisePermissions exercisePermissions;
 
