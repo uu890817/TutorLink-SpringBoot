@@ -65,10 +65,11 @@ public class ExercisesService {
 		List<TeacherGetLessonStudentDTO> tDTOs = new ArrayList<>();
 		
 		for(CartItem cart:carts ) {
+			System.err.println(cart.getUsers().getUserDetailUserName());
 			TeacherGetLessonStudentDTO tDTO = new TeacherGetLessonStudentDTO();
 			boolean hasSame = false; 
 			for(TeacherGetLessonStudentDTO t: tDTOs) {
-				if(cart.getUsers().getUsersId() == t.getUsersId()) {
+				if(cart.getUsers().getUsersId() == t.getUsersId() && cart.getUsers().getUserDetailUserName() == t.getUserName()) {
 					System.err.println("重複使用者");
 					hasSame = true;
 				}
@@ -137,7 +138,7 @@ public class ExercisesService {
 	}
 
 	public String deleteExercisePermission(Integer epId) {
-		System.out.println(epId);
+		System.err.println(epId);
 		epDAO.deleteById(epId);
 		return "OK";
 	}
