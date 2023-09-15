@@ -35,9 +35,6 @@ public class CartService {
 
 	// 更新購物車商品
 	public CartItem updateCartItem(CartItemDTO cDTO) {
-//		System.out.println(cDTO.getCartId());
-//		System.out.println(cDTO.getSelectedTimes());
-//		System.out.println(cDTO.getQuantity());
 		CartItem findById = cDAO.findBycId(cDTO.getCartId());
 		findById.setQuantity(cDTO.getQuantity());
 		findById.setSelectedTimes(cDTO.getSelectedTimes());
@@ -48,12 +45,12 @@ public class CartService {
 		return null;
 	}
 
-//	// 新增商品至購物車
-//	public CartItem insertNewCartItem(CartItem item) {
-//		CartItem result = cDAO.save(item);
-//		if (result != null) {
-//			return result;
-//		}
-//		return null;
-//	}
+	// 新增商品至購物車
+	public CartItem insertNewCartItem(CartItem item) {
+		CartItem result = cDAO.save(item);
+		if (result != null) {
+			return result;
+		}
+		return null;
+	}
 }
