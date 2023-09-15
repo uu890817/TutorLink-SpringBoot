@@ -75,7 +75,7 @@ public class LessonsService {
 		System.out.println("會員ID : "+user);
 		if(user!=null) {
 			lesson.setUsers(user);
-			lesson.setLessondetail(lessonDetail);		
+			lesson.setLessondetail(lessonDetail);
 			lDAO.save(lesson);
 			return lesson;
 
@@ -99,6 +99,7 @@ public class LessonsService {
 				lessons.setLessonName(lesson.getLessonName());
 				lessons.setImage(lesson.getImage());
 				lessons.setPrice(lesson.getPrice());
+				lessons.setSubject(lesson.getSubject());
 				lessons.getLessondetail().setImformation(lessondetail.getImformation());
 				lessons.getLessondetail().setMeetingUrl(lessondetail.getMeetingUrl());
 				lessons.getLessondetail().setCreateTime(new Date());
@@ -165,6 +166,9 @@ public class LessonsService {
 		return lDAO.findLessonsByType(true);
 	}
 	
+	public void deleteLessonById(Integer lessonId) {
+        lDAO.deleteById(lessonId);
+    }
 	
 	
 }
