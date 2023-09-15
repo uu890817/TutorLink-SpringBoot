@@ -27,6 +27,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import tw.tutorlink.bean.Users;
+import tw.tutorlink.repository.ReCAPTCHADAO;
 import tw.tutorlink.service.UsersService;
 
 @RestController
@@ -34,9 +35,12 @@ public class LoginController {
 
 	@Autowired
 	private UsersService uService;
-	
+
 	@Autowired
 	private RestTemplate restTemplate;
+
+	@Autowired
+	private ReCAPTCHADAO rDAO;
 
 	@SuppressWarnings("unused")
 	@PostMapping("/googlelogin")
@@ -154,14 +158,13 @@ public class LoginController {
 	@ResponseBody
 	public String recaptchaV2(@RequestBody Object obj) {
 		String url = "https://www.google.com/recaptcha/api/siteverify";
-		String secretKey = "6LceDCUoAAAAAPZuxH6zvQ4lwNp8b1v3WiBaXSRw";
-
+		String secretKey = rDAO.findById(1).get().getReCAPTCHA().toString();
 		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
 		params.add("secret", secretKey);
 		params.add("response", obj.toString());
-	
-		String result = restTemplate.postForObject(url,params,String.class);
-				
+
+		String result = restTemplate.postForObject(url, params, String.class);
+
 		return result;
 	}
 }
