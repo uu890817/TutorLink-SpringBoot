@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import tw.tutorlink.bean.CartItem;
 import tw.tutorlink.bean.ExercisePermissions;
 import tw.tutorlink.bean.Exercises;
 import tw.tutorlink.bean.Lessons;
@@ -24,6 +25,8 @@ public class ExercisesService {
 	private ExercisesDAO eDAO;
 	@Autowired
 	private ExercisePermissionsDAO epDAO;
+	
+	
 
 //	SELECT-----------------------------------------------------------------------------------------------
 	// TEACHER
@@ -52,9 +55,12 @@ public class ExercisesService {
 		return tDTO;
 	}
 
-	public List<OrderItem> getStudentByLessonId(Integer lessonId) {
-		return eDAO.findOrderByLessonId(lessonId);
-
+//	public List<OrderItem> getStudentByLessonId(Integer lessonId) {
+//		return eDAO.findOrderByLessonId(lessonId);
+//
+//	}
+	public List<CartItem> getStudentByLessonId(Integer lessonId){
+		return eDAO.findStudents(lessonId);
 	}
 
 	public ExercisePermissions getExercisePermissionsByUIdAndLId(Integer eId, Integer uId) {

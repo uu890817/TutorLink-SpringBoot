@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import tw.tutorlink.bean.CartItem;
+import tw.tutorlink.bean.OrderItem;
 
 public class CartItemDTO {
 	
@@ -30,14 +31,10 @@ public class CartItemDTO {
 	
 	private List<Long> selectedTimes;
 	
-	public List<Long> getSelectedTimes() {
-		return selectedTimes;
-	}
-
-	public void setSelectedTimes(List<Long> selectedTimes) {
-		this.selectedTimes = selectedTimes;
-	}
-
+	private List<OrderItem> orderItem;
+	
+	private Integer payment;
+	
 	public CartItemDTO(CartItem item) {
 		this.lessonName=item.getLesson().getLessonName();
 		this.lessonType=item.getLesson().getLessonType();
@@ -48,6 +45,8 @@ public class CartItemDTO {
 		this.status=item.getStatus();
 		this.selectedTimes=item.getSelectedTimes();
 		this.cartId=item.getCartId();
+		this.orderItem=item.getOrder();
+		this.payment=item.getPayment();
 	}
 	public Integer getCartId() {
 		return cartId;
@@ -114,6 +113,25 @@ public class CartItemDTO {
 		this.image = image;
 	}
 	
-	
-	
+	public List<OrderItem> getOrderItem() {
+		return orderItem;
+	}
+
+	public void setOrderItem(List<OrderItem> orderItem) {
+		this.orderItem = orderItem;
+	}
+
+	public List<Long> getSelectedTimes() {
+		return selectedTimes;
+	}
+
+	public void setSelectedTimes(List<Long> selectedTimes) {
+		this.selectedTimes = selectedTimes;
+	}
+	public Integer getPayment() {
+		return payment;
+	}
+	public void setPayment(Integer payment) {
+		this.payment = payment;
+	}
 }
