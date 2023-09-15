@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.servlet.http.HttpSession;
 import tw.tutorlink.bean.Comment;
+import tw.tutorlink.bean.CommentDTO;
 import tw.tutorlink.bean.Lessons;
 import tw.tutorlink.bean.Users;
 import tw.tutorlink.service.ScoreService;
@@ -27,8 +28,8 @@ public class ScoreController {
 	// 查詢所有評論
 	@GetMapping("/comment")
 	@ResponseBody
-	public List<Comment> findAllCommentList(){
-		List<Comment> fScore = sService.findAllCommentList();
+	public List<CommentDTO> findAllCommentList(){
+		List<CommentDTO> fScore = sService.findAllComment();
 		return fScore;
 	}
 	
