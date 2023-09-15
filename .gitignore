@@ -42,4 +42,8 @@ build/
 *.mp4
 *.pdf
 
+<<<<<<< HEAD
 application.properties
+=======
+application.properties
+>>>>>>> branch 'develop' of https://github.com/uu890817/TutorLink-SpringBoot.git
