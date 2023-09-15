@@ -16,6 +16,8 @@ public class CartItemDTO {
 	private Integer cartId;
 
 	private String lessonName;
+	
+	private Integer lessonId;
 
 	private boolean lessonType;
 
@@ -47,6 +49,7 @@ public class CartItemDTO {
 		this.cartId=item.getCartId();
 		this.orderItem=item.getOrder();
 		this.payment=item.getPayment();
+		this.lessonId=item.getLesson().getLessonId();
 	}
 	public Integer getCartId() {
 		return cartId;
@@ -125,6 +128,12 @@ public class CartItemDTO {
 		return selectedTimes;
 	}
 
+	public Integer getLessonId() {
+		return lessonId;
+	}
+	public void setLessonId(Integer lessonId) {
+		this.lessonId = lessonId;
+	}
 	public void setSelectedTimes(List<Long> selectedTimes) {
 		this.selectedTimes = selectedTimes;
 	}

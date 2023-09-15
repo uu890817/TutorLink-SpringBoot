@@ -15,9 +15,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.servlet.http.HttpSession;
 import tw.tutorlink.bean.CartItem;
+import tw.tutorlink.bean.OrderItem;
 import tw.tutorlink.bean.Users;
 import tw.tutorlink.dto.cart.CartItemDTO;
 import tw.tutorlink.service.CartService;
+import tw.tutorlink.service.OrderItemService;
 
 @RestController
 @RequestMapping("/shoppingcart")
@@ -25,6 +27,9 @@ public class ShoppingCartController {
 	
 	@Autowired
 	private CartService cService;
+	
+	@Autowired
+	private OrderItemService oService;
 	
 	
 //	@GetMapping("/CartItem")
@@ -62,6 +67,18 @@ public class ShoppingCartController {
 		Users loggedInUser = (Users) session.getAttribute("logState");
 		cService.insertNewCartItem(cartItem);
 		return "加入購物車成功";
+	}
+	
+	//結帳
+	@PostMapping("/pay")
+	public String pay(HttpSession session,@RequestBody OrderItem orderItem) {
+		Users loggedInUser = (Users) session.getAttribute("logState");
+		boolean ifSuccess = cService.deleteAllCartItem(loggedInUser.getUsersId());
+		OrderItem insertOrderItem = oService.insertOrderItem(orderItem,loggedInUser);
+		if(ifSuccess) {
+			return "結帳成功";
+		}
+		return "結帳失敗";
 	}
 	
 }

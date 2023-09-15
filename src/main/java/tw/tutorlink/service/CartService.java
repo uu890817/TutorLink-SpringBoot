@@ -22,6 +22,11 @@ public class CartService {
 		return "OK";
 	}
 
+	// 刪除購物車所有商品
+	public boolean deleteAllCartItem(Integer uId) {
+		return cDAO.deleteCartByUserId(uId);
+	}
+	
 	// 查詢使用者購物車商品
 	public List<CartItemDTO> getUserShoppingCart(int id) {
 		List<CartItemDTO> cDTOs = new ArrayList<>();

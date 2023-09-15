@@ -21,4 +21,8 @@ public interface CartDAO extends JpaRepository<CartItem, Integer> {
 	
 	@Query("FROM CartItem c  WHERE c.users.usersId = :usersId AND c.status=2")
 	public List<CartItem> findOrder(@Param("usersId") Integer usersId);
+	
+	@Query("UPDATE CartItem c SET c.status = 2 WHERE c.users.usersId = :usersId")
+	public boolean deleteCartByUserId(@Param("usersId") Integer usersId);
+	
 }

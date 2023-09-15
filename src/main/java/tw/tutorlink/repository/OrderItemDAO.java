@@ -6,4 +6,5 @@ import tw.tutorlink.bean.OrderItem;
 
 public interface OrderItemDAO extends JpaRepository<OrderItem, Integer> {
 
+	
 }
