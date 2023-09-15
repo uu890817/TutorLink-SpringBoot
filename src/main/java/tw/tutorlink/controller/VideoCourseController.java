@@ -48,6 +48,7 @@ import tw.tutorlink.bean.Users;
 import tw.tutorlink.bean.Video;
 import tw.tutorlink.bean.VideoCourseDTO;
 import tw.tutorlink.bean.VideoNote;
+import tw.tutorlink.bean.finAllLessonsDTO;
 import tw.tutorlink.service.CourseQAService;
 import tw.tutorlink.service.LessonDetailService;
 import tw.tutorlink.service.LessonPostService;
@@ -226,8 +227,8 @@ public class VideoCourseController {
 	
 	//找全部課程
 	@GetMapping(path="/findAllLesson",produces="application/json;charset=UTF-8")
-	public List<Lessons> findAllLesson(){
-		return lService.getAllLessons();
+	public List<finAllLessonsDTO> findAllLesson(){
+		return lService.findAllLesson();
 	}
 	
 	//找全部影片課程
