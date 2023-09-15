@@ -53,7 +53,7 @@ public class ManageController {
 				review = (user.getUserDetail().getTeacherState() == 1) ? "未申請"
 						: (user.getUserDetail().getTeacherState() == 2) ? "申請中"
 								: (user.getUserDetail().getTeacherState() == 3) ? "已通過"
-										: (user.getUserDetail().getTeacherState() == 4) ? "已	退件" : "錯誤";
+										: (user.getUserDetail().getTeacherState() == 4) ? "已退件" : "錯誤";
 
 				JSONObject item = new JSONObject().put("UsersId", user.getUsersId())
 						.put("UserEmail", user.getUserEmail()).put("UserPassword", user.getUserPassword())
