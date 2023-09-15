@@ -8,12 +8,13 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import jakarta.servlet.http.HttpSession;
+import tw.tutorlink.bean.Calender;
 import tw.tutorlink.bean.LessonDetail;
 import tw.tutorlink.bean.Lessons;
+import tw.tutorlink.bean.LessonsDTO;
 import tw.tutorlink.bean.UserDetail;
 import tw.tutorlink.bean.Users;
-import tw.tutorlink.bean.VideoCourseDTO;
+import tw.tutorlink.bean.finAllLessonsDTO;
 import tw.tutorlink.repository.LessonDetailDAO;
 import tw.tutorlink.repository.LessonsDAO;
 import tw.tutorlink.repository.UserDetailDAO;
@@ -170,7 +171,21 @@ public class LessonsService {
 	}
 
 	public void deleteLessonById(Integer lessonId) {
-		lDAO.deleteById(lessonId);
+
+        lDAO.deleteById(lessonId);
+    }
+	
+
+	// 查詢所有課程資料
+	public List<finAllLessonsDTO> findAllLesson() {
+	    List<Lessons> LessonsList = lDAO.findAll();
+	    List<finAllLessonsDTO> courseDTOList = new ArrayList<>();
+	    for (Lessons lesson : LessonsList) {
+	        Users teacher = uDAO.findById(lesson.getUsers().getUsersId()).get();
+	        finAllLessonsDTO lDTO = new finAllLessonsDTO(lesson, teacher);
+	        courseDTOList.add(lDTO);
+	    }
+	    return courseDTOList;
 	}
 
 }

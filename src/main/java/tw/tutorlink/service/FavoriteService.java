@@ -1,5 +1,6 @@
 package tw.tutorlink.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -7,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import tw.tutorlink.bean.Favorite;
+import tw.tutorlink.bean.FavoriteDTO;
 import tw.tutorlink.bean.Lessons;
+import tw.tutorlink.bean.LessonsDTO;
 import tw.tutorlink.bean.Users;
 import tw.tutorlink.repository.FavoriteDAO;
 import tw.tutorlink.repository.LessonsDAO;
@@ -40,8 +43,8 @@ public class FavoriteService {
 	
 	// 使用者ID查詢
 	public List<Favorite> findFavoriteListByUsersId(Integer usersId) {
-		List<Favorite> scoreList = fDAO.findFavoriteListByUsersId(usersId);
-		return scoreList;
+		List<Favorite> favoriteList = fDAO.findFavoriteListByUsersId(usersId);
+		return favoriteList;
 	}
 	
 	// ID刪除
@@ -61,5 +64,28 @@ public class FavoriteService {
 	// 使用者ID查詢使用者
 	public Users findUserId(Integer uID) {
 		return uDao.findById(uID).get();
+	}
+	
+	// 透過查詢收藏
+	public List<FavoriteDTO> findByUsersId(Integer usersId) {
+	    List<Favorite> favoriteList = fDAO.findFavoriteListByUsersId(usersId);
+	    List<FavoriteDTO> favoriteDtoList = new ArrayList<>();
+	    for (Favorite favorite : favoriteList) {
+	        Lessons lessons = favorite.getLesson();
+	        Users teacher = findUserId(lessons.getUsers().getUsersId());
+	        FavoriteDTO lDTO = new FavoriteDTO(lessons, teacher, favorite);
+	        favoriteDtoList.add(lDTO);
+	    }
+
+	    return favoriteDtoList;
+	}
+	
+	// 新增收藏用
+	public FavoriteDTO createFavoriteAndReturnDTO(Users user, Lessons lesson,Favorite favorite) {
+	    Lessons lessons = findLessonsById(lesson.getLessonId()); 
+	    Users teacher = findUserId(lessons.getUsers().getUsersId());
+	    // 创建 FavoriteDTO 对象
+	    FavoriteDTO lDTO = new FavoriteDTO(lessons, teacher, favorite);
+	    return lDTO;
 	}
 }

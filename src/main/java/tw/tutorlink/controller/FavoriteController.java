@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import tw.tutorlink.bean.Favorite;
+import tw.tutorlink.bean.FavoriteDTO;
 import tw.tutorlink.bean.Lessons;
 import tw.tutorlink.bean.Users;
 import tw.tutorlink.service.FavoriteService;
@@ -26,9 +27,9 @@ public class FavoriteController {
 	// 查詢使用者所有收藏
 	@GetMapping("/favorite")
 	@ResponseBody
-	public List<Favorite> findFavoriteListByUsersId(@RequestParam("uid") Integer uid) {
+	public List<FavoriteDTO> findFavoriteListByUsersId(@RequestParam("uid") Integer uid) {
 		if (uid != null) {
-			List<Favorite> fScore = fService.findFavoriteListByUsersId(uid);
+			List<FavoriteDTO> fScore = fService.findByUsersId(uid);
 			return fScore;
 		} else {
 			return null;
@@ -39,13 +40,14 @@ public class FavoriteController {
 	// 新增收藏
 	@PostMapping("/favorite")
 	@ResponseBody
-	public Favorite InsertFavorite(@RequestParam("lid") Integer lid,@RequestParam("uid") Integer uid,@RequestBody Favorite fv) {
+	public FavoriteDTO InsertFavorite(@RequestParam("lid") Integer lid,@RequestParam("uid") Integer uid,@RequestBody Favorite fv) {
 		Users user = fService.findUserId(uid);
 		Lessons lesson = fService.findLessonsById(lid);
 		fv.setUsers(user);
 		fv.setLesson(lesson);
 		fService.insert(fv);
-		return fv;
+		FavoriteDTO fDto = fService.createFavoriteAndReturnDTO(user, lesson,fv);
+		return fDto;
 	}
 
 	// 刪除收藏

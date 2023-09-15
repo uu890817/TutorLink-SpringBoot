@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import tw.tutorlink.bean.UserDetail;
@@ -45,7 +46,6 @@ public class UsersService {
 			Users add = new Users();
 			UserDetail ud = new UserDetail();
 			add.setUserEmail(mail);
-			add.setUserAccount(mail);
 			add.setGoogleSubId(sub);
 			add.setUserType(1);
 			ud.setUsers(add);
@@ -106,7 +106,7 @@ public class UsersService {
 	}
 
 	public Users checkMail(String mail) {
-		
+
 		return uDAO.findByMail(mail);
 	}
 
@@ -114,14 +114,17 @@ public class UsersService {
 		System.out.println(name);
 		System.out.println(mail);
 		System.out.println(pwd);
+		// 密碼加密
+		BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+		String passwordEncoder = bCryptPasswordEncoder.encode(pwd);
+
 		if (uDAO.findByMail(mail) == null) {
 			Users user = new Users();
 			UserDetail ud = new UserDetail();
 			ud.setUsers(user);
-			user.setUserAccount(mail);
 			user.setUserEmail(mail);
 			user.getUserDetail().setUserName(name);
-			user.setUserPassword(pwd);
+			user.setUserPassword(passwordEncoder);
 			user.setUserType(1);
 			ud.setTeacherState(1);
 			uDAO.save(user);
@@ -130,39 +133,35 @@ public class UsersService {
 		}
 		return null;
 	}
-	// 錯誤代碼
+
+	// 代碼
 	// 100 信箱不存在或者信箱輸入錯誤
-	// 101 透過信箱跟密碼取得的唯一值ID不同
-	// 102 密碼錯誤，請重新輸入
-	// 103 資料正確，進行登入後續動作
+	// 101 密碼錯誤，請重新輸入
+	// 102 資料正確，進行登入後續動作
 
 	public String normalLogin(String mail, String pwd) {
 		System.out.println("密碼是: " + pwd);
 		Users usermail = uDAO.findByMail(mail);
-		Users userpwd = uDAO.findByPwd(pwd, mail);
-
-		if (usermail != null) {
-			if (usermail.getUsersId() == userpwd.getUsersId()) {
-				// id相同代表同一個user可以驗證資料
-				if (usermail.getUserEmail() == userpwd.getUserEmail()) {
-					// 先驗證信箱是否為同樣的，照理信箱要是相同的
-					if (usermail.getUserPassword() == userpwd.getUserPassword()) {
-						// 先驗證撈出來的兩組密碼吻合，在各別與前端送的密碼做驗證
-						if (usermail.getUserPassword().equals(pwd) && userpwd.getUserPassword().equals(pwd)) {
-							usermail.getUserDetail().setLastLoginTime(usermail.getUserDetail().getNewLoginTime());
-							usermail.getUserDetail().setNewLoginTime(new Date());
-							uDAO.save(usermail);
-							return "103";
-						}
-						return "102";
-					}
-				}
-			}
-			// 檢查兩者取出來的id是不是同一組，進而驗證屬於同一個User
-			return "101";
+		if(usermail==null) {
+			return "100";
 		}
-		// 信箱不存在或者信箱輸入錯誤
-		return "100";
+		BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+
+		// 比對
+		boolean matches = bCryptPasswordEncoder.matches(pwd, usermail.getUserPassword());
+
+		// 檢查輸入的信箱是否存在資料庫
+		if (usermail != null) {
+			// 檢查輸入的密碼是否與資料庫解密的密碼相符
+			if (matches) {
+				// 寫入登入時間
+				usermail.getUserDetail().setLastLoginTime(usermail.getUserDetail().getNewLoginTime());
+				usermail.getUserDetail().setNewLoginTime(new Date());
+				uDAO.save(usermail);
+				return "102";
+			} 
+		}
+		return "101";
 	}
 
 // ----- 管理者頁面查詢全部 -----
@@ -178,6 +177,16 @@ public class UsersService {
 
 	public long count() {
 		return uDAO.count();
+	}
+
+	public Users findMail(int userid, String mail, int randomNumber) {
+		Users result = uDAO.findByMail(mail);
+		if(result!=null) {
+			result.setRamdonVerify(randomNumber);
+			result.setExpiredTime(new Date());
+			uDAO.save(result);
+		}
+		return result;
 	}
 
 }

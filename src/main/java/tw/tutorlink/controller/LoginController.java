@@ -113,7 +113,7 @@ public class LoginController {
 		String pwd = json.get("pwd").getAsString();
 		System.out.println(mail + "  " + pwd);
 		String result = uService.normalLogin(mail, pwd);
-		if (result.equals("103")) {
+		if (result.equals("102")) {
 			Users user = uService.checkMail(mail);
 			String usersid = user.getUsersId().toString();
 

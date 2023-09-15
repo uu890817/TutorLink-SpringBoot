@@ -53,7 +53,7 @@ public class Exercises {
 	private ExerciseConfig exerciseConfig;
 	
 	@JsonIgnore
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "exercises")
+	@OneToMany(cascade = CascadeType.DETACH, mappedBy = "exercises" )
 	private List<ExercisePermissions> exercisePermissions;
 	
 	@JsonIgnoreProperties("exercises")

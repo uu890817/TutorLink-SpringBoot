@@ -1,13 +1,17 @@
 package tw.tutorlink.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import tw.tutorlink.bean.Calender;
 import tw.tutorlink.bean.Comment;
+import tw.tutorlink.bean.CommentDTO;
 import tw.tutorlink.bean.Lessons;
+import tw.tutorlink.bean.LessonsDTO;
 import tw.tutorlink.bean.Users;
 import tw.tutorlink.repository.LessonsDAO;
 import tw.tutorlink.repository.ScoreDAO;
@@ -76,5 +80,21 @@ public class ScoreService {
 	// 使用者ID查詢使用者
 	public Users findUserId(Integer uID) {
 		return uDao.findById(uID).get();
+	}
+	
+	// 查詢所有評論
+	
+	public List<CommentDTO> findAllComment() {
+	    List<Comment> comments = sDAO.findAllCommentList();
+	    List<CommentDTO> courseDTOList = new ArrayList<>();
+	    for (Comment comment : comments) {
+	        Lessons lessons = comment.getLesson();
+	        Users teacher = findUserId(lessons.getUsers().getUsersId());
+	        Users student = findUserId(comment.getUsers().getUsersId());
+	        CommentDTO lDTO = new CommentDTO(lessons, teacher, comment, student);
+	        courseDTOList.add(lDTO);
+	    }
+
+	    return courseDTOList;
 	}
 }
