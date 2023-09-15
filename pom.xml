@@ -78,9 +78,8 @@
     		<version>2.11.0</version>
 		</dependency>
 		<dependency>
-			<groupId>MidtermAjaxMVC</groupId>
-			<artifactId>MidtermAjaxMVC</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-crypto</artifactId>
 		</dependency>
 	</dependencies>
 
