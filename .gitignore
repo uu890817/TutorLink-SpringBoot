@@ -42,3 +42,4 @@ build/
 *.mp4
 *.pdf
 
+application.properties
