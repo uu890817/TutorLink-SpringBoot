@@ -18,6 +18,7 @@ public class MailService {
 		message.setSubject("主旨：Hello TutorLink");
 		message.setText("內容：這是一封測試信件，恭喜您成功發送了唷");
 		mailSender.send(message);	
+		System.out.println("成功寄信");
 	};
 
 }
