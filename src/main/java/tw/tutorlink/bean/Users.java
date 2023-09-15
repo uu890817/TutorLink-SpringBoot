@@ -1,5 +1,6 @@
 package tw.tutorlink.bean;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.annotation.Transient;
@@ -25,10 +26,7 @@ public class Users{
 	@Column(name = "UsersId")
 	private Integer usersId;
 
-	@Column(name = "UserAccount", columnDefinition = "varchar(50)")
-	private String userAccount;
-
-	@Column(name = "UserPassword", columnDefinition = "varchar(50)")
+	@Column(name = "UserPassword", columnDefinition = "nvarchar(max)")
 	private String userPassword;
 
 	@Column(name = "UserEmail", columnDefinition = "varchar(50)")
@@ -39,6 +37,12 @@ public class Users{
 
 	@Column(name = "GoogleSubId", columnDefinition = "varchar(100)")
 	private String googleSubId;
+	
+	@Column(name="RamdonVerify")
+	private Integer ramdonVerify;
+	
+	@Column(name="ExpiredTime")
+	private Date expiredTime;
 
 	// 關聯性欄位-----------------------------------------------------
 
@@ -110,14 +114,6 @@ public class Users{
 
 	public void setUsersId(Integer usersId) {
 		this.usersId = usersId;
-	}
-
-	public String getUserAccount() {
-		return userAccount;
-	}
-
-	public void setUserAccount(String userAccount) {
-		this.userAccount = userAccount;
 	}
 
 	public String getUserPassword() {
@@ -278,6 +274,23 @@ public class Users{
 
 	public void setCourseQA(List<CourseQA> courseQA) {
 		this.courseQA = courseQA;
+	}
+	
+
+	public Integer getRamdonVerify() {
+		return ramdonVerify;
+	}
+
+	public void setRamdonVerify(Integer ramdonVerify) {
+		this.ramdonVerify = ramdonVerify;
+	}
+
+	public Date getExpiredTime() {
+		return expiredTime;
+	}
+
+	public void setExpiredTime(Date expiredTime) {
+		this.expiredTime = expiredTime;
 	}
 
 	@Transient
