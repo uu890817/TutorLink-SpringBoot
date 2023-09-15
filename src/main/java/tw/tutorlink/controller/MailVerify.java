@@ -21,23 +21,23 @@ public class MailVerify {
 	@Autowired
 	private UsersService uService;
 
-	@PostMapping("/testmail")
+	@PostMapping("/forgetmail")
 	@ResponseBody
-	public void mService(String mail, HttpSession session) {
-//		Users loggedInUser = (Users) session.getAttribute("logState");
-//		int userid = loggedInUser.getUsersId();
+	public String forgetMail(String mail) {
 		Random random = new Random();
 		int min = 100000; // 最小值（包括）
 		int max = 999999; // 最大值（包括）
 		int randomNumber = random.nextInt(max - min + 1) + min;
 
-//		Users result = uService.findMail(userid,mail, randomNumber);
+		Users result = uService.forgetMail(mail, randomNumber);
 		System.out.println("隨機生成的數值: " + randomNumber);
-//
-//		if (result != null) {
-//		}
-		mService.sendVerifyMail(mail);
 
+		if (result != null) {
+			String mailresult = mService.sendVerifyMail(mail, randomNumber);
+			if (mailresult.equals("成功寄信")) {
+				return "ok";
+			}
+		}
+		return "fail";
 	}
-
 }

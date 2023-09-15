@@ -142,7 +142,7 @@ public class UsersService {
 	public String normalLogin(String mail, String pwd) {
 		System.out.println("密碼是: " + pwd);
 		Users usermail = uDAO.findByMail(mail);
-		if(usermail==null) {
+		if (usermail == null) {
 			return "100";
 		}
 		BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
@@ -159,7 +159,7 @@ public class UsersService {
 				usermail.getUserDetail().setNewLoginTime(new Date());
 				uDAO.save(usermail);
 				return "102";
-			} 
+			}
 		}
 		return "101";
 	}
@@ -179,14 +179,16 @@ public class UsersService {
 		return uDAO.count();
 	}
 
-	public Users findMail(int userid, String mail, int randomNumber) {
+	public Users forgetMail(String mail, int randomNumber) {
+
 		Users result = uDAO.findByMail(mail);
-		if(result!=null) {
+		if (result != null) {
 			result.setRamdonVerify(randomNumber);
 			result.setExpiredTime(new Date());
 			uDAO.save(result);
+			return result;
 		}
-		return result;
+		return null;
 	}
 
 }
