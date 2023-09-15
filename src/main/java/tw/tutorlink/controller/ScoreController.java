@@ -59,8 +59,8 @@ public class ScoreController {
 	@PostMapping(path="/comment",produces="application/json;charset=UTF-8")
 	@ResponseBody
 	public String InsertScore(@RequestBody Comment sc) {
-		Users user = sService.findUserId(3);
-		Lessons lesson = sService.findLessonsById(8);
+		Users user = sService.findUserId(6);
+		Lessons lesson = sService.findLessonsById(1);
 		sc.setUsers(user);
 		sc.setLesson(lesson);
 		sService.insert(sc);
