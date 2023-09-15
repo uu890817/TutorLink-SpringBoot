@@ -61,6 +61,9 @@ public class CartItem {
 	
 	@OneToMany(mappedBy = "cartItem", cascade = CascadeType.ALL)
 	private List<OrderItem> orderItem;
+	
+	@Column(name = "Payment")
+	private Integer payment;
 
 	// 關聯性欄位-----------------------------------------------------
 
