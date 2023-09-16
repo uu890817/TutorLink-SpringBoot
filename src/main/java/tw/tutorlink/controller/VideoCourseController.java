@@ -625,4 +625,17 @@ public class VideoCourseController {
     	vnService.deleteVideoNote(videoNoteId);
     }
     
+    //----------------willLearn--------------------
+    
+    //取得該課程willLearn
+    @GetMapping(path="/willLearn/{lessonId}",produces="application/json;charset=UTF-8")
+    public List<StudentWillLearn> findLessonWillLearn(@PathVariable("lessonId")Integer lessonId) {
+    	return swlService.getLessonWillLearn(lessonId);
+    }
+    
+    //刪除單筆willLearn
+    @DeleteMapping(path="/willLearn/{willearnId}")
+    public void deleteWillLearn(@PathVariable("willearnId") Integer willearnId) {
+    	swlService.deleteWillLearn(willearnId);
+    }
 }
