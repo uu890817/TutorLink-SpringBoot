@@ -74,35 +74,27 @@ public class ExercisesService {
 					hasSame = true;
 				}
 			}
-			if(hasSame) {
-				break;
+			if(!hasSame) {
+				tDTO.setUsersId(cart.getUsers().getUsersId());
+				tDTO.setUserName(cart.getUsers().getUserDetailUserName());
+				
+				ExercisePermissions ep = this.getExercisePermissionsByUIdAndLId(eId, cart.getUsers().getUsersId());
+				if(ep != null) {
+					tDTO.setExerPerId(ep.getExerPerId());
+					tDTO.setExerPermissions(ep);
+				}
+			
+				Exercises e = eDAO.findExercisesByExerId(eId);		
+				tDTO.setExerConfig(e.getExerciseConfig());
+				tDTOs.add(tDTO);
 			}
-			
-			tDTO.setUsersId(cart.getUsers().getUsersId());
-			tDTO.setUserName(cart.getUsers().getUserDetailUserName());
-			
-			ExercisePermissions ep = this.getExercisePermissionsByUIdAndLId(eId, cart.getUsers().getUsersId());
-			if(ep != null) {
-				tDTO.setExerPerId(ep.getExerPerId());
-				tDTO.setExerPermissions(ep);
-			}
-		
-			Exercises e = eDAO.findExercisesByExerId(eId);
-			
-			tDTO.setExerConfig(e.getExerciseConfig());
-			
-			
-			
-			tDTOs.add(tDTO);
 		}
-		
 		return tDTOs;
-		
-		
-		
-		 
 	}
 
+
+	
+	
 	public ExercisePermissions getExercisePermissionsByUIdAndLId(Integer eId, Integer uId) {
 		return eDAO.findExercisePermissionsByLessonIdAndUserId(eId, uId);
 	}

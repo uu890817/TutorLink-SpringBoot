@@ -86,6 +86,7 @@ public class TeacherExerciseController {
 		
 		return tDTOs;
 	}
+	
 
 	@PostMapping(path = "/newExercise", produces = "application/json;charset=UTF-8")
 	public String insertNewExercise(@RequestBody Exercises newExercise, HttpSession session, @CookieValue("UsersId") String cookie) {
@@ -126,9 +127,13 @@ public class TeacherExerciseController {
 	
 	
 	@PutMapping(path = "/updateExercise", produces = "application/json;charset=UTF-8")
-	public String updataExercise(@RequestBody Exercises newExercise) {
+	public String updataExercise(@RequestBody Exercises newExercise, HttpSession session) {
+		Users uSession = (Users) session.getAttribute("logState");
+		if (uSession != null) {
+			System.err.println("Session" + uSession.getUsersId());
+		}
 		Users user = new Users();
-		user.setUsersId(1);
+		user.setUsersId(uSession.getUsersId());
 		newExercise.setUsers(user);
 		Exercises result = eService.insertNewExercise(newExercise);
 
