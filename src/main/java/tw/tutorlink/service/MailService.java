@@ -15,7 +15,7 @@ public class MailService {
 		SimpleMailMessage message = new SimpleMailMessage();
 		message.setFrom("ispantutorlink@gmail.com");
 		message.setTo(mail);
-		message.setSubject("主旨：Hello TutorLink");
+		message.setSubject("TutorLink");
 		message.setText("親愛的TutorLink會員您好: \r\n"
 				+ "\r\n"
 				+ "驗證碼:"+content+"\r\n"
