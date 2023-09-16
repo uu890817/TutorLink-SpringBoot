@@ -40,6 +40,9 @@ public class Question {
 	@Column(name = "IsDelete", columnDefinition = "bit")
 	private boolean isDelete;
 
+	@Column(name = "IsEdit", columnDefinition = "bit")
+	private boolean isEdit;
+	
 	// 關聯性欄位-----------------------------------------------------
 
 	@OneToMany(mappedBy = "question", cascade = CascadeType.ALL)

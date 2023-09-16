@@ -25,34 +25,27 @@ public class OrderItem {
 	private Integer orderId;
 
 	@ManyToOne
-	@JsonIgnore
-	@JsonIgnoreProperties({"order",})
+	@JsonIgnoreProperties({"order", "shoppingCart", "calender"})
 	@JoinColumn(name="LessonId",referencedColumnName = "lessonId", nullable = false)
 	private Lessons lesson;
 
 	@ManyToOne
 	@JsonIgnore
-	@JsonIgnoreProperties({"order",})
 	@JoinColumn(name = "UsersId", referencedColumnName = "usersId",nullable = false)
 	private Users users;
 	
 	@OneToOne
-	@JsonIgnoreProperties("order")
+	@JsonIgnoreProperties({"orderitem", "calender"})
 	@JoinColumn(name="CalenderId",referencedColumnName = "calenderId")
 	private Calender calender;
-
-	@Column(name = "Type",columnDefinition = "bit")
-	private boolean type;
 	
 	@Column(name="OrederStates")
 	private Integer orderStates;
 	
-	@ManyToOne
+	@ManyToOne 
+	@JsonIgnoreProperties({"order", "lesson"})
 	@JoinColumn(name="CartId",referencedColumnName = "cartId", nullable = false)
 	private CartItem cartItem;
-	
-//	@Column(name="Coupon")
-//	private String coupon;
 	
 	@Column(name = "CreateTime", nullable = false)
 	private Date createTime;
@@ -89,14 +82,6 @@ public class OrderItem {
 		this.calender = calender;
 	}
 
-	public boolean isType() {
-		return type;
-	}
-
-	public void setType(boolean type) {
-		this.type = type;
-	}
-
 	public Integer getOrderStates() {
 		return orderStates;
 	}
@@ -111,6 +96,14 @@ public class OrderItem {
 
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
+	}
+
+	public CartItem getCartItem() {
+		return cartItem;
+	}
+
+	public void setCartItem(CartItem cartItem) {
+		this.cartItem = cartItem;
 	}
 	
 	

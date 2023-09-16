@@ -6,14 +6,16 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import tw.tutorlink.bean.CartItem;
 import tw.tutorlink.bean.ExercisePermissions;
 import tw.tutorlink.bean.Exercises;
 import tw.tutorlink.bean.Lessons;
-import tw.tutorlink.bean.OrderItem;
 import tw.tutorlink.dto.exercises.StudentGetExerciseDTO;
 import tw.tutorlink.dto.exercises.TeacherGetAllExerciseDTO;
 import tw.tutorlink.dto.exercises.TeacherGetAllLessonsNameDTO;
 import tw.tutorlink.dto.exercises.TeacherGetExerciseInfoDTO;
+import tw.tutorlink.dto.exercises.TeacherGetLessonStudentDTO;
+import tw.tutorlink.dto.exercises.TeacherShareExerciseDTO;
 import tw.tutorlink.repository.ExercisePermissionsDAO;
 import tw.tutorlink.repository.ExercisesDAO;
 
@@ -24,6 +26,8 @@ public class ExercisesService {
 	private ExercisesDAO eDAO;
 	@Autowired
 	private ExercisePermissionsDAO epDAO;
+	
+	
 
 //	SELECT-----------------------------------------------------------------------------------------------
 	// TEACHER
@@ -52,9 +56,51 @@ public class ExercisesService {
 		return tDTO;
 	}
 
-	public List<OrderItem> getStudentByLessonId(Integer lessonId) {
-		return eDAO.findOrderByLessonId(lessonId);
-
+//	public List<OrderItem> getStudentByLessonId(Integer lessonId) {
+//		return eDAO.findOrderByLessonId(lessonId);
+//
+//	}
+	public List<TeacherGetLessonStudentDTO> getStudentByLessonId(Integer lId, Integer eId){
+		List<CartItem> carts = eDAO.findStudents(lId);
+		List<TeacherGetLessonStudentDTO> tDTOs = new ArrayList<>();
+		
+		for(CartItem cart:carts ) {
+			System.err.println(cart.getUsers().getUserDetailUserName());
+			TeacherGetLessonStudentDTO tDTO = new TeacherGetLessonStudentDTO();
+			boolean hasSame = false; 
+			for(TeacherGetLessonStudentDTO t: tDTOs) {
+				if(cart.getUsers().getUsersId() == t.getUsersId() && cart.getUsers().getUserDetailUserName() == t.getUserName()) {
+					System.err.println("重複使用者");
+					hasSame = true;
+				}
+			}
+			if(hasSame) {
+				break;
+			}
+			
+			tDTO.setUsersId(cart.getUsers().getUsersId());
+			tDTO.setUserName(cart.getUsers().getUserDetailUserName());
+			
+			ExercisePermissions ep = this.getExercisePermissionsByUIdAndLId(eId, cart.getUsers().getUsersId());
+			if(ep != null) {
+				tDTO.setExerPerId(ep.getExerPerId());
+				tDTO.setExerPermissions(ep);
+			}
+		
+			Exercises e = eDAO.findExercisesByExerId(eId);
+			
+			tDTO.setExerConfig(e.getExerciseConfig());
+			
+			
+			
+			tDTOs.add(tDTO);
+		}
+		
+		return tDTOs;
+		
+		
+		
+		 
 	}
 
 	public ExercisePermissions getExercisePermissionsByUIdAndLId(Integer eId, Integer uId) {
@@ -92,7 +138,7 @@ public class ExercisesService {
 	}
 
 	public String deleteExercisePermission(Integer epId) {
-		System.out.println(epId);
+		System.err.println(epId);
 		epDAO.deleteById(epId);
 		return "OK";
 	}

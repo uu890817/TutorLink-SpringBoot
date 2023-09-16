@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.servlet.http.HttpSession;
+import tw.tutorlink.bean.CartItem;
 import tw.tutorlink.bean.ExercisePermissions;
 import tw.tutorlink.bean.Exercises;
 import tw.tutorlink.bean.OrderItem;
@@ -81,19 +82,7 @@ public class TeacherExerciseController {
 
 	@GetMapping("/getStudents/{lId}/{eId}")
 	public List<TeacherGetLessonStudentDTO> getStudentsByLesson(@PathVariable Integer lId, @PathVariable Integer eId) {
-		List<TeacherGetLessonStudentDTO> tDTOs = new ArrayList<>();
-		List<OrderItem> orders = eService.getStudentByLessonId(lId);
-		
-		
-	
-		for(OrderItem order: orders) {
-			if(order.getOrderStates() != 0) {
-				break;
-			}
-			ExercisePermissions exercisePermissions = eService.getExercisePermissionsByUIdAndLId(eId, order.getUsers().getUsersId());
-			tDTOs.add(new TeacherGetLessonStudentDTO(order, exercisePermissions));
-		}
-		
+		List<TeacherGetLessonStudentDTO> tDTOs = eService.getStudentByLessonId(lId, eId);
 		
 		return tDTOs;
 	}

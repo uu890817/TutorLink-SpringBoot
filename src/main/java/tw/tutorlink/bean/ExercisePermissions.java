@@ -27,12 +27,12 @@ public class ExercisePermissions {
 	@Column(name="ExerPerId")
 	private Integer exerPerId;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	@JsonIgnoreProperties({"exercisePermissions", "topics", "exerciseConfig", "question", "lesson"})
 	@JoinColumn(name = "ExerId", referencedColumnName = "exerId")
 	private Exercises exercises;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	@JsonIgnore
 	@JoinColumn(name = "UsersId", referencedColumnName = "usersId", nullable = false)
 	private Users users;

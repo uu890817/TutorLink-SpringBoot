@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.servlet.http.HttpSession;
 import tw.tutorlink.bean.Comment;
+import tw.tutorlink.bean.CommentDTO;
 import tw.tutorlink.bean.Lessons;
 import tw.tutorlink.bean.Users;
 import tw.tutorlink.service.ScoreService;
@@ -26,8 +28,8 @@ public class ScoreController {
 	// 查詢所有評論
 	@GetMapping("/comment")
 	@ResponseBody
-	public List<Comment> findAllCommentList(){
-		List<Comment> fScore = sService.findAllCommentList();
+	public List<CommentDTO> findAllCommentList(){
+		List<CommentDTO> fScore = sService.findAllComment();
 		return fScore;
 	}
 	
@@ -58,9 +60,10 @@ public class ScoreController {
 	// 新增單一評論
 	@PostMapping(path="/comment",produces="application/json;charset=UTF-8")
 	@ResponseBody
-	public String InsertScore(@RequestBody Comment sc) {
-		Users user = sService.findUserId(3);
-		Lessons lesson = sService.findLessonsById(8);
+	public String InsertScore(@RequestBody Comment sc,HttpSession session,@RequestParam("lid") Integer lid) {
+		Users loggedInUser = (Users) session.getAttribute("logState");
+		Users user = sService.findUserId(loggedInUser.getUsersId());
+		Lessons lesson = sService.findLessonsById(lid);
 		sc.setUsers(user);
 		sc.setLesson(lesson);
 		sService.insert(sc);

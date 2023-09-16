@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.servlet.http.HttpSession;
 import tw.tutorlink.bean.Lessons;
 import tw.tutorlink.bean.Report;
 import tw.tutorlink.bean.Users;
@@ -24,7 +25,7 @@ public class ReportController {
 	@Autowired
 	private ReportService rService;
 
-	// 查詢所有評論
+	// 查詢所有檢舉
 	@GetMapping("/report")
 	@ResponseBody
 	public List<Report> findAllCommentList() {
@@ -32,7 +33,7 @@ public class ReportController {
 		return fScore;
 	}
 
-	// 查詢使用者所有評論
+	// 查詢使用者檢舉
 	@GetMapping("/report/selectbyuser")
 	@ResponseBody
 	public List<Report> findReportListByUsersId(@RequestParam("uid") Integer uid) {
@@ -44,7 +45,7 @@ public class ReportController {
 		}
 	}
 
-	// 查詢課程所有評論
+	// 查詢課程所有檢舉
 	@GetMapping("/report/selectbylesson")
 	@ResponseBody
 	public List<Report> findReportListByLessonId(@RequestParam("lid") Integer lid) {
@@ -56,12 +57,13 @@ public class ReportController {
 		}
 	}
 
-	// 新增單一評論
+	// 新增檢舉 /report?lid= 課程id
 	@PostMapping(path = "/report", produces = "application/json;charset=UTF-8")
 	@ResponseBody
-	public String InsertReport(@RequestBody Report sc) {
-		Users user = rService.findUserId(3);
-		Lessons lesson = rService.findLessonsById(2);
+	public String InsertReport(@RequestBody Report sc, HttpSession session,@RequestParam("lid") Integer lid) {
+		Users loggedInUser = (Users) session.getAttribute("logState");
+		Users user = rService.findUserId(loggedInUser.getUsersId());
+		Lessons lesson = rService.findLessonsById(lid);
 		sc.setStatus(0);
 		sc.setUsers(user);
 		sc.setLesson(lesson);
@@ -69,7 +71,7 @@ public class ReportController {
 		return "新增成功";
 	}
 
-	// 刪除單筆評論
+	// 刪除單筆檢舉
 	@DeleteMapping("/report/delete")
 	@ResponseBody
 	public String deleteReport(@RequestParam("id") Integer id) {
@@ -81,7 +83,7 @@ public class ReportController {
 		return "刪除成功";
 	}
 
-	// 修改單筆評論
+	// 修改單筆檢舉狀態
 	@PutMapping("/report/update")
 	@ResponseBody
 	public String updateById(@RequestParam("rId") Integer rid, @RequestBody Report newReport) {
