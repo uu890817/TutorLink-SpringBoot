@@ -1,14 +1,13 @@
 package tw.tutorlink.dto.exercises;
 
 import java.util.Date;
-import java.util.List;
 
-import tw.tutorlink.bean.Question;
+import tw.tutorlink.bean.Answer;
 
-public class QuestionDTO {
+public class AnswerDTO {
 
+	private Integer answerId;
 	private Integer questionId;
-	private Integer exerId;
 	private Integer usersId;
 	private String userName;
 	private String content;
@@ -16,114 +15,85 @@ public class QuestionDTO {
 	private boolean isDelete;
 	private boolean isEdit;
 	private boolean isMyQuestion;
-	private List<AnswerDTO> answer;
-	public QuestionDTO() {
 
+	
+	public AnswerDTO() {
 	}
 
-	public QuestionDTO(Question q) {
-		if(q.getQuestionId() != null) {
-			this.questionId = q.getQuestionId();
-		}
-
-		this.exerId = q.getExercises().getExerId();
-		
-		if(q.getUsers() != null) {
-			this.usersId = q.getUsers().getUsersId();
-			if(q.getUsers().getUserDetail() != null) {
-				this.userName = q.getUsers().getUserDetail().getUserName();
-			}
-		}
-		
-		this.content = q.getContent();
-		this.createDate = q.getCreateDate();
-		
-		this.isDelete = q.isDelete();
-		this.isEdit = q.isEdit();
-		
+	public AnswerDTO(Answer a) {
+		this.answerId = a.getAnswerId();
+		this.questionId = a.getQuestion().getQuestionId();
+		this.usersId = a.getUsers().getUsersId();
+		this.userName = a.getUsers().getUserDetailUserName();
+		this.content = a.getContent();
+		this.createDate = a.getCreateDate();
+		this.isDelete = a.isDelete();
+		this.isEdit = a.isEdit();
 	}
-
+	
+	public Integer getAnswerId() {
+		return answerId;
+	}
+	public void setAnswerId(Integer answerId) {
+		this.answerId = answerId;
+	}
 	public Integer getQuestionId() {
 		return questionId;
 	}
-
 	public void setQuestionId(Integer questionId) {
 		this.questionId = questionId;
 	}
-
-	public Integer getExerId() {
-		return exerId;
-	}
-
-	public void setExerId(Integer exerId) {
-		this.exerId = exerId;
-	}
-
 	public Integer getUsersId() {
 		return usersId;
 	}
-
 	public void setUsersId(Integer usersId) {
 		this.usersId = usersId;
 	}
-
-	public String getContent() {
-		return content;
-	}
-
-	public void setContent(String content) {
-		this.content = content;
-	}
-
-	public Date getCreateDate() {
-		return createDate;
-	}
-
-	public void setCreateDate(Date createDate) {
-		this.createDate = createDate;
-	}
-
-	public boolean isDelete() {
-		return isDelete;
-	}
-
-	public void setDelete(boolean isDelete) {
-		this.isDelete = isDelete;
-	}
-
-	public boolean isEdit() {
-		return isEdit;
-	}
-
-	public void setEdit(boolean isEdit) {
-		this.isEdit = isEdit;
-	}
-
 	public String getUserName() {
 		return userName;
 	}
-
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
-
+	public String getContent() {
+		return content;
+	}
+	public void setContent(String content) {
+		this.content = content;
+	}
+	public Date getCreateDate() {
+		return createDate;
+	}
+	public void setCreateDate(Date createDate) {
+		this.createDate = createDate;
+	}
+	public boolean isDelete() {
+		return isDelete;
+	}
+	public void setDelete(boolean isDelete) {
+		this.isDelete = isDelete;
+	}
+	public boolean isEdit() {
+		return isEdit;
+	}
+	public void setEdit(boolean isEdit) {
+		this.isEdit = isEdit;
+	}
 	public boolean isMyQuestion() {
 		return isMyQuestion;
 	}
-
 	public void setMyQuestion(boolean isMyQuestion) {
 		this.isMyQuestion = isMyQuestion;
 	}
 
-	public List<AnswerDTO> getAnswer() {
-		return answer;
-	}
-
-	public void setAnswer(List<AnswerDTO> answer) {
-		this.answer = answer;
-	}
-
-
 	
-
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
