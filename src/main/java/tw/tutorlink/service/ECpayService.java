@@ -30,10 +30,11 @@ public class ECpayService {
 		obj.setItemName("線上課程共10堂");
 
 	    // 交易結果回傳網址，只接受 https 開頭的網站，可以使用 ngrok	
-        obj.setReturnURL("http://211.23.128.214:5000");
+        obj.setReturnURL("http://localhost:5173/member/shoppingcart/step3");
+        
 		obj.setNeedExtraPaidInfo("N");
         // 商店轉跳網址 (Optional)
-        obj.setClientBackURL("http://192.168.1.37:8080/");
+        obj.setClientBackURL("http://localhost:5173/member/shoppingcart/step3");
 		String form = all.aioCheckOut(obj, null);
 		
 		return form;
