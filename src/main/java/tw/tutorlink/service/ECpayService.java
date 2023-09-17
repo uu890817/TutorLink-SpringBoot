@@ -6,35 +6,25 @@ import org.springframework.stereotype.Service;
 
 import ecpay.payment.integration.AllInOne;
 import ecpay.payment.integration.domain.AioCheckOutALL;
+import tw.tutorlink.dto.cart.EcPayDTO;
 
 @Service
 public class ECpayService {
 
-	public String ecpayCheckout() {
+	public String ecpayCheckout(EcPayDTO request) {
 		// 隨機生成UID
 		String uuId = UUID.randomUUID().toString().replaceAll("-", "").substring(0, 20);
 		AllInOne all = new AllInOne("");
 		
 		AioCheckOutALL obj = new AioCheckOutALL();
-		obj.setMerchantTradeNo(uuId);
-		
-		// 交易日期
-		obj.setMerchantTradeDate("2023/09/17 08:05:23");
-		
-		// 交易總金額
-		obj.setTotalAmount("5000");
-		
-		obj.setTradeDesc("線上課程");
-
-		// 訂單名稱
-		obj.setItemName("線上課程共10堂");
-
-	    // 交易結果回傳網址，只接受 https 開頭的網站，可以使用 ngrok	
-        obj.setReturnURL("http://localhost:5173/member/shoppingcart/step3");
-        
-		obj.setNeedExtraPaidInfo("N");
-        // 商店轉跳網址 (Optional)
-        obj.setClientBackURL("http://localhost:5173/member/shoppingcart/step3");
+		obj.setMerchantTradeNo(uuId);  // 設定商店訂單編號
+        obj.setMerchantTradeDate(request.getMerchantTradeDate());  // 設定商店訂單日期
+        obj.setTotalAmount(request.getTotalAmount());  // 設定交易總金額
+        obj.setTradeDesc(request.getTradeDesc());  // 設定交易描述
+        obj.setItemName(request.getItemName());  // 設定訂單名稱
+        obj.setReturnURL(request.getReturnURL());  // 設定交易結果回傳網址
+        obj.setClientBackURL(request.getClientBackURL());  // 設定商店轉跳網址
+        obj.setNeedExtraPaidInfo(request.getNeedExtraPaidInfo());  // 是否需要額外付款資訊
 		String form = all.aioCheckOut(obj, null);
 		
 		return form;
