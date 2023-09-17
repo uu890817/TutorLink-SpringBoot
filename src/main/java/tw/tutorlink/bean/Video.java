@@ -36,7 +36,7 @@ public class Video {
 	@Column(name="ChapterName",columnDefinition = "nvarchar(50)")
 	private String chapterName;
 	
-	@Column(name="CoureseUrl",columnDefinition = "varchar(100)")
+	@Column(name="CoureseUrl",columnDefinition = "varchar(Max)")
 	private String courseUrl;
 	
 	// 關聯性欄位-----------------------------------------------------

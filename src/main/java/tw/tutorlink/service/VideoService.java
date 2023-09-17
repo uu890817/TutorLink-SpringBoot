@@ -57,7 +57,28 @@ public class VideoService {
             return vDAO.save(existingVideo);
         }
 
-        return null; // 或者抛出一个异常，表示影片不存在
+        return null; 
+    }
+    //修改影片名稱
+    public Video updateVideoName(Integer videoId,String chapterName) {
+    	Optional<Video> optionalVideo = vDAO.findById(videoId);
+    	if(optionalVideo.isPresent()) {
+    		Video existingVideo = optionalVideo.get();
+    		existingVideo.setChapterName(chapterName);
+    		return vDAO.save(existingVideo);
+    	}
+    	return null;
+    }
+    
+  //修改影片檔案路徑
+    public Video updateVideoFile(Integer videoId,String videoUrl) {
+    	Optional<Video> optionalVideo = vDAO.findById(videoId);
+    	if(optionalVideo.isPresent()) {
+    		Video existingVideo = optionalVideo.get();
+    		existingVideo.setCourseUrl(videoUrl);
+    		return vDAO.save(existingVideo);
+    	}
+    	return null;
     }
     
     //上傳多筆影片

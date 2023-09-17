@@ -8,7 +8,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -188,19 +191,51 @@ public class VideoCourseController {
 	public List<Lessons> getLessonsByTeacher(HttpSession session){
 		Users loggedInUser = (Users) session.getAttribute("logState");
 		int userId = loggedInUser.getUsersId();
-		boolean lesson = false;
-		return lService.findByUserIdAndLessonType(userId,lesson);
+		boolean lessonType = false;
+//		return lService.findByUserIdAndLessonType(userId,lesson);
+		List<Lessons> lessons = lService.findByUserIdAndLessonType(userId,lessonType);
+		for (Lessons lesson : lessons) {
+	        String imagePath = lesson.getImage();
+
+	        try {
+	            byte[] imageBytes = Files.readAllBytes(Paths.get(imagePath));
+
+	            String base64Image = Base64.getEncoder().encodeToString(imageBytes);
+
+	            lesson.setImage(base64Image);
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
+	    }
+
+	    return lessons;
 	}
 	
 	//取得學生購買的課程
-	@GetMapping(path="/studentVideoLesson",produces="application/json;charset=UTF-8")
-	public List<Lessons> getLessonByStudent(HttpSession session){
-		Users loggedInUser = (Users) session.getAttribute("logState");
-		int userId = loggedInUser.getUsersId();
-//		return oiService.findByUserId(userId);
-		return null;
-	}
-	
+//	@GetMapping(path="/studentVideoLesson",produces="application/json;charset=UTF-8")
+//	public List<Lessons> getLessonByStudent(HttpSession session){
+//		Users loggedInUser = (Users) session.getAttribute("logState");
+//		int userId = loggedInUser.getUsersId();
+//		boolean lessonsType = false;
+//		List<Lessons> lessons = oiService.findByUserId(userId);
+////		List<Lessons> lessons = lService.findByUserIdAndLessonType(userId, lesson);
+//
+//	    for (Lessons lesson : lessons) {
+//	        String imagePath = lesson.getImage();
+//
+//	        try {
+//	            byte[] imageBytes = Files.readAllBytes(Paths.get(imagePath));
+//
+//	            String base64Image = Base64.getEncoder().encodeToString(imageBytes);
+//
+//	            lesson.setImage(base64Image);
+//	        } catch (IOException e) {
+//	            e.printStackTrace();
+//	        }
+//	    }
+//
+//	    return lessons;
+//	}
 	//課程找講師資訊
 	@GetMapping(path="/teacherInfo/{lessonId}",produces="application/json;charset=UTF-8")
 	public UserDetail findTeacherByLesson(@PathVariable("lessonId") Integer lessonId) {
@@ -272,6 +307,31 @@ public class VideoCourseController {
 		vService.deleteVideo(videoId);
 	}
 	
+	//修改影片chapterName
+	@PutMapping(path="/updateVideoName/{videoId}",produces="application/json;charset=UTF-8")
+	public Video updateVideoName(@PathVariable("videoId")Integer videoId,@RequestBody Map<String, String> updatevideo) {
+		String chapterName = updatevideo.get("chapterName");
+		return vService.updateVideoName(videoId,chapterName);
+	}
+	
+	//修改影片檔
+	@PutMapping(path = "/updateVideoFile/{videoId}")
+	public ResponseEntity<Video> updateVideoFile(@PathVariable("videoId") Integer videoId,
+			@RequestParam("videoFile") MultipartFile videoFile) throws IllegalStateException, IOException {
+		if (videoFile != null && !videoFile.isEmpty()) {
+			String videoFileName = generateUniqueFileName(videoFile.getOriginalFilename());
+			String savePath = "c:/temp/upload/video/";
+			File saveFile = new File(savePath + videoFileName);
+			videoFile.transferTo(saveFile);
+			String videoSavePath = saveFile.getAbsolutePath();
+			Video updateVideo = vService.updateVideoFile(videoId, videoSavePath);
+			return ResponseEntity.ok(updateVideo);
+		}
+
+		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+
+	}
+	
 	//刪除課程的所有影片
 	@DeleteMapping(path="/deleteVideoByCourse",produces="application/json;charset=UTF-8")
 	public List<Video> deleteVideoByCourse(@RequestBody Integer lessonDetailId) {
@@ -312,19 +372,15 @@ public class VideoCourseController {
 	}
 	
 	public InputStream getVideoInputStreamByVideoId(Integer videoid) {
-	    // 假设您的视频信息存储在数据库中，videoRepository 是用于访问数据库的 repository
 	    Optional<Video> videoOptional = vService.findVideoById(videoid);
 
 	    if (videoOptional.isPresent()) {
 	        Video video = videoOptional.get();
-	        String videoFilePath = video.getCourseUrl(); // 假设您的 Video 对象包含文件路径信息
-
-	        // 使用您的方法将文件路径转换为 InputStream
+	        String videoFilePath = video.getCourseUrl(); 
 	        InputStream videoInputStream = convertLocalFilePathToInputStream(videoFilePath);
 
 	        return videoInputStream;
 	    } else {
-	        // 处理未找到视频的情况，返回 null 或其他适当的响应
 	        return null;
 	    }
 	}
@@ -543,18 +599,23 @@ public class VideoCourseController {
     }
     
     //老師回答問題
+//    @PutMapping(path="/courseQA/{qaId}",produces="application/json;charset=UTF-8")
+//    public ResponseEntity<CourseQA> addAnswer(@PathVariable("qaId") Integer qaId, @RequestBody String updatedQA){
+//    	CourseQA existingQA = qaService.getCourseQAById(qaId);
+//    	
+//    	if (existingQA == null) {
+//            return ResponseEntity.notFound().build();
+//        }
+//    	
+//    	existingQA.setAnswer(updatedQA.getAnswer());
+//    	CourseQA updatedRecord = qaService.saveCourseQA(existingQA);
+//    	return ResponseEntity.ok(updatedRecord);
+//    }
     @PutMapping(path="/courseQA/{qaId}",produces="application/json;charset=UTF-8")
-    public ResponseEntity<CourseQA> addAnswer(@PathVariable("qaId") Integer qaId, @RequestBody CourseQA updatedQA){
-    	CourseQA existingQA = qaService.getCourseQAById(qaId);
-    	
-    	if (existingQA == null) {
-            return ResponseEntity.notFound().build();
-        }
-    	
-    	existingQA.setAnswer(updatedQA.getAnswer());
-    	CourseQA updatedRecord = qaService.saveCourseQA(existingQA);
-    	return ResponseEntity.ok(updatedRecord);
-    }
+	public CourseQA updateVideoAnswer(@PathVariable("qaId")Integer qaId,@RequestBody Map<String, String> updateAnswer) {
+		String chapterName = updateAnswer.get("answer");
+		return qaService.answerCourseQA(qaId,chapterName);
+	}
     
     
     //-------------Post--------------------
@@ -639,4 +700,41 @@ public class VideoCourseController {
     public void deleteWillLearn(@PathVariable("willearnId") Integer willearnId) {
     	swlService.deleteWillLearn(willearnId);
     }
+    
+    //-----------------搜尋----------------------------
+    
+    //搜尋章節名稱
+    @GetMapping("/searchChapterName/{lessonId}")
+    public List<Video> searchLessons(@PathVariable("lessonId")Integer lessonId,@RequestParam String keyword) {
+    	List<Video> videos = vService.findVideoByLesson(lessonId);
+
+        List<Video> searchResults = new ArrayList<>();
+
+        for (Video video : videos) {
+            // 在章節名稱 ChapterName 中模糊搜索
+            if (video.getChapterName().contains(keyword)) {
+                searchResults.add(video);
+            }
+        }
+
+        return searchResults;
+    }
+    
+    //搜尋問答
+    @GetMapping("/searchQA/{lessonId}")
+    public List<CourseQA> searchQA(@PathVariable("lessonId")Integer lessonId,@RequestParam String keyword) {
+    	List<CourseQA> courseqa = qaService.getCourseQAByLessonId(lessonId);
+
+        List<CourseQA> searchResults = new ArrayList<>();
+
+        for (CourseQA qa : courseqa) {
+            // 在章節名稱 ChapterName 中模糊搜索
+            if (qa.getTitle().contains(keyword)|| qa.getQuestion().contains(keyword)) {
+                searchResults.add(qa);
+            }
+        }
+
+        return searchResults;
+    }
+
 }
