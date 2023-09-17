@@ -97,8 +97,13 @@ public class UsersService {
 		BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 		// 比對 輸入的密碼是否跟資料庫吻合
 		boolean pwdMatch = bCryptPasswordEncoder.matches(oldpwd, user.getUserPassword());
+		System.out.println(pwdMatch);
+		System.out.println(oldpwd);
+		System.out.println(newPwd);
+		System.out.println(newPwd2);
 		if (user != null) {
-			if (!pwdMatch || newPwd != (newPwd2)) {
+			if (!pwdMatch || !newPwd.equals(newPwd2)) {
+				System.out.println("修改失敗");
 				return "fail";
 			}
 		}

@@ -35,7 +35,11 @@ public class CartItemDTO {
 	
 	private Integer payment;
 	
+	private Integer lessonId;
+	
+	
 	public CartItemDTO(CartItem item) {
+		this.lessonId = item.getLesson().getLessonId();
 		this.lessonName=item.getLesson().getLessonName();
 		this.lessonType=item.getLesson().getLessonType();
 		this.price=item.getLesson().getPrice();
@@ -48,6 +52,14 @@ public class CartItemDTO {
 		this.orderItem=item.getOrder();
 		this.payment=item.getPayment();
 	}
+	
+	public Integer getLessonId() {
+		return lessonId;
+	}
+	public void setLessonId(Integer lessonId) {
+		this.lessonId = lessonId;
+	}
+	
 	public Integer getCartId() {
 		return cartId;
 	}
