@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import tw.tutorlink.bean.Calender;
+import tw.tutorlink.bean.CalenderDTO;
 import tw.tutorlink.bean.Lessons;
 import tw.tutorlink.bean.LessonsDTO;
 import tw.tutorlink.bean.Users;
@@ -36,12 +37,12 @@ public class CalenderController {
 		}
 	}
 	
-	// 透過課程查詢行事曆
+	// 透過使用者(老師)查詢所有課程行事曆
 	@GetMapping("/calender/findbylesson")
 	@ResponseBody
-	public List<Calender> findCalenderByLessonId(@RequestParam("lid") Integer id) {
+	public List<CalenderDTO> findCalenderByLessonId(@RequestParam("uid") Integer id) {
 		if (id != null) {
-			List<Calender> lessonCalender = cService.findCalenderListByLessonId(id);
+			List<CalenderDTO> lessonCalender = cService.findCalenderByLessonsId(id);
 			return lessonCalender;
 		} else {
 			return null;
@@ -89,7 +90,7 @@ public class CalenderController {
 	}
 	
 	
-	// 透過使用者查詢行事曆
+	// 透過使用者(學生)查詢行事曆
 	@GetMapping("/calender")
 	@ResponseBody
 	public List<LessonsDTO> findCalenderWithLessonsByUsersId(@RequestParam("uid") Integer id) {

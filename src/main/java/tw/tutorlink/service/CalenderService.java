@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import tw.tutorlink.bean.Calender;
+import tw.tutorlink.bean.CalenderDTO;
 import tw.tutorlink.bean.Lessons;
 import tw.tutorlink.bean.LessonsDTO;
 import tw.tutorlink.bean.Users;
@@ -26,7 +27,7 @@ public class CalenderService {
 
 	@Autowired
 	private UsersDAO uDao;
-	
+
 	// ID查詢
 	public Calender findById(Integer id) {
 		Optional<Calender> optional = cDAO.findById(id);
@@ -71,20 +72,38 @@ public class CalenderService {
 	public Users findUserId(Integer uID) {
 		return uDao.findById(uID).get();
 	}
-	
-	
+
 	// 透過使用者查詢行事曆中課程的老師詳細資料
 	public List<LessonsDTO> findLessonsByUsersId(Integer usersId) {
-	    List<Calender> calenderList = cDAO.findCalenderListByUsersId(usersId);
-	    List<LessonsDTO> courseDTOList = new ArrayList<>();
-	    for (Calender calender : calenderList) {
-	        Lessons lessons = calender.getLesson();
-	        Users teacher = findUserId(lessons.getUsers().getUsersId());
-	        LessonsDTO lDTO = new LessonsDTO(lessons, teacher, calender);
-	        courseDTOList.add(lDTO);
-	    }
+		List<Calender> calenderList = cDAO.findCalenderListByUsersId(usersId);
+		List<LessonsDTO> courseDTOList = new ArrayList<>();
+		for (Calender calender : calenderList) {
+			Lessons lessons = calender.getLesson();
+			Users teacher = findUserId(lessons.getUsers().getUsersId());
+			LessonsDTO lDTO = new LessonsDTO(lessons, teacher, calender);
+			courseDTOList.add(lDTO);
+		}
 
-	    return courseDTOList;
+		return courseDTOList;
 	}
+
+	// 查詢所有課程的行事曆
+	public List<CalenderDTO> findCalenderByLessonsId(int userId) {
+		Users user = uDao.findById(userId);
+		List<Lessons> lessonList = lDAO.findByUsers(user);
+		List<CalenderDTO> courseDTOList = new ArrayList<>();
+		for (Lessons lesson : lessonList) {
+			List<Calender> calenderList = cDAO.findCalenderListByLessonId(lesson.getLessonId());
+			for (Calender calender : calenderList) {
+				Lessons lessons = calender.getLesson();
+				Users student = findUserId(calender.getUsers().getUsersId());
+				CalenderDTO lDTO = new CalenderDTO(lessons, student, calender);
+				courseDTOList.add(lDTO);
+			}
+		}
+
+		return courseDTOList;
+	}
+	
 
 }
