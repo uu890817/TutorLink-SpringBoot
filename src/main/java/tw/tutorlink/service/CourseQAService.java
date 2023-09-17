@@ -55,17 +55,16 @@ public class CourseQAService {
 	}
 	
 	// 回答問題
-    public CourseQA answerCourseQA(Integer courseQAId, String answer, Date time) {
+    public CourseQA answerCourseQA(Integer courseQAId, String answer) {
         Optional<CourseQA> optionalCourseQA = cDAO.findById(courseQAId);
 
         if (optionalCourseQA.isPresent()) {
             CourseQA courseQA = optionalCourseQA.get();
-
-            if (answer != null && !answer.isEmpty()) {
+//
+//            if (answer != null && !answer.isEmpty()) {
                 courseQA.setAnswer(answer);
-                courseQA.setTime(time);
                 return cDAO.save(courseQA);
-            }
+//            }
         }
         return null;
     }
