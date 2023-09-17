@@ -88,7 +88,7 @@ public class CalenderService {
 	}
 
 	// 查詢所有課程的行事曆
-	public List<CalenderDTO> findCalenderByLessonsId(int userId) {
+	public List<CalenderDTO> findCalenderbyUsersAllLessons(int userId) {
 		Users user = uDao.findById(userId);
 		List<Lessons> lessonList = lDAO.findByUsers(user);
 		List<CalenderDTO> courseDTOList = new ArrayList<>();
@@ -105,5 +105,19 @@ public class CalenderService {
 		return courseDTOList;
 	}
 	
+	
+	// 透過課程查詢行事曆
+	public List<CalenderDTO> findByLessonsId(int lessonId) {
+		List<CalenderDTO> courseDTOList = new ArrayList<>();
+		List<Calender> calenderList = cDAO.findCalenderListByLessonId(lessonId);
+		for (Calender calender : calenderList) {
+			Lessons lessons = calender.getLesson();
+			Users student = findUserId(calender.getUsers().getUsersId());
+			CalenderDTO lDTO = new CalenderDTO(lessons, student, calender);
+			courseDTOList.add(lDTO);
+		}
+
+		return courseDTOList;
+	}
 
 }

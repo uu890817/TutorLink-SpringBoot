@@ -42,7 +42,7 @@ public class CalenderController {
 	@ResponseBody
 	public List<CalenderDTO> findCalenderByLessonId(@RequestParam("uid") Integer id) {
 		if (id != null) {
-			List<CalenderDTO> lessonCalender = cService.findCalenderByLessonsId(id);
+			List<CalenderDTO> lessonCalender = cService.findCalenderbyUsersAllLessons(id);
 			return lessonCalender;
 		} else {
 			return null;
