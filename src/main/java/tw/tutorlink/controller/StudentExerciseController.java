@@ -12,12 +12,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.servlet.http.HttpSession;
 import tw.tutorlink.bean.ExercisePermissions;
+import tw.tutorlink.bean.Question;
 import tw.tutorlink.bean.StudentAnswers;
 import tw.tutorlink.bean.Users;
+import tw.tutorlink.dto.exercises.QuestionDTO;
 import tw.tutorlink.dto.exercises.ResponseDTO;
 import tw.tutorlink.dto.exercises.StudentGetExerciseDTO;
 import tw.tutorlink.service.ExercisePermissionsService;
 import tw.tutorlink.service.ExercisesService;
+import tw.tutorlink.service.QuestionsService;
 import tw.tutorlink.service.StudentAnswersService;
 import tw.tutorlink.service.TopicsService;
 
@@ -33,7 +36,23 @@ public class StudentExerciseController {
 	StudentAnswersService saService;
 	@Autowired
 	TopicsService tService;
-
+	@Autowired
+	QuestionsService qService;
+	
+	
+	public Integer getUserId(HttpSession session) {
+		try {
+			
+			Users user = (Users) session.getAttribute("logState");
+			return user.getUsersId();
+		}catch(Exception e){
+			System.err.println("Session無法取得");
+			return null;
+		}
+		
+	}
+	
+	
 	@GetMapping("/test")
 	public StudentGetExerciseDTO testApi() {
 		return epService.studentGetExerciseByExerId(1);
@@ -121,5 +140,27 @@ public class StudentExerciseController {
 		System.err.println("總分:" + Finalscore);
 		return isErr? "Error" : "OK";
 	}
+	
+	
+	@PostMapping("/addNewQuestion/{epId}")
+	public ResponseDTO addNewQuestion(@RequestBody Question que, @PathVariable Integer epId, HttpSession session) {
+		Integer userId = this.getUserId(session);
+		if(userId != null) {
+			Users u = new Users();
+			ExercisePermissions ep = epService.getExercisePermissionsByepId(epId);
+			
+			u.setUsersId(userId);
+			que.setUsers(u);
+			que.setExercises(ep.getExercises());
+			
+			return new ResponseDTO(new QuestionDTO(qService.insertNewQuestion(que)) , 200, "OK"); 
+		}
+		return new ResponseDTO(null, 500, "Error");
+	}
+	
+	
+	
+	
+	
 
 }

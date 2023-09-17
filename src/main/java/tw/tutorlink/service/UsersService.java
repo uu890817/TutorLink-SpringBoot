@@ -91,16 +91,25 @@ public class UsersService {
 		return null;
 	}
 
-	public String findbyIdAndPwd(int cookieid, String oldpwd, String newPwd, String newPwd2) {
-		Users user = uDAO.findById(cookieid);
+	public String findbyIdAndPwd(int userid, String oldpwd, String newPwd, String newPwd2) {
+		Users user = uDAO.findById(userid);
 
-		System.out.println(oldpwd + " " + newPwd + " " + newPwd2);
-//		if (user != null) {
-//			if (oldpwd != user.getUserPassword()||newPwd!=(newPwd2)) {
-//				return "fail";
-//			}
-//		}
-		user.setUserPassword(newPwd);
+		BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+		// 比對 輸入的密碼是否跟資料庫吻合
+		boolean pwdMatch = bCryptPasswordEncoder.matches(oldpwd, user.getUserPassword());
+		System.out.println(pwdMatch);
+		System.out.println(oldpwd);
+		System.out.println(newPwd);
+		System.out.println(newPwd2);
+		if (user != null) {
+			if (!pwdMatch || !newPwd.equals(newPwd2)) {
+				System.out.println("修改失敗");
+				return "fail";
+			}
+		}
+		// 密碼加密
+		String pwdEncoder = bCryptPasswordEncoder.encode(newPwd);
+		user.setUserPassword(pwdEncoder);
 		uDAO.save(user);
 		return "update";
 	}
