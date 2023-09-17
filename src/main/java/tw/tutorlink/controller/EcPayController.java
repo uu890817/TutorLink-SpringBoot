@@ -3,6 +3,7 @@ package tw.tutorlink.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import tw.tutorlink.dto.cart.EcPayDTO;
@@ -15,6 +16,7 @@ public class EcPayController {
 	ECpayService ecpayService;
 
 	@PostMapping("/ecpay")
+	@ResponseBody
 	public String ecpayCheckout(@RequestBody EcPayDTO request) {
 		String aioCheckOutALLForm = ecpayService.ecpayCheckout(request);
 		
