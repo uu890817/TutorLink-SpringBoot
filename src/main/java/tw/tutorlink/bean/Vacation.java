@@ -71,7 +71,7 @@ public class Vacation {
 		this.vacationTime = vacationTime;
 	}
 
-	public boolean isRepeat() {
+	public boolean getRepeat() {
 		return isRepeat;
 	}
 

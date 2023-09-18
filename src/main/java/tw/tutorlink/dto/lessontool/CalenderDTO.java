@@ -25,15 +25,6 @@ public class CalenderDTO {
 	
 	private String meetingUrl;
 	
-	
-	public String getMeetingUrl() {
-		return meetingUrl;
-	}
-
-	public void setMeetingUrl(String meetingUrl) {
-		this.meetingUrl = meetingUrl;
-	}
-
 	public CalenderDTO(Lessons lesson, Users student,Calender calender) {
 		this.lessonId = lesson.getLessonId();
 		this.calenderId = calender.getCalenderId();
@@ -94,6 +85,14 @@ public class CalenderDTO {
 
 	public void setLessonType(boolean lessonType) {
 		this.lessonType = lessonType;
+	}
+
+	public String getMeetingUrl() {
+		return meetingUrl;
+	}
+
+	public void setMeetingUrl(String meetingUrl) {
+		this.meetingUrl = meetingUrl;
 	}
 
 
