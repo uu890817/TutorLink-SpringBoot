@@ -37,12 +37,6 @@ public class CartItemDTO {
 	
 	private Integer payment;
 	
-<<<<<<< HEAD
-//	private Integer lessonId;
-	
-=======
->>>>>>> branch 'develop' of https://github.com/uu890817/TutorLink-SpringBoot.git
-	
 	public CartItemDTO(CartItem item) {
 		this.lessonId = item.getLesson().getLessonId();
 		this.lessonName=item.getLesson().getLessonName();
@@ -59,10 +53,6 @@ public class CartItemDTO {
 		this.lessonId=item.getLesson().getLessonId();
 	}
 	
-<<<<<<< HEAD
-=======
-	
->>>>>>> branch 'develop' of https://github.com/uu890817/TutorLink-SpringBoot.git
 	public Integer getCartId() {
 		return cartId;
 	}
