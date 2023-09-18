@@ -21,6 +21,7 @@ import tw.tutorlink.bean.ExercisePermissions;
 import tw.tutorlink.bean.Exercises;
 import tw.tutorlink.bean.OrderItem;
 import tw.tutorlink.bean.Users;
+import tw.tutorlink.dto.exercises.QuestionDTO;
 import tw.tutorlink.dto.exercises.ResponseDTO;
 import tw.tutorlink.dto.exercises.TeacherGetAllExerciseDTO;
 import tw.tutorlink.dto.exercises.TeacherGetAllLessonsNameDTO;
@@ -30,6 +31,7 @@ import tw.tutorlink.dto.exercises.TeacherShareExerciseDTO;
 import tw.tutorlink.repository.ExercisesDAO;
 import tw.tutorlink.service.ExercisePermissionsService;
 import tw.tutorlink.service.ExercisesService;
+import tw.tutorlink.service.QuestionsService;
 import tw.tutorlink.service.TopicsService;
 
 @RestController
@@ -43,8 +45,26 @@ public class TeacherExerciseController {
 	@Autowired
 	ExercisePermissionsService epService;
 	@Autowired
+	QuestionsService qService;
+	@Autowired
 	ExercisesDAO e;
+	
 	private ResponseDTO resDTO;
+	
+	
+	public Integer getUserId(HttpSession session) {
+		try {
+
+			Users user = (Users) session.getAttribute("logState");
+			return user.getUsersId();
+		} catch (Exception e) {
+			System.err.println("Session無法取得");
+			return null;
+		}
+
+	}
+
+	
 
 	@GetMapping("/testApi")
 	public List<Exercises> testApi() {
@@ -86,6 +106,19 @@ public class TeacherExerciseController {
 		
 		return tDTOs;
 	}
+	
+	@GetMapping("/getAllQuestion/{eId}")
+	public ResponseDTO getAllQuestion(@PathVariable Integer eId, HttpSession session) {
+		Integer userId = this.getUserId(session);
+		if (userId != null) {
+			List<QuestionDTO> allQuestion = qService.getAllQuestion(eId, userId);
+			ResponseDTO responseDTO = new ResponseDTO(allQuestion, 200, "OK");
+
+			return responseDTO;
+		}
+		return new ResponseDTO(null, 500, "Error");
+	}
+	
 
 	@PostMapping(path = "/newExercise", produces = "application/json;charset=UTF-8")
 	public String insertNewExercise(@RequestBody Exercises newExercise, HttpSession session, @CookieValue("UsersId") String cookie) {
@@ -126,9 +159,13 @@ public class TeacherExerciseController {
 	
 	
 	@PutMapping(path = "/updateExercise", produces = "application/json;charset=UTF-8")
-	public String updataExercise(@RequestBody Exercises newExercise) {
+	public String updataExercise(@RequestBody Exercises newExercise, HttpSession session) {
+		Users uSession = (Users) session.getAttribute("logState");
+		if (uSession != null) {
+			System.err.println("Session" + uSession.getUsersId());
+		}
 		Users user = new Users();
-		user.setUsersId(1);
+		user.setUsersId(uSession.getUsersId());
 		newExercise.setUsers(user);
 		Exercises result = eService.insertNewExercise(newExercise);
 

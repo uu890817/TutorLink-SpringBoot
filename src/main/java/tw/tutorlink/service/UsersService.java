@@ -91,16 +91,25 @@ public class UsersService {
 		return null;
 	}
 
-	public String findbyIdAndPwd(int cookieid, String oldpwd, String newPwd, String newPwd2) {
-		Users user = uDAO.findById(cookieid);
+	public String findbyIdAndPwd(int userid, String oldpwd, String newPwd, String newPwd2) {
+		Users user = uDAO.findById(userid);
 
-		System.out.println(oldpwd + " " + newPwd + " " + newPwd2);
-//		if (user != null) {
-//			if (oldpwd != user.getUserPassword()||newPwd!=(newPwd2)) {
-//				return "fail";
-//			}
-//		}
-		user.setUserPassword(newPwd);
+		BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+		// 比對 輸入的密碼是否跟資料庫吻合
+		boolean pwdMatch = bCryptPasswordEncoder.matches(oldpwd, user.getUserPassword());
+		System.out.println(pwdMatch);
+		System.out.println(oldpwd);
+		System.out.println(newPwd);
+		System.out.println(newPwd2);
+		if (user != null) {
+			if (!pwdMatch || !newPwd.equals(newPwd2)) {
+				System.out.println("修改失敗");
+				return "fail";
+			}
+		}
+		// 密碼加密
+		String pwdEncoder = bCryptPasswordEncoder.encode(newPwd);
+		user.setUserPassword(pwdEncoder);
 		uDAO.save(user);
 		return "update";
 	}
@@ -142,7 +151,7 @@ public class UsersService {
 	public String normalLogin(String mail, String pwd) {
 		System.out.println("密碼是: " + pwd);
 		Users usermail = uDAO.findByMail(mail);
-		if(usermail==null) {
+		if (usermail == null) {
 			return "100";
 		}
 		BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
@@ -159,7 +168,7 @@ public class UsersService {
 				usermail.getUserDetail().setNewLoginTime(new Date());
 				uDAO.save(usermail);
 				return "102";
-			} 
+			}
 		}
 		return "101";
 	}
@@ -179,14 +188,16 @@ public class UsersService {
 		return uDAO.count();
 	}
 
-	public Users findMail(int userid, String mail, int randomNumber) {
+	public Users forgetMail(String mail, int randomNumber) {
+
 		Users result = uDAO.findByMail(mail);
-		if(result!=null) {
+		if (result != null) {
 			result.setRamdonVerify(randomNumber);
 			result.setExpiredTime(new Date());
 			uDAO.save(result);
+			return result;
 		}
-		return result;
+		return null;
 	}
 
 }

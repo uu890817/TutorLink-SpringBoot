@@ -47,4 +47,74 @@ public class Question {
 
 	@OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
 	private List<Answer> answer;
+
+	public Integer getQuestionId() {
+		return questionId;
+	}
+
+	public void setQuestionId(Integer questionId) {
+		this.questionId = questionId;
+	}
+
+	public Exercises getExercises() {
+		return exercises;
+	}
+
+	public void setExercises(Exercises exercises) {
+		this.exercises = exercises;
+	}
+
+	public Users getUsers() {
+		return users;
+	}
+
+	public void setUsers(Users users) {
+		this.users = users;
+	}
+
+	public String getContent() {
+		return content;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
+	}
+
+	public Date getCreateDate() {
+		return createDate;
+	}
+
+	public void setCreateDate(Date createDate) {
+		this.createDate = createDate;
+	}
+
+	public boolean isDelete() {
+		return isDelete;
+	}
+
+	public void setDelete(boolean isDelete) {
+		this.isDelete = isDelete;
+	}
+
+	public boolean isEdit() {
+		return isEdit;
+	}
+
+	public void setEdit(boolean isEdit) {
+		this.isEdit = isEdit;
+	}
+
+	public List<Answer> getAnswer() {
+		return answer;
+	}
+
+	public void setAnswer(List<Answer> answer) {
+		this.answer = answer;
+	}
+	
+	
+	
+	
+	
+	
 }

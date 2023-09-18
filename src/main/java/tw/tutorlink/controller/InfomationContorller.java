@@ -30,7 +30,7 @@ public class InfomationContorller {
 
 	@PostMapping("/infomation")
 	@ResponseBody
-	public InfomationDTO infomation(HttpSession session, @CookieValue("UsersId") String cookie) {
+	public InfomationDTO infomation(HttpSession session) {
 		Users loggedInUser = (Users) session.getAttribute("logState");
 		int userid = loggedInUser.getUsersId();
 		System.out.println("Session取得的ID : " + userid);
@@ -61,18 +61,18 @@ public class InfomationContorller {
 	// --- 修改/驗證密碼用 ---
 	@PostMapping("/pwdverifty")
 	@ResponseBody
-	public String pwd(@RequestBody String str, HttpSession session, @CookieValue("UsersId") String cookie,
-			HttpServletResponse response) {
+	public String pwd(@RequestBody String str, HttpSession session, HttpServletResponse response) {
 		JsonObject json = JsonParser.parseString(str).getAsJsonObject();
 		String oldpwd = json.get("oldPwd").getAsString();
 		String newPwd = json.get("newPwd").getAsString();
 		String newPwd2 = json.get("newPwd2").getAsString();
-		int cookieid = Integer.parseInt(cookie);
-		String result = uService.findbyIdAndPwd(cookieid, oldpwd, newPwd, newPwd2);
-//		if(result.equals("fail")) {
-//			return "fail";
-//		}
-		return "ok";
+		Users loggedInUser = (Users) session.getAttribute("logState");
+		int userid = loggedInUser.getUsersId();
+		String result = uService.findbyIdAndPwd(userid, oldpwd, newPwd, newPwd2);
+		if(result.equals("fail")) {
+			return "fail";
+		}
+		return "update";
 	}
 
 	// --- 回傳UserType，如果是老師就不會顯示申請老師頁面，且可以切換學生/老師頁面 ---
@@ -111,16 +111,16 @@ public class InfomationContorller {
 		String lastLoginTime = result.getUserDetail().getLastLoginTime().toString();
 		String newLoginTime = result.getUserDetail().getNewLoginTime().toString();
 		SimpleDateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-		
+
 		Date lastLoginOriginalDate = originalFormat.parse(lastLoginTime);
 		Date newLoginOriginalDate = originalFormat.parse(newLoginTime);
-		
-		 // 創建SimpleDateFormat對象以格式化日期時間
-        SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy年MM月dd日 HH:mm	");
-        String formattedlastDateTime = outputFormat.format(lastLoginOriginalDate);
-        String formattednewDateTime = outputFormat.format(newLoginOriginalDate);
-		JSONObject item = new JSONObject().put("LastLoginTime", formattedlastDateTime)
-				.put("NewLoginTime", formattednewDateTime);
+
+		// 創建SimpleDateFormat對象以格式化日期時間
+		SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy年MM月dd日 HH:mm	");
+		String formattedlastDateTime = outputFormat.format(lastLoginOriginalDate);
+		String formattednewDateTime = outputFormat.format(newLoginOriginalDate);
+		JSONObject item = new JSONObject().put("LastLoginTime", formattedlastDateTime).put("NewLoginTime",
+				formattednewDateTime);
 		return item.toString();
 	}
 }
