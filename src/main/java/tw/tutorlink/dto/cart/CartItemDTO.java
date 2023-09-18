@@ -37,8 +37,6 @@ public class CartItemDTO {
 	
 	private Integer payment;
 	
-	private Integer lessonId;
-	
 	
 	public CartItemDTO(CartItem item) {
 		this.lessonId = item.getLesson().getLessonId();
@@ -56,12 +54,6 @@ public class CartItemDTO {
 		this.lessonId=item.getLesson().getLessonId();
 	}
 	
-	public Integer getLessonId() {
-		return lessonId;
-	}
-	public void setLessonId(Integer lessonId) {
-		this.lessonId = lessonId;
-	}
 	
 	public Integer getCartId() {
 		return cartId;
