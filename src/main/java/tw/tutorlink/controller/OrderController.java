@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.servlet.http.HttpSession;
 import tw.tutorlink.bean.Users;
-import tw.tutorlink.dto.cart.CartItemDTO;
+import tw.tutorlink.dto.cart.OrderDTO;
 import tw.tutorlink.service.OrderItemService;
 
 @RestController
@@ -21,11 +21,29 @@ public class OrderController {
 	private OrderItemService orderItemService;
 	
 	
-	@GetMapping("/complete")
+	@GetMapping("/all")
 	@ResponseBody
-	public List<CartItemDTO> getMyPurchase(HttpSession session) {
+	public List<OrderDTO> getMyPurchase(HttpSession session) {
 		Users loggedInUser = (Users) session.getAttribute("logState");
 //		return orderItemService.getUserOrder(loggedInUser.getUsersId());
 		return orderItemService.getUserOrder(6);
 	}
+	
+	@GetMapping("/applyrefund")
+	@ResponseBody
+	public List<OrderDTO> getMyApplyRefund(HttpSession session) {
+		Users loggedInUser = (Users) session.getAttribute("logState");
+//		return orderItemService.getUserOrder(loggedInUser.getUsersId());
+		return orderItemService.getUserApplyRefund(6);
+	}
+	
+	
+	@GetMapping("/refund")
+	@ResponseBody
+	public List<OrderDTO> getRefund(HttpSession session) {
+		Users loggedInUser = (Users) session.getAttribute("logState");
+//		return orderItemService.getUserOrder(loggedInUser.getUsersId());
+		return orderItemService.getUserRefund(6);
+	}
+	
 }

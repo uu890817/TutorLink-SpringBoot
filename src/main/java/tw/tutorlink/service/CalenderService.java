@@ -1,12 +1,14 @@
 package tw.tutorlink.service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import jakarta.servlet.http.HttpSession;
 import tw.tutorlink.bean.Calender;
 import tw.tutorlink.bean.CalenderDTO;
 import tw.tutorlink.bean.Lessons;
@@ -40,6 +42,16 @@ public class CalenderService {
 	// 新增
 	public void insert(Calender cd) {
 		cDAO.save(cd);
+	}
+	
+	
+	public Calender insertByTimes(Date date, Users users , Lessons lesson) {
+		Calender cd = new Calender();
+		cd.setLessonTime(date);
+		cd.setLesson(lesson);
+		cd.setUsers(users);
+		cDAO.save(cd);
+		return cd;
 	}
 
 	// 使用者ID查詢
