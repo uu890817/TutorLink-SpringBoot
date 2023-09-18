@@ -51,6 +51,7 @@ public class UsersService {
 			ud.setUsers(add);
 			ud.setTeacherState(1);
 			ud.setCreateDate(new Date());
+			ud.setNewLoginTime(new Date());
 			uDAO.save(add);
 			users = uDAO.findByGoogleSubId(sub);
 			return users;
@@ -156,18 +157,21 @@ public class UsersService {
 		}
 		BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
-		// 比對
-		boolean matches = bCryptPasswordEncoder.matches(pwd, usermail.getUserPassword());
-
 		// 檢查輸入的信箱是否存在資料庫
 		if (usermail != null) {
-			// 檢查輸入的密碼是否與資料庫解密的密碼相符
-			if (matches) {
-				// 寫入登入時間
-				usermail.getUserDetail().setLastLoginTime(usermail.getUserDetail().getNewLoginTime());
-				usermail.getUserDetail().setNewLoginTime(new Date());
-				uDAO.save(usermail);
-				return "102";
+			// 比對
+			boolean matches = bCryptPasswordEncoder.matches(pwd, usermail.getUserPassword());
+			if (usermail.getUserType() == 3) {
+				return "103";
+			} else {
+				// 檢查輸入的密碼是否與資料庫解密的密碼相符
+				if (matches) {
+					// 寫入登入時間
+					usermail.getUserDetail().setLastLoginTime(usermail.getUserDetail().getNewLoginTime());
+					usermail.getUserDetail().setNewLoginTime(new Date());
+					uDAO.save(usermail);
+					return "102";
+				}
 			}
 		}
 		return "101";
