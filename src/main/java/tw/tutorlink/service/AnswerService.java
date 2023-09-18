@@ -17,7 +17,9 @@ public class AnswerService {
 		return aDAO.save(q);
 	}
 	
-	
+	public Answer findById(Integer aId) {
+		return aDAO.findById(aId).get();
+	}
 	
 	
 	

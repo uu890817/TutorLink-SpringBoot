@@ -2,6 +2,7 @@ package tw.tutorlink.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,12 @@ public class QuestionsService {
 	@Autowired
 	private QuestionsDAO qDAO;
 
+	public Question findById(Integer qId) {
+		Question question = qDAO.findById(qId).get();
+		return question;
+	}
+	
+	
 	public List<QuestionDTO> getAllQuestion(Integer eId, Integer uId) {
 		List<QuestionDTO> qDTOs = new ArrayList<>();
 		List<Question> questions = qDAO.findAllQuestionByeId(eId);
@@ -34,7 +41,10 @@ public class QuestionsService {
 				if (answer.getUsers().getUsersId() == uId) {
 					aDTO.setMyQuestion(true);
 				}
-				aDTOs.add(aDTO);
+				if(!answer.isDelete()) {
+					
+					aDTOs.add(aDTO);
+				}
 			}
 			qDTO.setAnswer(aDTOs);
 			qDTOs.add(qDTO);
