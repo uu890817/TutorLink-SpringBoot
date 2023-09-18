@@ -42,7 +42,6 @@ public class LoginController {
 	@Autowired
 	private ReCAPTCHADAO rDAO;
 
-	@SuppressWarnings("unused")
 	@PostMapping("/googlelogin")
 	@ResponseBody
 	public String loginByGoogle(@RequestBody String googleToken, HttpSession session, HttpServletResponse response)

@@ -39,7 +39,7 @@ public class LessonsService {
 //	public LessonsService(LessonsDAO lDAO) {
 //		this.lDAO = lDAO;
 //	}
-	
+
 	//查詢全部課程資料
 	public List<Lessons> getAllLessons(){
 		return lDAO.findAll();
