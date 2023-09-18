@@ -21,13 +21,6 @@ public class EcPayDTO {
 		this.merchantTradeNo = merchantTradeNo;
 	}
 
-	public String getMerchantTradeDate() {
-		return merchantTradeDate;
-	}
-
-	public void setMerchantTradeDate(String merchantTradeDate) {
-		this.merchantTradeDate = merchantTradeDate;
-	}
 
 	public String getTotalAmount() {
 		return totalAmount;
@@ -69,12 +62,22 @@ public class EcPayDTO {
 		this.clientBackURL = clientBackURL;
 	}
 
+
+
 	public String getNeedExtraPaidInfo() {
 		return needExtraPaidInfo;
 	}
 
 	public void setNeedExtraPaidInfo(String needExtraPaidInfo) {
 		this.needExtraPaidInfo = needExtraPaidInfo;
+	}
+
+	public String getMerchantTradeDate() {
+		return merchantTradeDate;
+	}
+
+	public void setMerchantTradeDate(String merchantTradeDate) {
+		this.merchantTradeDate = merchantTradeDate;
 	}
 
 }

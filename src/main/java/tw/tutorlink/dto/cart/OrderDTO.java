@@ -28,6 +28,8 @@ public class OrderDTO {
 	
 	private Integer cartId;
 	
+	private Integer price;
+	
 	
 	public OrderDTO(OrderItem item) {
 		super();
@@ -42,6 +44,19 @@ public class OrderDTO {
 		this.payment = item.getCartItem().getPayment();
 		this.createTime = item.getCreateTime();
 		this.cartId = item.getCartItem().getCartId();
+		this.price= item.getLesson().getPrice();
+	}
+
+
+
+	public Integer getPrice() {
+		return price;
+	}
+
+
+
+	public void setPrice(Integer price) {
+		this.price = price;
 	}
 
 
