@@ -3,6 +3,7 @@ package tw.tutorlink.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -190,4 +191,21 @@ public class StudentExerciseController {
 		return new ResponseDTO(null, 500, "Error");
 	}
 
+	@DeleteMapping("/deleteQuestion/{qId}")
+	public String deleteQuestion(@PathVariable Integer qId) {
+		Question q = qService.findById(qId);
+		q.setDelete(true);
+		qService.insertNewQuestion(q);
+		return "OK";
+	}
+	
+	@DeleteMapping("/deleteAnswer/{aId}")
+	public String deleteAnswer(@PathVariable Integer aId) {
+		Answer a = aService.findById(aId);
+		a.setDelete(true);
+		aService.insertNewAnswer(a);
+		return "OK";
+	}
+	
+	
 }
