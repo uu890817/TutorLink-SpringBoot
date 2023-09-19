@@ -68,4 +68,20 @@ public class ApplyTeacherService {
 	public long count() {
 		return atDAO.count();
 	}
+
+	public String findById(int applyid) {
+		System.out.println("applyid:" +applyid);
+		ApplyTeacher result = atDAO.findByAtId(applyid);
+		if(result!=null) {
+			result.setState("通過");
+			atDAO.save(result);
+			int userId = result.getUsers().getUsersId();
+			Users uResult = uDAO.findById(userId);
+			if(uResult!=null) {
+				uResult.setUserType(2);
+				uDAO.save(uResult);
+			}
+		}
+		return "ok";
+	}
 }

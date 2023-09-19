@@ -51,7 +51,9 @@ import tw.tutorlink.bean.Users;
 import tw.tutorlink.bean.Video;
 import tw.tutorlink.bean.VideoCourseDTO;
 import tw.tutorlink.bean.VideoNote;
-import tw.tutorlink.dto.lessontool.finAllLessonsDTO;
+
+import tw.tutorlink.dto.lessons.finAllLessonsDTO;
+
 import tw.tutorlink.service.CourseQAService;
 import tw.tutorlink.service.LessonDetailService;
 import tw.tutorlink.service.LessonPostService;
@@ -278,7 +280,7 @@ public class VideoCourseController {
 		return lService.findOnlineLessonsByType();
 	}
 	
-	
+	//
 	//-----------------影片--------------------
 	
 	//新增影片
