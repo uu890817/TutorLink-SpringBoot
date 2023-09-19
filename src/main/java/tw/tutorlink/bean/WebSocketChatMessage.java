@@ -36,5 +36,63 @@ public class WebSocketChatMessage {
 	
 	@Column(name="CreateDate")
 	private Date createDate;
+
+	public Integer getMessageId() {
+		return messageId;
+	}
+
+	public void setMessageId(Integer messageId) {
+		this.messageId = messageId;
+	}
+
+	public Users getUsers() {
+		return users;
+	}
+
+	public void setUsers(Users users) {
+		this.users = users;
+	}
+
+	public WebSocketChatRoom getChatRoom() {
+		return chatRoom;
+	}
+
+	public void setChatRoom(WebSocketChatRoom chatRoom) {
+		this.chatRoom = chatRoom;
+	}
+
+	public String getContent() {
+		return content;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
+	}
+
+	public Integer getType() {
+		return type;
+	}
+
+	public void setType(Integer type) {
+		this.type = type;
+	}
+
+	public Date getCreateDate() {
+		return createDate;
+	}
+
+	public void setCreateDate(Date createDate) {
+		this.createDate = createDate;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 }

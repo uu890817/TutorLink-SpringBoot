@@ -31,6 +31,46 @@ public class WebSocketChatMember {
 	
 	@Column(name = "Type")
 	private Integer type;
+
+	public Integer getChatMemberId() {
+		return chatMemberId;
+	}
+
+	public void setChatMemberId(Integer chatMemberId) {
+		this.chatMemberId = chatMemberId;
+	}
+
+	public WebSocketChatRoom getChatRoom() {
+		return chatRoom;
+	}
+
+	public void setChatRoom(WebSocketChatRoom chatRoom) {
+		this.chatRoom = chatRoom;
+	}
+
+	public Users getUsers() {
+		return users;
+	}
+
+	public void setUsers(Users users) {
+		this.users = users;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public Integer getType() {
+		return type;
+	}
+
+	public void setType(Integer type) {
+		this.type = type;
+	}
 	
 	
 }
