@@ -24,10 +24,10 @@ public class ECpayService {
 		// 隨機生成UID
 		String uuId = UUID.randomUUID().toString().replaceAll("-", "").substring(0, 20);
 		AllInOne all = new AllInOne("");
-		
 		AioCheckOutALL obj = new AioCheckOutALL();
 		obj.setMerchantTradeNo(uuId);  // 設定商店訂單編號
         obj.setMerchantTradeDate(formattedDate);  // 設定商店訂單日期
+        System.out.println(formattedDate);
         obj.setTotalAmount(request.getTotalAmount());  // 設定交易總金額
         obj.setTradeDesc(request.getTradeDesc());  // 設定交易描述
         obj.setItemName(request.getItemName());  // 設定訂單名稱

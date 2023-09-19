@@ -4,11 +4,14 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.servlet.http.HttpSession;
+import tw.tutorlink.bean.OrderItem;
 import tw.tutorlink.bean.Users;
 import tw.tutorlink.dto.cart.OrderDTO;
 import tw.tutorlink.service.OrderItemService;
@@ -32,7 +35,7 @@ public class OrderController {
 	@ResponseBody
 	public List<OrderDTO> getMyApplyRefund(HttpSession session) {
 		Users loggedInUser = (Users) session.getAttribute("logState");
-		return orderItemService.getUserOrder(loggedInUser.getUsersId());
+		return orderItemService.getUserApplyRefund(loggedInUser.getUsersId());
 	}
 	
 	
@@ -40,7 +43,14 @@ public class OrderController {
 	@ResponseBody
 	public List<OrderDTO> getRefund(HttpSession session) {
 		Users loggedInUser = (Users) session.getAttribute("logState");
-		return orderItemService.getUserOrder(loggedInUser.getUsersId());
+		return orderItemService.getUserRefund(loggedInUser.getUsersId());
+	}
+	
+	@PutMapping("/clickrefund/{oid}")
+	@ResponseBody
+	public String applyRefund(@PathVariable Integer oid) {
+		orderItemService.updateOrderStates(oid);
+		return null;
 	}
 	
 }

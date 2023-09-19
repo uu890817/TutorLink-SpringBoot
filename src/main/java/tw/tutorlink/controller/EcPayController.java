@@ -18,6 +18,7 @@ public class EcPayController {
 	@PostMapping("/ecpay")
 	@ResponseBody
 	public String ecpayCheckout(@RequestBody EcPayDTO request) {
+		System.out.println(request);
 		String aioCheckOutALLForm = ecpayService.ecpayCheckout(request);
 		
 		return aioCheckOutALLForm;
