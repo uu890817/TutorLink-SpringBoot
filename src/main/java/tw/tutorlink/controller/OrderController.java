@@ -59,18 +59,18 @@ public class OrderController {
 		return orderItemService.findAllOrder();
 	}
 	
-	// TODO 平台
 	@GetMapping("/manager/revenue")
 	@ResponseBody
 	public RevenueDTO getAllRevenue(HttpSession session) {
 		return orderItemService.countRevenue();
 	}
 	
-	// TODO 老師個人
+	// TODO 老師個人營收
 	@GetMapping("/teacher/revenue")
 	@ResponseBody
-	public List<OrderDTO> getTeacherRevenue(HttpSession session) {
-		return orderItemService.findAllOrder();
+	public RevenueDTO getTeacherRevenue(HttpSession session) {
+		Users loggedInUser = (Users) session.getAttribute("logState");
+		return orderItemService.countTeacherRevenue(loggedInUser.getUsersId());
 	}
 	
 }

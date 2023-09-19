@@ -87,6 +87,23 @@ public class OrderItemService {
 		List<OrderItem> videos = oDAO.findVideoRevenue();
 		List<OrderItem> lessons = oDAO.findLessonRevenue();
 		for (OrderItem video : videos) {
+			videosRevenue+=video.getLesson().getPrice();
+		}
+		for (OrderItem lesson : lessons) {
+			lessonsRevenue+=lesson.getLesson().getPrice();
+		}
+		RevenueDTO rDTO=new RevenueDTO();
+		rDTO.setLessons(lessonsRevenue);
+		rDTO.setVideos(videosRevenue);
+		return rDTO;
+	}
+	
+	public RevenueDTO countTeacherRevenue(int uid) {
+		Integer videosRevenue=0;
+		Integer lessonsRevenue=0;
+		List<OrderItem> videos = oDAO.findTeacherVideoRevenue(uid);
+		List<OrderItem> lessons = oDAO.findTeacherLessonRevenue(uid);
+		for (OrderItem video : videos) {
 			System.out.println(videosRevenue);
 			System.out.println(video.getOrderId());
 			videosRevenue+=video.getLesson().getPrice();
