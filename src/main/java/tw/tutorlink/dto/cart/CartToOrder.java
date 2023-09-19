@@ -15,7 +15,7 @@ public class CartToOrder {
 	private Integer orderStates;
 	
 	public CartToOrder() {
-		// TODO Auto-generated constructor stub
+
 	}
 
 	public Integer getLessonId() {

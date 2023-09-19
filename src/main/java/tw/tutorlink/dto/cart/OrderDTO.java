@@ -64,7 +64,6 @@ public class OrderDTO {
 
 	public OrderDTO() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public Integer getOrderId() {

@@ -53,7 +53,6 @@ public class TutorlinkWebSocketHandler implements WebSocketHandler {
 
 	@Override
 	public boolean supportsPartialMessages() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 

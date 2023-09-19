@@ -59,4 +59,18 @@ public class OrderController {
 		return orderItemService.findAllOrder();
 	}
 		
+	// TODO
+	@GetMapping("/manager/revenue")
+	@ResponseBody
+	public List<OrderDTO> getAllRevenue(HttpSession session) {
+		return orderItemService.findAllOrder();
+	}
+	
+	// TODO
+	@GetMapping("/teacher/revenue")
+	@ResponseBody
+	public List<OrderDTO> getTeacherRevenue(HttpSession session) {
+		return orderItemService.findAllOrder();
+	}
+	
 }
