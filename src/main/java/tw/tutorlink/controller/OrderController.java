@@ -14,6 +14,7 @@ import jakarta.servlet.http.HttpSession;
 import tw.tutorlink.bean.Users;
 import tw.tutorlink.dto.cart.OrderDTO;
 import tw.tutorlink.dto.cart.RevenueDTO;
+import tw.tutorlink.dto.cart.SubjectRevenueDTO;
 import tw.tutorlink.service.OrderItemService;
 
 @RestController
@@ -71,6 +72,13 @@ public class OrderController {
 	public RevenueDTO getTeacherRevenue(HttpSession session) {
 		Users loggedInUser = (Users) session.getAttribute("logState");
 		return orderItemService.countTeacherRevenue(loggedInUser.getUsersId());
+	}
+	
+	// TODO 後臺分科目營收
+	@GetMapping("/manager/subjectrevenue")
+	@ResponseBody
+	public List<SubjectRevenueDTO> getSubjectRevenue(HttpSession session) {
+		return orderItemService.countRevenueBySubject();
 	}
 	
 }

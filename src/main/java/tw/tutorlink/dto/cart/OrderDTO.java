@@ -33,6 +33,8 @@ public class OrderDTO {
 	private Integer price;
 
 	private Date lessonTime;
+	
+	private String subject;
 
 	public OrderDTO(OrderItem item) {
 		super();
@@ -49,11 +51,19 @@ public class OrderDTO {
 		this.uerName = item.getUsers().getUserDetailUserName();
 		this.cartId = item.getCartItem().getCartId();
 		this.price = item.getLesson().getPrice();
+		this.subject = item.getLesson().getSubject().getSubjectContent();
 		if (item.getCalender() != null) {
 			this.lessonTime = item.getCalender().getLessonTime();
 		}
 	}
 
+	public String getSubject() {
+		return subject;
+	}
+
+	public void setSubject(String subject) {
+		this.subject = subject;
+	}
 	public Integer getPrice() {
 		return price;
 	}

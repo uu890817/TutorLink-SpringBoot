@@ -7,16 +7,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import tw.tutorlink.bean.OrderItem;
+import tw.tutorlink.bean.Subject;
 import tw.tutorlink.dto.cart.OrderDTO;
 import tw.tutorlink.dto.cart.RevenueDTO;
-import tw.tutorlink.repository.CartDAO;
+import tw.tutorlink.dto.cart.SubjectRevenueDTO;
 import tw.tutorlink.repository.OrderItemDAO;
+import tw.tutorlink.repository.SubjectDAO;
 
 @Service
 public class OrderItemService {
 
 	@Autowired
 	private OrderItemDAO oDAO;
+
+	@Autowired
+	private SubjectDAO sDAO;
 
 	public List<OrderDTO> findAllOrder() {
 		List<OrderDTO> oDTOs = new ArrayList<>();
@@ -82,41 +87,60 @@ public class OrderItemService {
 	}
 
 	public RevenueDTO countRevenue() {
-		Integer videosRevenue=0;
-		Integer lessonsRevenue=0;
+		Integer videosRevenue = 0;
+		Integer lessonsRevenue = 0;
 		List<OrderItem> videos = oDAO.findVideoRevenue();
 		List<OrderItem> lessons = oDAO.findLessonRevenue();
 		for (OrderItem video : videos) {
-			videosRevenue+=video.getLesson().getPrice();
+			videosRevenue += video.getLesson().getPrice();
 		}
 		for (OrderItem lesson : lessons) {
-			lessonsRevenue+=lesson.getLesson().getPrice();
+			lessonsRevenue += lesson.getLesson().getPrice();
 		}
-		RevenueDTO rDTO=new RevenueDTO();
+		RevenueDTO rDTO = new RevenueDTO();
 		rDTO.setLessons(lessonsRevenue);
 		rDTO.setVideos(videosRevenue);
 		return rDTO;
 	}
-	
+
 	public RevenueDTO countTeacherRevenue(int uid) {
-		Integer videosRevenue=0;
-		Integer lessonsRevenue=0;
+		Integer videosRevenue = 0;
+		Integer lessonsRevenue = 0;
 		List<OrderItem> videos = oDAO.findTeacherVideoRevenue(uid);
 		List<OrderItem> lessons = oDAO.findTeacherLessonRevenue(uid);
 		for (OrderItem video : videos) {
-			System.out.println(videosRevenue);
-			System.out.println(video.getOrderId());
-			videosRevenue+=video.getLesson().getPrice();
+			videosRevenue += video.getLesson().getPrice();
 		}
 		for (OrderItem lesson : lessons) {
-			System.out.println(lessonsRevenue);
-			System.out.println(lesson.getOrderId());
-			lessonsRevenue+=lesson.getLesson().getPrice();
+			lessonsRevenue += lesson.getLesson().getPrice();
 		}
-		RevenueDTO rDTO=new RevenueDTO();
+		RevenueDTO rDTO = new RevenueDTO();
 		rDTO.setLessons(lessonsRevenue);
 		rDTO.setVideos(videosRevenue);
 		return rDTO;
+	}
+
+	public List<SubjectRevenueDTO> countRevenueBySubject() {
+		List<SubjectRevenueDTO> rDTOs = new ArrayList<>();
+		Integer videosRevenue = 0;
+		Integer lessonsRevenue = 0;
+		List<Subject> findAllSubjects = sDAO.findAll();
+		for (Subject subject : findAllSubjects) {
+			SubjectRevenueDTO srDto = new SubjectRevenueDTO();
+			List<OrderItem> videos = oDAO.findTeacherVideoRevenue(subject.getSubjectId());
+			List<OrderItem> lessons = oDAO.findTeacherLessonRevenue(subject.getSubjectId());
+			for (OrderItem video : videos) {
+				videosRevenue += video.getLesson().getPrice();
+			}
+			for (OrderItem lesson : lessons) {
+				lessonsRevenue += lesson.getLesson().getPrice();
+			}
+			srDto.setLessons(lessonsRevenue);
+			srDto.setVideos(videosRevenue);
+			srDto.setSubject(subject.getSubjectContent());
+			rDTOs.add(srDto);
+		}
+		return rDTOs;
 	}
 
 }

@@ -33,4 +33,10 @@ public interface OrderItemDAO extends JpaRepository<OrderItem, Integer> {
 
 	@Query("FROM OrderItem o  WHERE o.lesson.lessonType=true AND o.users.usersId = :usersId")
 	public List<OrderItem> findTeacherLessonRevenue(@Param("usersId") Integer usersId);
+	
+	@Query("FROM OrderItem o  WHERE o.lesson.lessonType=false AND o.lesson.subject.subjectId = :subjectId")
+	public List<OrderItem> findVideoRevenueBySubject(@Param("subjectId") Integer subjectId);
+	
+	@Query("FROM OrderItem o  WHERE o.lesson.lessonType=false AND o.lesson.subject.subjectId = :subjectId")
+	public List<OrderItem> findLessonRevenueBySubject(@Param("subjectId") Integer subjectId);
 }
