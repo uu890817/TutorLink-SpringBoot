@@ -10,7 +10,7 @@ public class CartItemDTO {
 	
 	public CartItemDTO() {
 		super();
-		// TODO Auto-generated constructor stub
+
 	}
 
 	private Integer cartId;

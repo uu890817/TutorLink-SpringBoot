@@ -16,11 +16,20 @@ public class OrderItemService {
 
 	@Autowired
 	private OrderItemDAO oDAO;
-	
+
 	@Autowired
 	private CartDAO cDAO;
 	
-	
+	public List<OrderDTO> findAllOrder(){
+		List<OrderDTO> oDTOs = new ArrayList<>();
+		List<OrderItem> oitems = oDAO.findAll();
+		for (OrderItem oitem : oitems) {
+			OrderDTO oDTO = new OrderDTO(oitem);
+			oDTOs.add(oDTO);
+		}
+		return oDTOs;
+	}
+
 	public List<OrderDTO> getUserOrder(int uid) {
 		List<OrderDTO> oDTOs = new ArrayList<>();
 		List<OrderItem> oitems = oDAO.findOrderByUserId(uid);
@@ -30,7 +39,7 @@ public class OrderItemService {
 		}
 		return oDTOs;
 	}
-	
+
 	public List<OrderDTO> getUserApplyRefund(int uid) {
 		List<OrderDTO> oDTOs = new ArrayList<>();
 		List<OrderItem> oitems = oDAO.findApplyRefundById(uid);
@@ -40,7 +49,7 @@ public class OrderItemService {
 		}
 		return oDTOs;
 	}
-	
+
 	public List<OrderDTO> getUserRefund(int uid) {
 		List<OrderDTO> oDTOs = new ArrayList<>();
 		List<OrderItem> oitems = oDAO.findRefundById(uid);
@@ -50,8 +59,7 @@ public class OrderItemService {
 		}
 		return oDTOs;
 	}
-	
-	
+
 	public OrderItem insertOrderItem(OrderItem item) {
 		OrderItem result = oDAO.save(item);
 		if (result != null) {
@@ -59,4 +67,20 @@ public class OrderItemService {
 		}
 		return null;
 	}
+
+	public OrderItem getOrderById(int oId) {
+		OrderItem oitem = oDAO.findOrderByOrderId(oId);
+		if (oitem != null) {
+			return oitem;
+		}
+		return null;
+	}
+	
+	public OrderItem updateOrderStates(int oId) {
+		OrderItem oitem = oDAO.findOrderByOrderId(oId);
+		oitem.setOrderStates(2);
+		oDAO.save(oitem);
+		return null;
+	}
+
 }

@@ -136,7 +136,6 @@ public class ExercisesService {
 	}
 
 	public StudentGetExerciseDTO studentGetExerciseByExerId(int i) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 }

@@ -1,26 +1,23 @@
 package tw.tutorlink.controller;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
-import java.net.URLConnection;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Base64;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -31,11 +28,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.servlet.http.HttpSession;
@@ -43,13 +38,10 @@ import tw.tutorlink.bean.CourseQA;
 import tw.tutorlink.bean.LessonDetail;
 import tw.tutorlink.bean.LessonPost;
 import tw.tutorlink.bean.Lessons;
-import tw.tutorlink.bean.OrderItem;
 import tw.tutorlink.bean.StudentWillLearn;
-import tw.tutorlink.bean.Subject;
 import tw.tutorlink.bean.UserDetail;
 import tw.tutorlink.bean.Users;
 import tw.tutorlink.bean.Video;
-import tw.tutorlink.bean.VideoCourseDTO;
 import tw.tutorlink.bean.VideoNote;
 import tw.tutorlink.dto.lessontool.finAllLessonsDTO;
 import tw.tutorlink.service.CourseQAService;
@@ -62,12 +54,6 @@ import tw.tutorlink.service.UserDetailService;
 import tw.tutorlink.service.UsersService;
 import tw.tutorlink.service.VideoNoteService;
 import tw.tutorlink.service.VideoService;
-
-import org.apache.commons.io.FilenameUtils;
-import java.util.UUID;
-import java.util.stream.Collectors;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
 
 
 
@@ -278,7 +264,7 @@ public class VideoCourseController {
 		return lService.findOnlineLessonsByType();
 	}
 	
-	
+	//
 	//-----------------影片--------------------
 	
 	//新增影片

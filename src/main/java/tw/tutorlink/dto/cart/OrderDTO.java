@@ -9,6 +9,8 @@ public class OrderDTO {
 	private Integer orderId;
 
 	private Integer uerId;
+	
+	private String uerName;
 
 	private boolean lessonType;
 
@@ -44,6 +46,7 @@ public class OrderDTO {
 		this.orderStates = item.getOrderStates();
 		this.payment = item.getCartItem().getPayment();
 		this.createTime = item.getCreateTime();
+		this.uerName = item.getUsers().getUserDetailUserName();
 		this.cartId = item.getCartItem().getCartId();
 		this.price = item.getLesson().getPrice();
 		if (item.getCalender() != null) {
@@ -61,7 +64,6 @@ public class OrderDTO {
 
 	public OrderDTO() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public Integer getOrderId() {
@@ -150,6 +152,14 @@ public class OrderDTO {
 
 	public void setCartId(Integer cartId) {
 		this.cartId = cartId;
+	}
+
+	public String getUerName() {
+		return uerName;
+	}
+
+	public void setUerName(String uerName) {
+		this.uerName = uerName;
 	}
 
 	public Date getLessonTime() {
