@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.servlet.http.HttpSession;
-import tw.tutorlink.bean.OrderItem;
 import tw.tutorlink.bean.Users;
 import tw.tutorlink.dto.cart.OrderDTO;
+import tw.tutorlink.dto.cart.RevenueDTO;
 import tw.tutorlink.service.OrderItemService;
 
 @RestController
@@ -58,15 +58,15 @@ public class OrderController {
 	public List<OrderDTO> getAllorder(HttpSession session) {
 		return orderItemService.findAllOrder();
 	}
-		
-	// TODO
+	
+	// TODO 平台
 	@GetMapping("/manager/revenue")
 	@ResponseBody
-	public List<OrderDTO> getAllRevenue(HttpSession session) {
-		return orderItemService.findAllOrder();
+	public RevenueDTO getAllRevenue(HttpSession session) {
+		return orderItemService.countRevenue();
 	}
 	
-	// TODO
+	// TODO 老師個人
 	@GetMapping("/teacher/revenue")
 	@ResponseBody
 	public List<OrderDTO> getTeacherRevenue(HttpSession session) {
