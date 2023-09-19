@@ -2,6 +2,7 @@ package tw.tutorlink.controller;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -9,17 +10,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.configurationprocessor.json.JSONArray;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import tw.tutorlink.bean.ApplyTeacher;
+import tw.tutorlink.bean.Lessons;
 import tw.tutorlink.bean.Users;
+import tw.tutorlink.dto.lessons.FindAllLessonTypeLessonDTO;
+import tw.tutorlink.dto.lessons.finAllLessonsDTO;
 import tw.tutorlink.service.ApplyTeacherService;
+import tw.tutorlink.service.LessonsService;
 import tw.tutorlink.service.UsersService;
 
 @RestController
@@ -30,6 +38,9 @@ public class ManageController {
 
 	@Autowired
 	private ApplyTeacherService atService;
+	
+	@Autowired
+	private LessonsService lService;
 
 	@PostMapping("/allusers")
 	@ResponseBody
@@ -95,4 +106,41 @@ public class ManageController {
 
 		return null;
 	}
+	
+    //課程全部查詢
+	@PostMapping(path = "/getAllLesson", produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public String findAllLesson(@RequestBody String json) throws JSONException, ParseException {
+		// 回傳給前端的Jsno物件
+		JSONObject responseJson = new JSONObject();
+		// 取資料表總筆數
+		long count = lService.count();
+		JsonObject jsondadta = JsonParser.parseString(json).getAsJsonObject();
+		int start = jsondadta.get("start").getAsInt();
+		int rows = jsondadta.get("rows").getAsInt();
+		System.out.println("sssssss"+start);
+		System.out.println("rrrrrrr"+rows);
+		JSONArray array = new JSONArray();
+		List<Lessons> lessons = lService.findAllLessons(start, rows);
+	
+		for (Lessons lesson : lessons) {
+
+			JSONObject item = new JSONObject().put("lessonId",lesson.getLessonId()).put("lessonName",lesson.getLessonName()).put("lessonType", lesson.getLessonType()).put("price", lesson.getPrice())
+					.put("subjectName", lesson.getSubject().getSubjectContent()).put("teacherName", lesson.getUsers().getUserDetail().getUserName());
+			array = array.put(item);
+		}
+		responseJson.put("total", count); // 设置总记录数
+
+		responseJson.put("lesson", array);
+
+		return responseJson.toString();
+	}
+    
+    //查詢類別課程
+    @GetMapping(path="/getLessonBysubjectId/{subjectId}", produces = "application/json;charset=UTF-8")
+    public List<FindAllLessonTypeLessonDTO> findSubjectLesson(@PathVariable("subjectId") Integer subjectId){
+    	return lService.findLessonBySubject(subjectId);
+    }
+    
+    
 }

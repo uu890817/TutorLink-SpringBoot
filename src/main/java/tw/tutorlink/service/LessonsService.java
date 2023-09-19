@@ -6,7 +6,11 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import tw.tutorlink.bean.Calender;
 import tw.tutorlink.bean.LessonDetail;
@@ -14,7 +18,9 @@ import tw.tutorlink.bean.Lessons;
 import tw.tutorlink.bean.LessonsDTO;
 import tw.tutorlink.bean.UserDetail;
 import tw.tutorlink.bean.Users;
-import tw.tutorlink.bean.finAllLessonsDTO;
+import tw.tutorlink.dto.lessons.FindAllLessonTypeLessonDTO;
+import tw.tutorlink.dto.lessons.LessonsUpdateDTO;
+import tw.tutorlink.dto.lessons.finAllLessonsDTO;
 import tw.tutorlink.repository.LessonDetailDAO;
 import tw.tutorlink.repository.LessonsDAO;
 import tw.tutorlink.repository.UserDetailDAO;
@@ -94,29 +100,59 @@ public class LessonsService {
 
 	}
 
-	// 修改課程
-	public Lessons updateLesson(Integer id, Lessons lesson, LessonDetail lessondetail) {
-		Lessons lessons = lDAO.findById(id).get();
-		System.out.println("132");
+//	// 修改課程
+//	public Lessons updateLesson(Integer id, Lessons lesson, LessonDetail lessondetail) {
+//		Lessons lessons = lDAO.findById(id).get();
+//		System.out.println("132");
+//
+//		System.out.println(lessons);
+//		if (lessons != null) {
+//			lessons.setLessonName(lesson.getLessonName());
+//			lessons.setImage(lesson.getImage());
+//			lessons.setPrice(lesson.getPrice());
+//			lessons.setSubject(lesson.getSubject());
+//			lessons.getLessondetail().setImformation(lessondetail.getImformation());
+//			lessons.getLessondetail().setMeetingUrl(lessondetail.getMeetingUrl());
+//			lessons.getLessondetail().setCreateTime(new Date());
+//			lessons.getLessondetail().setLanguage(lessondetail.getLanguage());
+//			lessons.getLessondetail().setCourseUrl(lessondetail.getCourseUrl());
+//			lDAO.save(lessons);
+//			return lessons;
+//		}
+//
+//		return null;
+//
+//	}
+	
+    //修改課程
+    @Transactional
+    public Lessons updateLesson(Integer id,LessonsUpdateDTO lDTO, LessonDetail lessondetail) {
+            Lessons lessons = lDAO.findById(id).get();
 
-		System.out.println(lessons);
-		if (lessons != null) {
-			lessons.setLessonName(lesson.getLessonName());
-			lessons.setImage(lesson.getImage());
-			lessons.setPrice(lesson.getPrice());
-			lessons.setSubject(lesson.getSubject());
-			lessons.getLessondetail().setImformation(lessondetail.getImformation());
-			lessons.getLessondetail().setMeetingUrl(lessondetail.getMeetingUrl());
-			lessons.getLessondetail().setCreateTime(new Date());
-			lessons.getLessondetail().setLanguage(lessondetail.getLanguage());
-			lessons.getLessondetail().setCourseUrl(lessondetail.getCourseUrl());
-			lDAO.save(lessons);
-			return lessons;
-		}
 
-		return null;
-
-	}
+            if(lessons!=null) {
+                lessons.setLessonId(id);
+                lessons.setLessonName(lDTO.getLessonName());
+                lessons.setImage(lDTO.getImage());
+                lessons.setPrice(lDTO.getPrice());
+                lessons.setSubject(lDTO.getSubject());
+                
+                
+                LessonDetail ld = lessons.getLessondetail();
+                ld.setImformation(lessondetail.getImformation());
+                ld.setMeetingUrl(lessondetail.getMeetingUrl());
+                ld.setCreateTime(new Date());
+                ld.setLanguage(lessondetail.getLanguage());
+                ld.setCourseUrl(lessondetail.getCourseUrl());
+                ldDAO.save(ld);
+                lDAO.save(lessons);
+            
+            }
+            return lessons;
+            
+            
+            
+        }
 
 	// 刪除課程
 	public String deleteLessons(Lessons lesson) {
@@ -187,5 +223,68 @@ public class LessonsService {
 	    }
 	    return courseDTOList;
 	}
+	
+	//查詢所有影片課程
+	public List<FindAllLessonTypeLessonDTO> findAllVideoLesson() {
+		List<Lessons> lessonList = lDAO.findLessonsByType(false);
+		List<FindAllLessonTypeLessonDTO> courseDTOList = new ArrayList<>();
+		for(Lessons lesson : lessonList) {
+			Users teacher = uDAO.findById(lesson.getUsers().getUsersId()).get();
+			FindAllLessonTypeLessonDTO VDTO = new FindAllLessonTypeLessonDTO(lesson, teacher);
+			courseDTOList.add(VDTO);
+		}
+		return courseDTOList;
+	}
+	
+	//查詢所有線上課程
+	public List<FindAllLessonTypeLessonDTO> findAllOnlineLesson() {
+		List<Lessons> lessonList = lDAO.findLessonsByType(true);
+		List<FindAllLessonTypeLessonDTO> courseDTOList = new ArrayList<>();
+		for (Lessons lesson : lessonList) {
+			Users teacher = uDAO.findById(lesson.getUsers().getUsersId()).get();
+			FindAllLessonTypeLessonDTO VDTO = new FindAllLessonTypeLessonDTO(lesson, teacher);
+			courseDTOList.add(VDTO);
+		}
+		return courseDTOList;
+	}
+	
+	//查詢所有線上課程
+	public List<FindAllLessonTypeLessonDTO> findAllLessons() {
+		List<Lessons> lessonList = lDAO.findAll();
+		List<FindAllLessonTypeLessonDTO> courseDTOList = new ArrayList<>();
+		for (Lessons lesson : lessonList) {
+			Users teacher = uDAO.findById(lesson.getUsers().getUsersId()).get();
+			FindAllLessonTypeLessonDTO VDTO = new FindAllLessonTypeLessonDTO(lesson, teacher);
+			courseDTOList.add(VDTO);
+		}
+		return courseDTOList;
+	}
+	
+	//subject查詢所有課程
+	public List<FindAllLessonTypeLessonDTO> findLessonBySubject(Integer subId){
+		List<Lessons> lessonList = lDAO.findLessonsBySubId(subId);
+		List<FindAllLessonTypeLessonDTO> courseDTOList = new ArrayList<>();
+		for(Lessons lesson : lessonList) {
+			Users teacher = uDAO.findById(lesson.getUsers().getUsersId()).get();
+			FindAllLessonTypeLessonDTO VDTO = new FindAllLessonTypeLessonDTO(lesson, teacher);
+			courseDTOList.add(VDTO);
+		}
+		return courseDTOList;
+	}
+	//後臺課程分頁
+	public List<Lessons> findAllLessons(int page, int rows) {
+		if (page == 0 && rows == 0) {
+			return lDAO.findAll();
+		}
+		Pageable pageable = PageRequest.of(page, rows);
+		Page<Lessons> result = lDAO.findAll(pageable);
+		return result.getContent();
+	}
+	
+	
+	public long count() {
+		return lDAO.count();
+	}
+
 
 }
