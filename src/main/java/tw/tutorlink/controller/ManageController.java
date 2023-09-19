@@ -38,9 +38,9 @@ public class ManageController {
 		JSONObject responseJson = new JSONObject();
 		// 取資料表總筆數
 		long count = uService.count();
-		JsonObject jsondadta = JsonParser.parseString(json).getAsJsonObject();
-		int start = jsondadta.get("start").getAsInt();
-		int rows = jsondadta.get("rows").getAsInt();
+		JsonObject jsondata = JsonParser.parseString(json).getAsJsonObject();
+		int start = jsondata.get("start").getAsInt();
+		int rows = jsondata.get("rows").getAsInt();
 		JSONArray array = new JSONArray();
 		List<Users> users = uService.findAllUsers(start, rows);
 		// 用戶身分空值
