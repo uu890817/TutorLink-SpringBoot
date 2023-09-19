@@ -18,4 +18,7 @@ public interface OrderItemDAO extends JpaRepository<OrderItem, Integer> {
 	
 	@Query("FROM OrderItem o  WHERE o.users.usersId = :usersId AND o.orderStates=2")
 	public List<OrderItem> findRefundById(@Param("usersId") Integer usersId);
+	
+	@Query("FROM OrderItem o  WHERE o.orderId=:orderId")
+	public OrderItem findOrderByOrderId(@Param("orderId") Integer orderId);
 }
