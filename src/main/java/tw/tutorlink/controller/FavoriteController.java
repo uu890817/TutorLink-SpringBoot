@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import tw.tutorlink.bean.Favorite;
-import tw.tutorlink.bean.FavoriteDTO;
 import tw.tutorlink.bean.Lessons;
 import tw.tutorlink.bean.Users;
+import tw.tutorlink.dto.lessontool.FavoriteDTO;
 import tw.tutorlink.service.FavoriteService;
 
 @RestController

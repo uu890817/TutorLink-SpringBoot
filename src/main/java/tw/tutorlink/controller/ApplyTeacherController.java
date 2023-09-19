@@ -71,4 +71,20 @@ public class ApplyTeacherController {
 		return atService.checkstate(userid);
 	}
 
+	@PostMapping("/reviewApply")
+	@ResponseBody
+	public String reviewApply(@RequestBody String json) {
+		System.out.println(json);
+		JsonObject jsondata = JsonParser.parseString(json).getAsJsonObject();
+		int applyid = jsondata.get("applyid").getAsInt();
+		String type = jsondata.get("type").getAsString();
+		String name = jsondata.get("name").getAsString();
+		System.out.println(applyid + " " + type + " " + name);
+		String result = atService.findById(applyid);
+		if (result.equals("ok")) {
+			return "ok";
+		}
+		return "fail";
+	}
+
 }

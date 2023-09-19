@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.servlet.http.HttpSession;
 import tw.tutorlink.bean.Comment;
-import tw.tutorlink.bean.CommentDTO;
 import tw.tutorlink.bean.Lessons;
 import tw.tutorlink.bean.Users;
+import tw.tutorlink.dto.lessontool.CommentDTO;
 import tw.tutorlink.service.ScoreService;
 
 @RestController

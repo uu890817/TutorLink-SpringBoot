@@ -10,10 +10,10 @@ import org.springframework.stereotype.Service;
 
 import jakarta.servlet.http.HttpSession;
 import tw.tutorlink.bean.Calender;
-import tw.tutorlink.bean.CalenderDTO;
 import tw.tutorlink.bean.Lessons;
-import tw.tutorlink.bean.LessonsDTO;
 import tw.tutorlink.bean.Users;
+import tw.tutorlink.dto.lessontool.CalenderDTO;
+import tw.tutorlink.dto.lessontool.LessonsDTO;
 import tw.tutorlink.repository.CalenderDAO;
 import tw.tutorlink.repository.LessonsDAO;
 import tw.tutorlink.repository.UsersDAO;

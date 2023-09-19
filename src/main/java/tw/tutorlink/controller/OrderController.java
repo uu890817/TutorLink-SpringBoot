@@ -25,16 +25,14 @@ public class OrderController {
 	@ResponseBody
 	public List<OrderDTO> getMyPurchase(HttpSession session) {
 		Users loggedInUser = (Users) session.getAttribute("logState");
-//		return orderItemService.getUserOrder(loggedInUser.getUsersId());
-		return orderItemService.getUserOrder(6);
+		return orderItemService.getUserOrder(loggedInUser.getUsersId());
 	}
 	
 	@GetMapping("/applyrefund")
 	@ResponseBody
 	public List<OrderDTO> getMyApplyRefund(HttpSession session) {
 		Users loggedInUser = (Users) session.getAttribute("logState");
-//		return orderItemService.getUserOrder(loggedInUser.getUsersId());
-		return orderItemService.getUserApplyRefund(6);
+		return orderItemService.getUserOrder(loggedInUser.getUsersId());
 	}
 	
 	
@@ -42,8 +40,7 @@ public class OrderController {
 	@ResponseBody
 	public List<OrderDTO> getRefund(HttpSession session) {
 		Users loggedInUser = (Users) session.getAttribute("logState");
-//		return orderItemService.getUserOrder(loggedInUser.getUsersId());
-		return orderItemService.getUserRefund(6);
+		return orderItemService.getUserOrder(loggedInUser.getUsersId());
 	}
 	
 }

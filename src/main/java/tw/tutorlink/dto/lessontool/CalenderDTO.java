@@ -1,8 +1,12 @@
-package tw.tutorlink.bean;
+package tw.tutorlink.dto.lessontool;
 
 import java.util.Date;
 
 import org.springframework.stereotype.Component;
+
+import tw.tutorlink.bean.Calender;
+import tw.tutorlink.bean.Lessons;
+import tw.tutorlink.bean.Users;
 
 @Component
 public class CalenderDTO {
@@ -21,15 +25,6 @@ public class CalenderDTO {
 	
 	private String meetingUrl;
 	
-	
-	public String getMeetingUrl() {
-		return meetingUrl;
-	}
-
-	public void setMeetingUrl(String meetingUrl) {
-		this.meetingUrl = meetingUrl;
-	}
-
 	public CalenderDTO(Lessons lesson, Users student,Calender calender) {
 		this.lessonId = lesson.getLessonId();
 		this.calenderId = calender.getCalenderId();
@@ -90,6 +85,14 @@ public class CalenderDTO {
 
 	public void setLessonType(boolean lessonType) {
 		this.lessonType = lessonType;
+	}
+
+	public String getMeetingUrl() {
+		return meetingUrl;
+	}
+
+	public void setMeetingUrl(String meetingUrl) {
+		this.meetingUrl = meetingUrl;
 	}
 
 

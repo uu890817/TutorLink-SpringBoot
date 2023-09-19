@@ -3,6 +3,9 @@ package tw.tutorlink.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import tw.tutorlink.bean.ApplyTeacher;
@@ -21,11 +24,9 @@ public class ApplyTeacherService {
 	public String applyTeacher(int id, String name, String idNumber, String country, String lessons, String langs,
 			String exp, String jobstate, String hours, String salary, String advantage) {
 
-		System.out.println("到service");
 		Users result = uDAO.findById(id);
 		if (result != null) {
 			ApplyTeacher at = new ApplyTeacher();
-			System.out.println("還沒寫進資料庫");
 			at.setUsers(result);
 			at.setIdNumber(idNumber);
 			at.setExp(exp);
@@ -40,7 +41,6 @@ public class ApplyTeacherService {
 			result.getUserDetail().setTeacherState(2);
 			atDAO.save(at);
 			uDAO.save(result);
-			System.out.println("已寫進資料庫");
 			return "ok";
 		}
 
@@ -55,8 +55,33 @@ public class ApplyTeacherService {
 		return null;
 	}
 
-	public List<ApplyTeacher> findAllApply(int start, int rows) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<ApplyTeacher> findAllApply(int page, int rows) {
+		if (page == 0 && rows == 0) {
+			return atDAO.findAll();
+		}
+		
+		Pageable pageable = PageRequest.of(page, rows);
+		Page<ApplyTeacher> result = atDAO.findAll(pageable);
+		return result.getContent();
+	}
+
+	public long count() {
+		return atDAO.count();
+	}
+
+	public String findById(int applyid) {
+		System.out.println("applyid:" +applyid);
+		ApplyTeacher result = atDAO.findByAtId(applyid);
+		if(result!=null) {
+			result.setState("通過");
+			atDAO.save(result);
+			int userId = result.getUsers().getUsersId();
+			Users uResult = uDAO.findById(userId);
+			if(uResult!=null) {
+				uResult.setUserType(2);
+				uDAO.save(uResult);
+			}
+		}
+		return "ok";
 	}
 }

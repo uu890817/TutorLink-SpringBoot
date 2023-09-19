@@ -8,10 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import tw.tutorlink.bean.Favorite;
-import tw.tutorlink.bean.FavoriteDTO;
 import tw.tutorlink.bean.Lessons;
-import tw.tutorlink.bean.LessonsDTO;
 import tw.tutorlink.bean.Users;
+import tw.tutorlink.dto.lessontool.FavoriteDTO;
+import tw.tutorlink.dto.lessontool.LessonsDTO;
 import tw.tutorlink.repository.FavoriteDAO;
 import tw.tutorlink.repository.LessonsDAO;
 import tw.tutorlink.repository.UsersDAO;

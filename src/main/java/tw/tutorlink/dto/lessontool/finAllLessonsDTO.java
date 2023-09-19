@@ -1,29 +1,33 @@
-package tw.tutorlink.bean;
+package tw.tutorlink.dto.lessontool;
 
 import org.springframework.stereotype.Component;
 
+import tw.tutorlink.bean.Lessons;
+import tw.tutorlink.bean.Users;
+
 @Component
-public class FavoriteDTO {
-	private Integer favoriteId;
+public class finAllLessonsDTO {
+
 	private Integer lessonId;
 	private String lessonUrl;
 	private String lessonName; 
 	private String lessonInfo;
 	private String teacherName;
+	private Integer price;
 	private boolean lessonType;
 	private Integer subjectId;
 
-	public FavoriteDTO(Lessons lesson, Users teacher,Favorite favorite) {
-		this.favoriteId = favorite.getFavoriteId();
+	public finAllLessonsDTO(Lessons lesson, Users teacher) {
 		this.lessonId = lesson.getLessonId();
 		this.lessonUrl = lesson.getImage();
 		this.lessonName = lesson.getLessonName();
 		this.lessonInfo = lesson.getLessondetail().getImformation();
 		this.teacherName = teacher.getUserDetail().getUserName();
+		this.price = lesson.getPrice();
 		this.lessonType = lesson.getLessonType();
 		this.subjectId = lesson.getSubject().getSubjectId();
 	}
-	public FavoriteDTO() {
+	public finAllLessonsDTO() {
 	}
 	
 	public Integer getLessonId() {
@@ -56,6 +60,12 @@ public class FavoriteDTO {
 	public void setTeacherName(String teacherName) {
 		this.teacherName = teacherName;
 	}
+	public Integer getPrice() {
+		return price;
+	}
+	public void setPrice(Integer price) {
+		this.price = price;
+	}
 	public boolean isLessonType() {
 		return lessonType;
 	}
@@ -67,12 +77,6 @@ public class FavoriteDTO {
 	}
 	public void setSubjectId(Integer subjectId) {
 		this.subjectId = subjectId;
-	}
-	public Integer getFavoriteId() {
-		return favoriteId;
-	}
-	public void setFavoriteId(Integer favoriteId) {
-		this.favoriteId = favoriteId;
 	}
 
 

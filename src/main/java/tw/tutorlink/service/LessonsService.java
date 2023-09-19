@@ -15,12 +15,14 @@ import org.springframework.transaction.annotation.Transactional;
 import tw.tutorlink.bean.Calender;
 import tw.tutorlink.bean.LessonDetail;
 import tw.tutorlink.bean.Lessons;
-import tw.tutorlink.bean.LessonsDTO;
 import tw.tutorlink.bean.UserDetail;
 import tw.tutorlink.bean.Users;
+
 import tw.tutorlink.dto.lessons.FindAllLessonTypeLessonDTO;
 import tw.tutorlink.dto.lessons.LessonsUpdateDTO;
 import tw.tutorlink.dto.lessons.finAllLessonsDTO;
+
+import tw.tutorlink.dto.lessontool.LessonsDTO;
 import tw.tutorlink.repository.LessonDetailDAO;
 import tw.tutorlink.repository.LessonsDAO;
 import tw.tutorlink.repository.UserDetailDAO;

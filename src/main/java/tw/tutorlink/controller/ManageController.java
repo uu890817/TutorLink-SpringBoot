@@ -49,9 +49,9 @@ public class ManageController {
 		JSONObject responseJson = new JSONObject();
 		// 取資料表總筆數
 		long count = uService.count();
-		JsonObject jsondadta = JsonParser.parseString(json).getAsJsonObject();
-		int start = jsondadta.get("start").getAsInt();
-		int rows = jsondadta.get("rows").getAsInt();
+		JsonObject jsondata = JsonParser.parseString(json).getAsJsonObject();
+		int start = jsondata.get("start").getAsInt();
+		int rows = jsondata.get("rows").getAsInt();
 		JSONArray array = new JSONArray();
 		List<Users> users = uService.findAllUsers(start, rows);
 		// 用戶身分空值
@@ -73,7 +73,7 @@ public class ManageController {
 
 				if (user.getUserDetail().getNewLoginTime() == null) {
 					newLoginTime = "2000-01-01 00:00:00.000";
-				}else {
+				} else {
 					newLoginTime = user.getUserDetail().getNewLoginTime().toString();
 				}
 				Date newLoginOriginalDate = originalFormat.parse(newLoginTime);
@@ -93,18 +93,36 @@ public class ManageController {
 
 	@PostMapping("/allapply")
 	@ResponseBody
-	public String allapply(@RequestBody String json) {
+	public String allapply(@RequestBody String json) throws JSONException {
 		// 回傳給前端的Jsno物件
 		JSONObject responseJson = new JSONObject();
 		// 取資料表總筆數
-		long count = uService.count();
+		long count = atService.count();
 		JsonObject jsondadta = JsonParser.parseString(json).getAsJsonObject();
 		int start = jsondadta.get("start").getAsInt();
 		int rows = jsondadta.get("rows").getAsInt();
 		JSONArray array = new JSONArray();
 		List<ApplyTeacher> apply = atService.findAllApply(start, rows);
 
-		return null;
+		if (apply != null) {
+			for (ApplyTeacher applyTeacher : apply) {
+				String input = applyTeacher.getLangs();
+
+				// 處理字串
+				String processed = input.replaceAll("\\[\"|\"\\]|\\[", "").replaceAll("\",\"", ",");
+
+				JSONObject item = new JSONObject().put("ApplyTeacherId", applyTeacher.getApplyTeacherId())
+						.put("UserName", applyTeacher.getUsers().getUserDetail().getUserName())
+						.put("Country", applyTeacher.getCountry()).put("Mainlessons", applyTeacher.getMainlessons())
+						.put("Langs", processed).put("Exp", applyTeacher.getExp())
+						.put("Advantage", applyTeacher.getAdvantage()).put("Salary", applyTeacher.getSalary())
+						.put("State", applyTeacher.getState());
+				array = array.put(item);
+			}
+		}
+		responseJson.put("count", count);
+		responseJson.put("apply", array);
+		return responseJson.toString();
 	}
 	
     //課程全部查詢

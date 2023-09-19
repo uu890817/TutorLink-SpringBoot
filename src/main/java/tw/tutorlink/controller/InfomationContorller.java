@@ -1,17 +1,26 @@
 package tw.tutorlink.controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Base64;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -20,6 +29,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import tw.tutorlink.bean.Users;
 import tw.tutorlink.dto.user.InfomationDTO;
+import tw.tutorlink.repository.UsersDAO;
 import tw.tutorlink.service.UsersService;
 
 @RestController
@@ -27,6 +37,9 @@ public class InfomationContorller {
 
 	@Autowired
 	private UsersService uService;
+
+	@Autowired
+	private UsersDAO uDAO;
 
 	@PostMapping("/infomation")
 	@ResponseBody
@@ -69,7 +82,7 @@ public class InfomationContorller {
 		Users loggedInUser = (Users) session.getAttribute("logState");
 		int userid = loggedInUser.getUsersId();
 		String result = uService.findbyIdAndPwd(userid, oldpwd, newPwd, newPwd2);
-		if(result.equals("fail")) {
+		if (result.equals("fail")) {
 			return "fail";
 		}
 		return "update";
@@ -108,19 +121,73 @@ public class InfomationContorller {
 		Users loggedInUser = (Users) session.getAttribute("logState");
 		int userid = loggedInUser.getUsersId();
 		Users result = uService.findUsersByID(userid);
-		String lastLoginTime = result.getUserDetail().getLastLoginTime().toString();
-		String newLoginTime = result.getUserDetail().getNewLoginTime().toString();
 		SimpleDateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+		String lastLoginTime = "";
+		if (result.getUserDetail().getLastLoginTime().toString() == null) {
+			lastLoginTime = "2000-01-01 00:00:00.000000";
+		} else {
+			lastLoginTime = result.getUserDetail().getLastLoginTime().toString();
+		}
+		String newLoginTime = result.getUserDetail().getNewLoginTime().toString();
+
+		// 創建SimpleDateFormat對象以格式化日期時間
+		SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy年MM月dd日 HH:mm");
 
 		Date lastLoginOriginalDate = originalFormat.parse(lastLoginTime);
 		Date newLoginOriginalDate = originalFormat.parse(newLoginTime);
-
-		// 創建SimpleDateFormat對象以格式化日期時間
-		SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy年MM月dd日 HH:mm	");
 		String formattedlastDateTime = outputFormat.format(lastLoginOriginalDate);
 		String formattednewDateTime = outputFormat.format(newLoginOriginalDate);
+
 		JSONObject item = new JSONObject().put("LastLoginTime", formattedlastDateTime).put("NewLoginTime",
 				formattednewDateTime);
 		return item.toString();
+	}
+
+	// 上傳大頭貼
+	@Value("${upload.path}")
+	private String uploadPath;
+
+	@PostMapping("/uploadimg")
+	@ResponseBody
+	public String imgUpload(@RequestParam("image") MultipartFile imageFile, HttpSession session)
+			throws IllegalStateException, IOException {
+		Users loggedInUser = (Users) session.getAttribute("logState");
+		String userId = loggedInUser.getUsersId().toString();
+		String userName = loggedInUser.getUserDetail().getUserName();
+		if (imageFile != null && !imageFile.isEmpty()) {
+			String contentType = imageFile.getContentType();
+			System.out.println(contentType);
+			if (contentType != null && contentType.startsWith("image")) {
+
+				// 新增檔案
+				String fileName = userId + "-" + userName + ".jpg";
+				Path filePath = Paths.get(uploadPath, fileName);
+				File targetFile = filePath.toFile();
+				File uploadDirectory = targetFile.getParentFile();
+				if (!uploadDirectory.exists()) {
+					uploadDirectory.mkdirs();
+				}
+				imageFile.transferTo(targetFile);
+
+				// 針對id 將圖片路徑寫進資料庫
+				Users result = uService.findUsersByID(loggedInUser.getUsersId());
+				result.getUserDetail().setImage(fileName);
+				uDAO.save(result);
+
+				return "success";
+			}
+		}
+		return "fail";
+	}
+
+	@PostMapping("/getImage")
+	public String getImage(HttpSession session) throws IOException {
+		Users loggedInUser = (Users) session.getAttribute("logState");
+		Users result = uService.findUsersByID(loggedInUser.getUsersId());
+		String img = result.getUserDetail().getImage();
+		Path filePath = Paths.get(uploadPath, img);
+		byte[] fileBytes = Files.readAllBytes(filePath);
+		String base64Image = Base64.getEncoder().encodeToString(fileBytes);
+		return base64Image;
 	}
 }

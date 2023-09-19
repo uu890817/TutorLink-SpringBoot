@@ -48,7 +48,6 @@ public class ShoppingCartController {
 	public List<CartItemDTO> getMyShoppingCart(HttpSession session) {
 		Users loggedInUser = (Users) session.getAttribute("logState");
 		return cService.getUserShoppingCart(loggedInUser.getUsersId());
-//		return cService.getUserShoppingCart(6);
 	}
 
 	// 刪除使用者購物車商品
