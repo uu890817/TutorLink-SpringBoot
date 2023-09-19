@@ -99,6 +99,7 @@ public class Lessons {
 		this.lessonName = lessonName;
 		this.price = price;
 		this.image = image;
+		this.subject = subject;
 	}
 	
 
