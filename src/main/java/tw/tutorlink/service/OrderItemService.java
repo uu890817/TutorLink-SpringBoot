@@ -19,6 +19,16 @@ public class OrderItemService {
 
 	@Autowired
 	private CartDAO cDAO;
+	
+	public List<OrderDTO> findAllOrder(){
+		List<OrderDTO> oDTOs = new ArrayList<>();
+		List<OrderItem> oitems = oDAO.findAll();
+		for (OrderItem oitem : oitems) {
+			OrderDTO oDTO = new OrderDTO(oitem);
+			oDTOs.add(oDTO);
+		}
+		return oDTOs;
+	}
 
 	public List<OrderDTO> getUserOrder(int uid) {
 		List<OrderDTO> oDTOs = new ArrayList<>();

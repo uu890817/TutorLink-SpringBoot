@@ -53,4 +53,10 @@ public class OrderController {
 		return null;
 	}
 	
+	@GetMapping("/manager/all")
+	@ResponseBody
+	public List<OrderDTO> getAllorder(HttpSession session) {
+		return orderItemService.findAllOrder();
+	}
+		
 }
