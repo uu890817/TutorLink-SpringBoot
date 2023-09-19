@@ -42,5 +42,74 @@ public class WebSocketChatRoom {
 	
 	@OneToMany(mappedBy = "chatRoom", cascade = CascadeType.ALL)
 	private List<WebSocketChatMessage> message;
+
+	//----------------------------------------------
+
+	
+	public Integer getChatRoomId() {
+		return chatRoomId;
+	}
+
+	public void setChatRoomId(Integer chatRoomId) {
+		this.chatRoomId = chatRoomId;
+	}
+
+	public Users getUsers() {
+		return users;
+	}
+
+	public void setUsers(Users users) {
+		this.users = users;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public Integer getType() {
+		return type;
+	}
+
+	public void setType(Integer type) {
+		this.type = type;
+	}
+
+	public Date getCreateDate() {
+		return createDate;
+	}
+
+	public void setCreateDate(Date createDate) {
+		this.createDate = createDate;
+	}
+
+	public List<WebSocketChatMember> getChatMember() {
+		return chatMember;
+	}
+
+	public void setChatMember(List<WebSocketChatMember> chatMember) {
+		this.chatMember = chatMember;
+	}
+
+	public List<WebSocketChatMessage> getMessage() {
+		return message;
+	}
+
+	public void setMessage(List<WebSocketChatMessage> message) {
+		this.message = message;
+	}
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
 	
 }
