@@ -86,7 +86,7 @@ public class ReportController {
 	// 修改單筆檢舉狀態
 	@PutMapping("/report/update")
 	@ResponseBody
-	public String updateById(@RequestParam("rId") Integer rid, @RequestBody Report newReport) {
+	public String updateById(@RequestParam("rid") Integer rid, @RequestBody Report newReport) {
 		Report report = rService.findById(rid);
 		if (report != null) {
 			if (newReport.getStatus() >= 0 && newReport.getStatus() <= 2) {
