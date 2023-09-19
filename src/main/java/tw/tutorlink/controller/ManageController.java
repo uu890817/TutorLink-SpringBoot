@@ -2,7 +2,6 @@ package tw.tutorlink.controller;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -25,7 +23,6 @@ import tw.tutorlink.bean.ApplyTeacher;
 import tw.tutorlink.bean.Lessons;
 import tw.tutorlink.bean.Users;
 import tw.tutorlink.dto.lessons.FindAllLessonTypeLessonDTO;
-import tw.tutorlink.dto.lessons.finAllLessonsDTO;
 import tw.tutorlink.service.ApplyTeacherService;
 import tw.tutorlink.service.LessonsService;
 import tw.tutorlink.service.UsersService;
