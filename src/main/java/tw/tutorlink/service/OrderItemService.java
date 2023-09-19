@@ -122,13 +122,14 @@ public class OrderItemService {
 
 	public List<SubjectRevenueDTO> countRevenueBySubject() {
 		List<SubjectRevenueDTO> rDTOs = new ArrayList<>();
-		Integer videosRevenue = 0;
-		Integer lessonsRevenue = 0;
 		List<Subject> findAllSubjects = sDAO.findAll();
 		for (Subject subject : findAllSubjects) {
+			Integer videosRevenue = 0;
+			Integer lessonsRevenue = 0;
 			SubjectRevenueDTO srDto = new SubjectRevenueDTO();
-			List<OrderItem> videos = oDAO.findTeacherVideoRevenue(subject.getSubjectId());
-			List<OrderItem> lessons = oDAO.findTeacherLessonRevenue(subject.getSubjectId());
+			List<OrderItem> videos = oDAO.findVideoRevenueBySubject(subject.getSubjectId());
+			List<OrderItem> lessons = oDAO.findLessonRevenueBySubject(subject.getSubjectId());
+			srDto.setSubject(subject.getSubjectContent());
 			for (OrderItem video : videos) {
 				videosRevenue += video.getLesson().getPrice();
 			}
@@ -137,8 +138,8 @@ public class OrderItemService {
 			}
 			srDto.setLessons(lessonsRevenue);
 			srDto.setVideos(videosRevenue);
-			srDto.setSubject(subject.getSubjectContent());
 			rDTOs.add(srDto);
+
 		}
 		return rDTOs;
 	}
