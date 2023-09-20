@@ -121,7 +121,7 @@ public class OrderItemService {
 	}
 
 	public List<SubjectRevenueDTO> countRevenueBySubject() {
-		List<SubjectRevenueDTO> rDTOs = new ArrayList<>();
+		List<SubjectRevenueDTO> srDtos = new ArrayList<>();
 		List<Subject> findAllSubjects = sDAO.findAll();
 		for (Subject subject : findAllSubjects) {
 			Integer videosRevenue = 0;
@@ -138,10 +138,9 @@ public class OrderItemService {
 			}
 			srDto.setLessons(lessonsRevenue);
 			srDto.setVideos(videosRevenue);
-			rDTOs.add(srDto);
-
+			srDtos.add(srDto);
 		}
-		return rDTOs;
+		return srDtos;
 	}
 
 }
