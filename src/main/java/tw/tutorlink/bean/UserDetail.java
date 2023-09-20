@@ -39,9 +39,20 @@ public class UserDetail {
 	
 	@Column(name = "Image",columnDefinition = "varchar(100)")
 	private String image;
+	
+	@Column(name = "ImageByte",columnDefinition = "varbinary(MAX)")
+	private byte[] imageByte;
 
 	@Column(name = "Birthday")
 	private long birthday;
+
+	public byte[] getImageByte() {
+		return imageByte;
+	}
+
+	public void setImageByte(byte[] imageByte) {
+		this.imageByte = imageByte;
+	}
 
 	@Column(name = "City",columnDefinition = "nvarchar(50)")
 	private String city;
