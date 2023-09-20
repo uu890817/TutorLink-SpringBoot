@@ -51,7 +51,7 @@ public class TutorlinkWebSocketHandler implements WebSocketHandler {
                 targetSession = webSocketBeanMap.get(targetUserId).getwSession();
 
             }catch (Exception e) {
-            	wSession.sendMessage(new TextMessage("對方不在線上"));
+//            	wSession.sendMessage(new TextMessage("對方不在線上"));
 				// TODO: handle exception
 			}
 //           WebSocketSession targetSession = webSocketBeanMap.get(targetUserId).getwSession();
