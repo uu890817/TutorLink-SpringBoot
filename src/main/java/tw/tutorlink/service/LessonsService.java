@@ -170,6 +170,18 @@ public class LessonsService {
 	public List<Lessons> findLessonsBySubIdAndType(Integer subjectId, boolean type) {
 		return lDAO.findLessonsBySubIdAndType(subjectId, type);
 	}
+	
+	//subjectId找課程
+	public List<finAllLessonsDTO> findLessonsBySubId(Integer subjectId){
+		List<Lessons> lessonsList = lDAO.findLessonsBySubId(subjectId);
+		List<finAllLessonsDTO> courseDTOList = new ArrayList<>();
+		for (Lessons lesson : lessonsList) {
+	        Users teacher = uDAO.findById(lesson.getUsers().getUsersId()).get();
+	        finAllLessonsDTO lDTO = new finAllLessonsDTO(lesson, teacher);
+	        courseDTOList.add(lDTO);
+	    }
+	    return courseDTOList;
+	}
 
 	// type找影片課程
 	public List<Lessons> findVideoLessonsByType() {
