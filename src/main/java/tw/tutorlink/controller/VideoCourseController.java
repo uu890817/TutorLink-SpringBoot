@@ -184,7 +184,8 @@ public class VideoCourseController {
 	        String imagePath = lesson.getImage();
 
 	        try {
-	            byte[] imageBytes = Files.readAllBytes(Paths.get(imagePath));
+	        	String savePath = "c:/temp/upload/image/";
+	            byte[] imageBytes = Files.readAllBytes(Paths.get(savePath +imagePath));
 
 	            String base64Image = Base64.getEncoder().encodeToString(imageBytes);
 
@@ -233,6 +234,27 @@ public class VideoCourseController {
 	public void deleteVideoLesson(@PathVariable("lessonId") Integer lessonId) {
 		lService.deleteLessonById(lessonId);
 	}
+	
+	//用科目找所有課程
+	@PostMapping(path="/findsubjectLesson/{subId}",produces="application/json;charset=UTF-8")
+	public List<finAllLessonsDTO> findLessonBysubject(@PathVariable("subId") Integer subjectId){
+		List<finAllLessonsDTO> lessons = lService.findLessonsBySubId(subjectId);
+		for (finAllLessonsDTO lesson : lessons) {
+	        String imagePath = lesson.getLessonUrl();
+
+	        try {
+	        	String savePath = "c:/temp/upload/image/";
+	            byte[] imageBytes = Files.readAllBytes(Paths.get(savePath +imagePath));
+
+	            String base64Image = Base64.getEncoder().encodeToString(imageBytes);
+
+	            lesson.setLessonUrl(base64Image);
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
+	    }
+		return lessons;
+	}
 
 	//用科目找影片課程
 	@GetMapping(path="/findVideoLessonsBySub/{subid}",produces="application/json;charset=UTF-8")
@@ -247,9 +269,24 @@ public class VideoCourseController {
 	}
 	
 	//找全部課程
-	@GetMapping(path="/findAllLesson",produces="application/json;charset=UTF-8")
+	@PostMapping(path="/findAllLesson",produces="application/json;charset=UTF-8")
 	public List<finAllLessonsDTO> findAllLesson(){
-		return lService.findAllLesson();
+		List<finAllLessonsDTO> lessons = lService.findAllLesson();
+		for (finAllLessonsDTO lesson : lessons) {
+	        String imagePath = lesson.getLessonUrl();
+
+	        try {
+	        	String savePath = "c:/temp/upload/image/";
+	            byte[] imageBytes = Files.readAllBytes(Paths.get(savePath +imagePath));
+
+	            String base64Image = Base64.getEncoder().encodeToString(imageBytes);
+
+	            lesson.setLessonUrl(base64Image);
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
+	    }
+		return lessons;
 	}
 	
 	//找全部影片課程
@@ -306,11 +343,11 @@ public class VideoCourseController {
 			@RequestParam("videoFile") MultipartFile videoFile) throws IllegalStateException, IOException {
 		if (videoFile != null && !videoFile.isEmpty()) {
 			String videoFileName = generateUniqueFileName(videoFile.getOriginalFilename());
-			String savePath = "c:/temp/upload/video/";
+			String savePath = "c:/temp/upload/videoCourse/";
 			File saveFile = new File(savePath + videoFileName);
 			videoFile.transferTo(saveFile);
 			String videoSavePath = saveFile.getAbsolutePath();
-			Video updateVideo = vService.updateVideoFile(videoId, videoSavePath);
+			Video updateVideo = vService.updateVideoFile(videoId, videoFileName);
 			return ResponseEntity.ok(updateVideo);
 		}
 
@@ -362,7 +399,8 @@ public class VideoCourseController {
 
 	    if (videoOptional.isPresent()) {
 	        Video video = videoOptional.get();
-	        String videoFilePath = video.getCourseUrl(); 
+	        String savePath = "c:/temp/upload/videoCourse/";
+	        String videoFilePath = savePath + video.getCourseUrl(); 
 	        InputStream videoInputStream = convertLocalFilePathToInputStream(videoFilePath);
 
 	        return videoInputStream;
@@ -394,7 +432,8 @@ public class VideoCourseController {
 	}
 	
 	public InputStream getPreVideoInputStreamByLessonId(Integer lessonId) {
-		String videoFilePath = ldService.findPreVideo(lessonId);
+		String savePath = "c:/temp/upload/video/";
+		String videoFilePath = savePath+ldService.findPreVideo(lessonId);
 		System.out.println(videoFilePath);
 		InputStream videoInputStream = convertLocalFilePathToInputStream(videoFilePath);
 		return videoInputStream;
@@ -512,7 +551,7 @@ public class VideoCourseController {
 	        @RequestParam("lessonDetail") String lessonDetail) throws IllegalStateException, IOException {
 	    if (videoFile != null && !videoFile.isEmpty()) {
 	        String fileName = generateUniqueFileName(videoFile.getOriginalFilename());
-	        String savePath = "c:/temp/upload/";
+	        String savePath = "c:/temp/upload/videoCourse/";
 	        File saveFile = new File(savePath + fileName);
 	        videoFile.transferTo(saveFile);
 	        System.out.println("影片已傳入資料夾");
@@ -522,7 +561,8 @@ public class VideoCourseController {
 //	        video.setLessonDetail(lessonDetail);
 	        video.setSort(sort);
 	        video.setChapterName(chapterName);
-	        video.setCourseUrl(saveFile.getAbsolutePath());
+//	        video.setCourseUrl(saveFile.getAbsolutePath());
+	        video.setCourseUrl(fileName);
 	        
 	     // 解析 lessonDetail JSON 字符串为 LessonDetail 对象
             ObjectMapper objectMapper = new ObjectMapper();

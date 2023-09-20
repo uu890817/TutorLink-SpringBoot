@@ -118,7 +118,9 @@ public class LessonController {
 				// 获取图像保存路径
 				String imageSavePath = saveFile.getAbsolutePath();
 				System.out.println(lessonName + " " + lessonType + " " + image + " ");
-				lesson = new Lessons(lessonName, subject, lessonType, imageSavePath, price);
+//				lesson = new Lessons(lessonName, subject, lessonType, imageSavePath, price);
+				//存圖片名稱
+				lesson = new Lessons(lessonName, subject, lessonType, imageFileName, price);
 			}
 			if (courseUrl == null || courseUrl.isEmpty()) {
 				LD = new LessonDetail(information, meetingUrl, "", createTime, courseTotalTime, language);
@@ -129,7 +131,9 @@ public class LessonController {
 				courseUrl.transferTo(saveFile);
 				String videoSavePath = saveFile.getAbsolutePath();
 
-				LD = new LessonDetail(information, meetingUrl, videoSavePath, createTime, courseTotalTime, language);
+//				LD = new LessonDetail(information, meetingUrl, videoSavePath, createTime, courseTotalTime, language);
+				//存影片名稱
+				LD = new LessonDetail(information, meetingUrl, videoFileName, createTime, courseTotalTime, language);
 			}
 
 			Lessons savedLesson = lService.insertLesson(loggedInUser.getUsersId(), lesson, LD);
@@ -158,7 +162,9 @@ public class LessonController {
 	@PostMapping(path = "/findLessons/{lessonId}", produces = "application/json;charset=UTF-8")
 	public Lessons findLesson(@PathVariable("lessonId")Integer id) {
 		Lessons lesson = lService.findByLessonId(id).get();
-		String imagePath = lesson.getImage();
+		String savePath = "c:/temp/upload/image/";
+		String imagePath = savePath+lesson.getImage();
+		System.out.println(imagePath);
 		try {
 			
 			byte[] fileBytes = readFileToByteArray(imagePath);
@@ -261,7 +267,8 @@ public class LessonController {
 					String imageSavePath = saveFile.getAbsolutePath();
 					System.out.println(lessonName + " " + image + " ");
 
-					lDTO.setImage(imageSavePath);
+//					lDTO.setImage(imageSavePath);
+					lDTO.setImage(imageFileName);
 					lDTO.setLessonName(lessonName);
 					lDTO.setPrice(price);
 					lDTO.setSubject(subject);
@@ -277,7 +284,8 @@ public class LessonController {
 					courseUrl.transferTo(saveFile);
 					String videoSavePath = saveFile.getAbsolutePath();
 
-					LD = new LessonDetail(information, meetingUrl, videoSavePath, null, courseTotalTime, language);
+//					LD = new LessonDetail(information, meetingUrl, videoSavePath, null, courseTotalTime, language);
+					LD = new LessonDetail(information, meetingUrl, videoFileName, null, courseTotalTime, language);
 				}
 				System.out.println("我要看的lesson :" + lesson.getSubject());
 				Lessons savedLesson = lService.updateLesson(id, lDTO, LD);
