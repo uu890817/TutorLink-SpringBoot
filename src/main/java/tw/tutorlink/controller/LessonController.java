@@ -179,64 +179,19 @@ public class LessonController {
 		}
 		return lesson;
 	}
+	//靠LessonType來決定顯示哪個的所有課程
+	@GetMapping(path="/findlesson/{lessonType}", produces = "application/json;charset=UTF-8")
+	public List<Lessons> findLessonByLessonType(@PathVariable("lessonType")boolean lessonType) {
+		if(lessonType) {
+			return lService.findOnlineLessonsByType();
+		}
+		    return lService.findVideoLessonsByType();
+		
+	}
 	
-	// 課程修改
-//	@PutMapping(path = "/updateLessons/{lessonId}", produces = "application/json;charset=UTF-8")
-//	public ResponseEntity<Integer> updateLesson(@PathVariable("lessonId")Integer id, @RequestParam(name="lessonName",required = false) String lessonName,
-//			@RequestParam(name = "image", required = false) MultipartFile image, @RequestParam(name="price",required = false) Integer price,
-//			@RequestParam(name = "information", defaultValue = "") String information,
-//			@RequestParam(name = "meetingURL", defaultValue = "") String meetingUrl,
-//			@RequestParam(name = "video", required = false) MultipartFile courseUrl,
-//			@RequestParam(name = "courseTotalTime", defaultValue = "") Integer courseTotalTime,
-//			@RequestParam(name = "language", defaultValue = "") String language,
-//			@RequestParam("subject") Subject subject) {
-//			System.out.println("123");
-//		try {
-//			
-//			Lessons lesson = lService.findByLessonId(id).get();
-//			LessonDetail LD = ldService.findLessonDetailByLessonId(id);
-//			
-//			
-//				
-//			if (image == null ||image.isEmpty()) {
-//				// 保存文件到本地文件夾
-//				String imageFileName = generateUniqueFileName(image.getOriginalFilename());
-//				String savePath = "c:/temp/upload/image/";
-//				File saveFile = new File(savePath + imageFileName);
-//				image.transferTo(saveFile);
-//				System.out.println("圖片已存入本地資料夾");
-//				// 获取图像保存路径
-//				String imageSavePath = saveFile.getAbsolutePath();
-//				System.out.println(lessonName + " " + image + " ");
-//				
-//				lesson = new Lessons(lessonName,subject,imageSavePath, price);
-//				
-//			}
-//			
-//			if (courseUrl == null || courseUrl.isEmpty()) {
-//				LD = new LessonDetail(information, meetingUrl,  language, null, courseTotalTime, language);
-//			} else {
-//				String videoFileName = generateUniqueFileName(courseUrl.getOriginalFilename());
-//				String savePath = "c:/temp/upload/video/";
-//				File saveFile = new File(savePath + videoFileName);
-//				courseUrl.transferTo(saveFile);
-//				String videoSavePath = saveFile.getAbsolutePath();
-//
-//				LD = new LessonDetail(information, meetingUrl, videoSavePath,  null, courseTotalTime, language);
-//			}
-//
-//			Lessons savedLesson = lService.updateLesson(id,lesson,LD);
-//			Integer response = savedLesson.getLessondetail().getLessonDetailId();
-//			return ResponseEntity.status(HttpStatus.CREATED).body(response);
-//			
-//
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-//		}
-//			
-//	}
 	
+	
+
 	   // 課程修改
 		@PutMapping(path = "/updateLessons/{lessonId}", produces = "application/json;charset=UTF-8")
 		public ResponseEntity<Integer> updateLesson(@PathVariable("lessonId") Integer id,
