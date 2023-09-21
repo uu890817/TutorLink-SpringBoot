@@ -74,7 +74,8 @@ public class FavoriteService {
 	    List<Favorite> favoriteList = fDAO.findFavoriteListByUsersId(usersId);
 	    List<FavoriteDTO> favoriteDtoList = new ArrayList<>();
 	    for (Favorite favorite : favoriteList) {
-	    	Lessons lessons = favorite.getLesson();	    	
+	    	Lessons lessons = favorite.getLesson();	   
+	    	// 圖片轉址
 	    	String savePath = "c:/temp/upload/image/";
 			String imagePath = savePath+lessons.getImage();
 			try {
@@ -96,11 +97,11 @@ public class FavoriteService {
 	public FavoriteDTO createFavoriteAndReturnDTO(Users user, Lessons lesson,Favorite favorite) {
 	    Lessons lessons = findLessonsById(lesson.getLessonId()); 
 	    Users teacher = findUserId(lessons.getUsers().getUsersId());
-	    // 创建 FavoriteDTO 对象
 	    FavoriteDTO lDTO = new FavoriteDTO(lessons, teacher, favorite);
 	    return lDTO;
 	}
 	
+	// 圖片轉址
 	private byte[] readFileToByteArray(String filePath) throws IOException {
 	    File file = new File(filePath);
 	    FileInputStream fis = new FileInputStream(file);
