@@ -1,6 +1,10 @@
 package tw.tutorlink.service;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
@@ -11,7 +15,6 @@ import tw.tutorlink.bean.Favorite;
 import tw.tutorlink.bean.Lessons;
 import tw.tutorlink.bean.Users;
 import tw.tutorlink.dto.lessontool.FavoriteDTO;
-import tw.tutorlink.dto.lessontool.LessonsDTO;
 import tw.tutorlink.repository.FavoriteDAO;
 import tw.tutorlink.repository.LessonsDAO;
 import tw.tutorlink.repository.UsersDAO;
@@ -71,7 +74,16 @@ public class FavoriteService {
 	    List<Favorite> favoriteList = fDAO.findFavoriteListByUsersId(usersId);
 	    List<FavoriteDTO> favoriteDtoList = new ArrayList<>();
 	    for (Favorite favorite : favoriteList) {
-	        Lessons lessons = favorite.getLesson();
+	    	Lessons lessons = favorite.getLesson();	    	
+	    	String savePath = "c:/temp/upload/image/";
+			String imagePath = savePath+lessons.getImage();
+			try {
+				byte[] fileBytes = readFileToByteArray(imagePath);
+		        String base64Image = Base64.getEncoder().encodeToString(fileBytes);
+		        lessons.setImage(base64Image);
+			}catch(IOException e){
+				e.printStackTrace();	
+			}
 	        Users teacher = findUserId(lessons.getUsers().getUsersId());
 	        FavoriteDTO lDTO = new FavoriteDTO(lessons, teacher, favorite);
 	        favoriteDtoList.add(lDTO);
@@ -87,5 +99,14 @@ public class FavoriteService {
 	    // 创建 FavoriteDTO 对象
 	    FavoriteDTO lDTO = new FavoriteDTO(lessons, teacher, favorite);
 	    return lDTO;
+	}
+	
+	private byte[] readFileToByteArray(String filePath) throws IOException {
+	    File file = new File(filePath);
+	    FileInputStream fis = new FileInputStream(file);
+	    byte[] fileBytes = new byte[(int) file.length()];
+	    fis.read(fileBytes);
+	    fis.close();
+	    return fileBytes;
 	}
 }

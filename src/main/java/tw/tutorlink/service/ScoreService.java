@@ -1,18 +1,20 @@
 package tw.tutorlink.service;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import tw.tutorlink.bean.Calender;
 import tw.tutorlink.bean.Comment;
 import tw.tutorlink.bean.Lessons;
 import tw.tutorlink.bean.Users;
 import tw.tutorlink.dto.lessontool.CommentDTO;
-import tw.tutorlink.dto.lessontool.LessonsDTO;
 import tw.tutorlink.repository.LessonsDAO;
 import tw.tutorlink.repository.ScoreDAO;
 import tw.tutorlink.repository.UsersDAO;
@@ -88,7 +90,17 @@ public class ScoreService {
 	    List<Comment> comments = sDAO.findAllCommentList();
 	    List<CommentDTO> courseDTOList = new ArrayList<>();
 	    for (Comment comment : comments) {
-	        Lessons lessons = comment.getLesson();
+	        Lessons lessons = comment.getLesson(); 	
+	    	String savePath = "c:/temp/upload/image/";
+			String imagePath = savePath+lessons.getImage();
+			System.err.println(imagePath);
+			try {
+				byte[] fileBytes = readFileToByteArray(imagePath);
+		        String base64Image = Base64.getEncoder().encodeToString(fileBytes);
+		        lessons.setImage(base64Image);
+			}catch(IOException e){
+				e.printStackTrace();	
+			}
 	        Users teacher = findUserId(lessons.getUsers().getUsersId());
 	        Users student = findUserId(comment.getUsers().getUsersId());
 	        CommentDTO lDTO = new CommentDTO(lessons, teacher, comment, student);
@@ -96,5 +108,14 @@ public class ScoreService {
 	    }
 
 	    return courseDTOList;
+	}
+	
+	private byte[] readFileToByteArray(String filePath) throws IOException {
+	    File file = new File(filePath);
+	    FileInputStream fis = new FileInputStream(file);
+	    byte[] fileBytes = new byte[(int) file.length()];
+	    fis.read(fileBytes);
+	    fis.close();
+	    return fileBytes;
 	}
 }
