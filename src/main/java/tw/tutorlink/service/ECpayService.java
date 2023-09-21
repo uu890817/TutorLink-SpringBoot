@@ -34,7 +34,6 @@ public class ECpayService {
         obj.setReturnURL(request.getReturnURL());  // 設定交易結果回傳網址
         obj.setClientBackURL(request.getClientBackURL());  // 設定商店轉跳網址
         obj.setNeedExtraPaidInfo("N");  // 是否需要額外付款資訊
-        System.out.println(request.getTotalAmount());
 		String form = all.aioCheckOut(obj, null);
 		
 		return form;
