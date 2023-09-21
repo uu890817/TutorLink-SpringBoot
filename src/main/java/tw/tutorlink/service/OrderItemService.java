@@ -1,6 +1,10 @@
 package tw.tutorlink.service;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +32,17 @@ public class OrderItemService {
 		List<OrderItem> oitems = oDAO.findAll();
 		for (OrderItem oitem : oitems) {
 			OrderDTO oDTO = new OrderDTO(oitem);
+			String savePath = "c:/temp/upload/image/";
+			String imagePath = savePath+oDTO.getImage();
+			System.err.println(imagePath);
+			try {
+				byte[] fileBytes = readFileToByteArray(imagePath);
+		        String base64Image = Base64.getEncoder().encodeToString(fileBytes);
+		        oDTO.setImage(base64Image);
+			}catch(IOException e){
+				e.printStackTrace();
+				
+			}
 			oDTOs.add(oDTO);
 		}
 		return oDTOs;
@@ -38,6 +53,17 @@ public class OrderItemService {
 		List<OrderItem> oitems = oDAO.findOrderByUserId(uid);
 		for (OrderItem oitem : oitems) {
 			OrderDTO oDTO = new OrderDTO(oitem);
+			String savePath = "c:/temp/upload/image/";
+			String imagePath = savePath+oDTO.getImage();
+			System.err.println(imagePath);
+			try {
+				byte[] fileBytes = readFileToByteArray(imagePath);
+		        String base64Image = Base64.getEncoder().encodeToString(fileBytes);
+		        oDTO.setImage(base64Image);
+			}catch(IOException e){
+				e.printStackTrace();
+				
+			}
 			oDTOs.add(oDTO);
 		}
 		return oDTOs;
@@ -143,4 +169,14 @@ public class OrderItemService {
 		return srDtos;
 	}
 
+	
+	// 轉base64
+	private byte[] readFileToByteArray(String filePath) throws IOException {
+	    File file = new File(filePath);
+	    FileInputStream fis = new FileInputStream(file);
+	    byte[] fileBytes = new byte[(int) file.length()];
+	    fis.read(fileBytes);
+	    fis.close();
+	    return fileBytes;
+	}
 }

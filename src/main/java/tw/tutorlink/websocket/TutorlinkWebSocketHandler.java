@@ -36,7 +36,7 @@ public class TutorlinkWebSocketHandler implements WebSocketHandler {
 		
 //		wsBean.setClientId(clientIdMaker.getAndIncrement());//取值並+1
 		webSocketBeanMap.put(splitUserId(wSession), wsBean);
-		wSession.sendMessage(new TextMessage("OKK"));
+//		wSession.sendMessage(new TextMessage("OKK"));
 	}
 
 	@Override
@@ -46,7 +46,15 @@ public class TutorlinkWebSocketHandler implements WebSocketHandler {
         if (parts.length == 2) {
             String targetUserId = parts[0];
             String content = parts[1];
-            WebSocketSession targetSession = webSocketBeanMap.get(targetUserId).getwSession();
+            WebSocketSession targetSession = null;
+            try {
+                targetSession = webSocketBeanMap.get(targetUserId).getwSession();
+
+            }catch (Exception e) {
+//            	wSession.sendMessage(new TextMessage("對方不在線上"));
+				// TODO: handle exception
+			}
+//           WebSocketSession targetSession = webSocketBeanMap.get(targetUserId).getwSession();
             if (targetSession != null && targetSession.isOpen()) {
                 targetSession.sendMessage(new TextMessage(content));
             }

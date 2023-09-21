@@ -1,6 +1,10 @@
 package tw.tutorlink.service;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +41,18 @@ public class CartService {
 		List<CartItem> citems = cDAO.findByUsers(uid);
 		for (CartItem citem : citems) {
 			CartItemDTO cDTO = new CartItemDTO(citem);
+			
+			String savePath = "c:/temp/upload/image/";
+			String imagePath = savePath+cDTO.getImage();
+			System.err.println(imagePath);
+			try {
+				byte[] fileBytes = readFileToByteArray(imagePath);
+		        String base64Image = Base64.getEncoder().encodeToString(fileBytes);
+		        cDTO.setImage(base64Image);
+			}catch(IOException e){
+				e.printStackTrace();
+				
+			}
 			cDTOs.add(cDTO);
 		}
 		return cDTOs;
@@ -72,5 +88,14 @@ public class CartService {
 
 	public CartItem findByCartId(Integer cartId) {
 		return cDAO.findBycId(cartId);
+	}
+	
+	private byte[] readFileToByteArray(String filePath) throws IOException {
+	    File file = new File(filePath);
+	    FileInputStream fis = new FileInputStream(file);
+	    byte[] fileBytes = new byte[(int) file.length()];
+	    fis.read(fileBytes);
+	    fis.close();
+	    return fileBytes;
 	}
 }

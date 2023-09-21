@@ -168,10 +168,11 @@ public class InfomationContorller {
 					uploadDirectory.mkdirs();
 				}
 				imageFile.transferTo(targetFile);
-
+				byte[] fileBytes = Files.readAllBytes(filePath);
 				// 針對id 將圖片路徑寫進資料庫
 				Users result = uService.findUsersByID(loggedInUser.getUsersId());
 				result.getUserDetail().setImage(fileName);
+				result.getUserDetail().setImageByte(fileBytes);
 				uDAO.save(result);
 
 				return "success";
@@ -187,7 +188,10 @@ public class InfomationContorller {
 		String img = result.getUserDetail().getImage();
 		Path filePath = Paths.get(uploadPath, img);
 		byte[] fileBytes = Files.readAllBytes(filePath);
+		byte[] fileBytestest = result.getUserDetail().getImageByte();
 		String base64Image = Base64.getEncoder().encodeToString(fileBytes);
-		return base64Image;
+		String base64Imagetest = Base64.getEncoder().encodeToString(fileBytestest);
+//		return base64Image;
+		return base64Imagetest;
 	}
 }
