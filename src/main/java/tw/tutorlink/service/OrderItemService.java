@@ -55,7 +55,6 @@ public class OrderItemService {
 			OrderDTO oDTO = new OrderDTO(oitem);
 			String savePath = "c:/temp/upload/image/";
 			String imagePath = savePath+oDTO.getImage();
-			System.err.println(imagePath);
 			try {
 				byte[] fileBytes = readFileToByteArray(imagePath);
 		        String base64Image = Base64.getEncoder().encodeToString(fileBytes);
@@ -84,6 +83,15 @@ public class OrderItemService {
 		List<OrderItem> oitems = oDAO.findRefundById(uid);
 		for (OrderItem oitem : oitems) {
 			OrderDTO oDTO = new OrderDTO(oitem);
+			String savePath = "c:/temp/upload/image/";
+			String imagePath = savePath+oDTO.getImage();
+			try {
+				byte[] fileBytes = readFileToByteArray(imagePath);
+		        String base64Image = Base64.getEncoder().encodeToString(fileBytes);
+		        oDTO.setImage(base64Image);
+			}catch(IOException e){
+				e.printStackTrace();
+			}
 			oDTOs.add(oDTO);
 		}
 		return oDTOs;
