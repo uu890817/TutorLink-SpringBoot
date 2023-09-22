@@ -88,6 +88,7 @@ public class OrderItemService {
 			try {
 				byte[] fileBytes = readFileToByteArray(imagePath);
 		        String base64Image = Base64.getEncoder().encodeToString(fileBytes);
+		        System.err.println(base64Image);
 		        oDTO.setImage(base64Image);
 			}catch(IOException e){
 				e.printStackTrace();
